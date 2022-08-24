@@ -1,0 +1,40 @@
+<div class="container mt-3 mb-3">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="col-md-8 col-8">
+            <h4>Edit Data Bank</h4>
+        </div>
+        <div class="col-md-4 col-4">
+            <button class="btn btn-warning btn-rounded float-right btn-back" onclick="back('edit', 'list-data')">
+                <i class="fas fa-chevron-left mr-2"></i>
+                @lang('Back')
+            </button>
+        </div>
+    </div>
+    <hr>
+    <form action="javascript:void(0)" id="form-edit">
+        <div class="row">
+            <div class="col-6 col-md-6">
+                <div class="form-group">
+                    <label for="bank_id">Bank ID</label>
+                    <input type="text" class="form-control required" name="bank_id" readonly>
+                </div>
+            </div>
+            <div class="col-6 col-md-6">
+                <div class="form-group">
+                    <label for="bank_name">Bank Name</label>
+                    <input type="text" class="form-control required" name="bank_name">
+                </div>
+            </div>
+            <div class="col-12 col-md-12">
+                <button class="btn btn-primary btn-rounded float-right" id="btn-save"> 
+                    <i class="fas fa-floppy-o mr-2"></i>
+                    @lang('Save Edited Data')
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        $('input[name="bank_id"]').inputmask("999")
+    </script>
+</div>

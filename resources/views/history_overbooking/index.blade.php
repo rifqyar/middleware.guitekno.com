@@ -1,0 +1,50 @@
+@extends('layouts.app')
+
+@section('page-title', __('History Overbookng'))
+@section('page-heading', __('History Overbookng'))
+
+@section('breadcrumbs')
+    <li class="breadcrumb-item active">
+        @lang('History Overbookng')
+    </li>
+@stop
+
+@section('content')
+    <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    <div id="overbooking-component">
+        <div class="card" id="list-data">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table t-overbooking" style="width: 100%">
+                        <thead>
+                            <tr>    
+                                {{-- <th>Action</th> --}}
+                                <th>Status</th>
+                                {{-- <th>ID</th> --}}
+                                <th>Sender Bank ID</th>
+                                <th>Sender Account</th>
+                                <th>Sender Ammount</th>
+                                <th>Notes</th>
+                                <th>Recipient Bank ID</th>
+                                <th>Recipient Account</th>
+                                <th>Recipient Ammount</th>
+                                <th>Amount</th>
+                                <th>Execution Time</th>
+                                <th>Description</th>
+                                <th>Internal Status</th>
+                                <th>Status Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
+    <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script>
+    
+@stop
