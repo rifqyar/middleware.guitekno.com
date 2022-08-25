@@ -12,7 +12,7 @@
                     <form class="form-group" method="GET">
                         <div class="row">
                             <div class="col-md-4">
-                                <label class="sr-only">RST</label>
+                                <p>Partner Id</p>
                                 <select class="form-control" name="rst_id">
                                     <option value="">All</option>
                                     <option value="051">SIPD / Otomatis</option>
@@ -20,6 +20,11 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
+                                <p>Partner Id</p>
+                                <input type="text" class="form-control" name="partner_id">
+                            </div>
+                            <div class="col-md-4">
+                                <p></p>
                                 <button type="submit" class="btn btn-primary mb-2">Filter</button>
                             </div>
                         </div>

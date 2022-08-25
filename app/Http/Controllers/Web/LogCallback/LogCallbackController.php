@@ -12,10 +12,11 @@ class LogCallbackController extends Controller
     {
         $query = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc');
 
-        if($request->rst_id)
-        {
-            $rst_id = $request->rst_id;
-            $query->where('rst_id', 'LIKE', "%{$rst_id}%");
+        if ($request->rst_id) {
+            $query->where('rst_id', $request->rst_id);
+        }
+        if ($request->partner_id) {
+            $query->where('lcb_partnerid', $request->partner_id);
         }
 
         $data['datas'] = $query->paginate(5)->withQueryString();
