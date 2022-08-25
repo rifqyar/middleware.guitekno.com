@@ -250,6 +250,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             });
         });
     }); 
+
+    /** Log Callback */
+    Route::get('log-callback', function(){
+        return 'WIP';
+    })->name('logCallback.index');
 });
 
 

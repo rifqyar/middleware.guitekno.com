@@ -13,6 +13,11 @@
 @stop
 
 @section('content')
+    <style>
+        table.dataTable {
+            font-size: 12px;
+        }
+    </style>
     <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
     <div id="bank-component">
         <div id="bank_res_data">

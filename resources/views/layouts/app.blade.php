@@ -37,6 +37,8 @@
     <script src="//cdn.amcharts.com/lib/4/themes/animated.js"></script>
     <script src="//cdn.amcharts.com/lib/4/themes/kelly.js"></script>
 
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+    
     @yield('styles')
 
     @hook('app:styles')
@@ -73,6 +75,7 @@
         integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
     @yield('scripts')
 
     @hook('app:scripts')

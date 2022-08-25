@@ -36,20 +36,28 @@
                     </div>
                 </div>
             </div>
-            @foreach ($data['header'] as $h)
-                <div class="card mb-2">
-                    <div class="card-header d-flex justify-content-between align-items-center" id="{{$h->rst_id}}" onclick="collapse('{{$h->rst_id}}')" style="cursor: pointer">
-                        <h6> 
-                            {{$h->rst_name}} 
-                        </h6>
-                        <span class="badge badge-info mr-2">
-                            {{$h->total}}
-                        </span>
+            @if(count($data['header']) > 0)
+                @foreach ($data['header'] as $h)
+                    <div class="card mb-2">
+                        <div class="card-header d-flex justify-content-between align-items-center" id="{{$h->rst_id}}" onclick="collapse('{{$h->rst_id}}')" style="cursor: pointer">
+                            <h6> 
+                                {{$h->rst_name}} 
+                            </h6>
+                            <span class="badge badge-info mr-2">
+                                {{$h->total}}
+                            </span>
+                        </div>
+                        <div class="card-body data-log-sipd" id="data-{{$h->rst_id}}" style="display: none">
+                        </div>
                     </div>
-                    <div class="card-body data-log-sipd" id="data-{{$h->rst_id}}" style="display: none">
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            @else
+                <center>
+                    <h3>
+                        <font color="red">There's nothing to show</font>
+                    </h3>
+                </center>
+            @endif
         </div>
 
     </div>

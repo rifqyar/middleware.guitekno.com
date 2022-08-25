@@ -1,18 +1,9 @@
+<style>
+    table {
+        font-size: 12px;
+    }
+</style>
 <div class="container-fluid">
-    {{-- <div class="row mb-1">
-        <div class="col-lg-2">
-            <div class="row">
-                <span class="badge badge-success px-2 mr-3">&nbsp;</span>
-                <b>Transaction Success</b>
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="row">
-                <span class="badge badge-danger px-2 mr-3">&nbsp;</span>
-                <b>Transaction Failed</b>
-            </div>
-        </div>
-    </div> --}}
     <div class="table-responsive">
         <table class="table t-logSIPD" style="width: 100%">
             <thead>

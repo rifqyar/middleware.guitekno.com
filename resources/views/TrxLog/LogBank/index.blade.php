@@ -36,18 +36,29 @@
                     </div>
                 </div>
             </div>
-            @foreach ($data['header'] as $h)
-                <div class="card mb-2">
-                    <div class="card-header d-flex justify-content-between align-items-center" id="{{$h->rst_id}}" onclick="collapse('{{$h->rst_id}}')" style="cursor: pointer">
-                        <h6> {{$h->rst_name}} </h6>
-                        <span class="badge badge-info mr-2">
-                            {{$h->total}}
-                        </span>
+            @if(count($data['header']) > 0)
+                @foreach ($data['header'] as $h)
+                    <div class="card mb-2">
+                        <div class="card-header d-flex justify-content-between align-items-center" data-name="{{$h->rst_name}}" id="{{$h->rst_id}}">
+                            <h6 class="d-flex align-items-center" onclick="collapse('{{$h->rst_id}}')" style="cursor: pointer"> 
+                                {{$h->rst_name}} 
+                                <button class="btn btn-icon btn-sm btn-warning ml-3" onclick="getData(`{{$h->rst_id}}`)" style="display: none"><i class="fas fa-refresh text-white"></i></button>
+                            </h6>
+                            <span class="badge badge-info mr-2">
+                                {{$h->total}}
+                            </span>
+                        </div>
+                        <div class="card-body data-log-bank" id="data-{{$h->rst_id}}" style="display: none">
+                        </div>
                     </div>
-                    <div class="card-body data-log-bank" id="data-{{$h->rst_id}}" style="display: none">
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            @else
+                <center>
+                    <h3>
+                        <font color="red">There's nothing to show</font>
+                    </h3>
+                </center>
+            @endif
         </div>
 
     </div>
