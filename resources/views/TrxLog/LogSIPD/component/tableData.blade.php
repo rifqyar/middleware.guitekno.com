@@ -90,7 +90,7 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-        convertDate()
+        // convertDate()
     })
 
     $('.pagination a').on('click', function(e){
