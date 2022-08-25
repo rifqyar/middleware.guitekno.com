@@ -1,12 +1,12 @@
 <?php
 
-namespace Vanguard\MasterData\Http\Controllers\Web\BankSecret;
+namespace Vanguard\Http\Controllers\Web\MasterData\BankSecret;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
-use Vanguard\MasterData\Http\Controllers\Web\BankSecret\DbController as Model;
+use Vanguard\Http\Controllers\Web\MasterData\BankSecret\DbController as Model;
 use Vanguard\Http\Controllers\Library;
 
 class MainController extends Controller
