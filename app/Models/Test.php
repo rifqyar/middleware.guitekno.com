@@ -5,7 +5,7 @@ namespace Vanguard\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TrxOverBooking extends Model
+class Test extends Model
 {
     use HasFactory;
     protected $table = 'trx_overbooking';
@@ -19,6 +19,6 @@ class TrxOverBooking extends Model
 
     public function senderBank()
     {
-        return $this->hasOne(RefBank::class, 'bank_id', 'tbk_sender_bank_id');
+        return $this->hashOne(RefBank::class, 'TBK_SENDER_BANK_ID', 'BANK_ID');
     }
 }

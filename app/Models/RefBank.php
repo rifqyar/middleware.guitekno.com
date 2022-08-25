@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Models;
+namespace Vanguard\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class RefBank extends Model

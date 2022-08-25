@@ -2,12 +2,13 @@
 
 namespace Vanguard\Http\Controllers\Web;
 
-use App\Models\TrxOverBooking;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Controllers\Library;
+use Vanguard\Models\Test;
+use Vanguard\Models\TrxOverBooking;
 
 class DashboardController extends Controller
 {
@@ -55,28 +56,17 @@ class DashboardController extends Controller
         // $data['']
 
         // dd($date);
-        $test = TrxOverBooking::get();
-        echo $test->senderBank->bank_name;
-        die();
+        $data['trxOverbooking'] = TrxOverBooking::where('ras_id', '100')
+            ->orderBy('tbk_created', 'desc')
+            ->get();
         $status = DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking)
         SELECT x.name keterangan, (select count(1) from st where name=x.name) value from (select distinct(name) from st) x order by x.name");
 
-        $tableTrans = DB::SELECT("SELECT y.bank_name bank_pengirim, x.tbk_created tanggal, x.tbk_amount jumlah, x.tbk_notes keterangan,
-                            CASE x.tbk_type
-                            WHEN 'LS|GAJI' THEN 'Gaji'
-                            ELSE 'Non Gaji' END as tipe,
 
-                            CASE x.ras_id
-                            WHEN '000' THEN 'Success'
-                            WHEN '100' THEN 'Process'
-                            ELSE 'Failed' END as status
-                        from trx_overbooking x, ref_bank y where x.tbk_sender_bank_id=y.bank_id");
 
         $data['status'] = $status;
 
         $data['transaksi'] = $date;
-
-        $data['tableTrans'] = $tableTrans;
 
         $data['jenis'] = DB::SELECT("SELECT statustext type, count(statustext) amount from vw_overbooking_h group by statustext");
 

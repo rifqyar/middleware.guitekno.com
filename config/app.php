@@ -178,7 +178,7 @@ return [
         Illuminate\Pagination\PaginationServiceProvider::class,
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
-//        Illuminate\Redis\RedisServiceProvider::class,
+        //        Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
@@ -207,6 +207,7 @@ return [
         Vanguard\Providers\RouteServiceProvider::class,
         Vanguard\Services\Auth\TwoFactor\AuthyServiceProvider::class,
         Vanguard\Providers\VanguardServiceProvider::class,
+
     ],
 
     /*
@@ -267,6 +268,7 @@ return [
         'Setting' => Akaunting\Setting\Facade::class,
         'Authy' => Vanguard\Services\Auth\TwoFactor\Facade::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'Helper' => App\Helpers\Helper::class,
 
     ],
 
