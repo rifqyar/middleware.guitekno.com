@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f3cb12e26f3d09df053cf2ac40f2cfe",
+    "content-hash": "dc295bd36279711ca0d63db314be5fb6",
     "packages": [
         {
             "name": "akaunting/laravel-setting",
@@ -6255,35 +6255,6 @@
                 "source": "https://github.com/vanguardapp/announcements/tree/v4.0.0"
             },
             "time": "2022-03-16T12:55:44+00:00"
-        },
-        {
-            "name": "vanguardapp/master-data",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "./plugins/MasterData",
-                "reference": "c01cb46c91ad78ff093d9622687538409161d468"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Vanguard\\MasterData\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Vanguard\\MasterData\\Tests\\": "tests/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Milos Stojanovic",
-                    "email": "stojanovic.loshmi@gmail.com"
-                }
-            ],
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "vanguardapp/plugins",

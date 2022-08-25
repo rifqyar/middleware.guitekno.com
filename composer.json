@@ -23,10 +23,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/loshmis/laravel-countries"
-        },
-        {
-            "type": "path",
-            "url": "./plugins/MasterData"
         }
     ],
     "require": {
@@ -49,7 +45,6 @@
         "spatie/laravel-query-builder": "^5.0",
         "vanguardapp/activity-log": "^4.0",
         "vanguardapp/announcements": "^4.0",
-        "vanguardapp/master-data": "*",
         "vanguardapp/plugins": "^4.0",
         "webpatser/laravel-countries": "dev-master",
         "yajra/laravel-datatables": "9.0",

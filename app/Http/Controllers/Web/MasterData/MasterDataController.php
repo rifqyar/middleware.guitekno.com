@@ -1,6 +1,6 @@
 <?php
 
-namespace Vanguard\MasterData\Http\Controllers\Web;
+namespace Vanguard\Http\Controllers\Web\MasterData;
 
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class MasterDataController extends Controller
      */
     public function index()
     {
-        return view('master-data::index');
+        return view('MasterData.index');
     }
 
     public function getRefBank(HttpRequest $req){
@@ -47,12 +47,11 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('master-data::bank.index', compact('data'));
+        return view('MasterData.bank.index', compact('data'));
     }
 
     public function getBankSecret(HttpRequest $req){
         $data = DB::SELECT("SELECT * FROM vw_BankSecret");
-        //lowercase
         if($req->ajax()){
             return Datatables::of($data)
             ->addColumn('action', function($data) {
@@ -78,7 +77,7 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('master-data::BankSecret.index', compact('data'));
+        return view('MasterData.BankSecret.index', compact('data'));
     }
 
     public function getBankEndpoint(HttpRequest $req){
@@ -109,6 +108,6 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('master-data::BankEndpoint.index', compact('data'));
+        return view('MasterData.BankEndpoint.index', compact('data'));
     }
 }
