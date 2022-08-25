@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Controllers\Library;
+use Vanguard\Models\Test;
+use Vanguard\Models\TrxOverBooking;
 
 class DashboardController extends Controller
 {
@@ -47,38 +49,29 @@ class DashboardController extends Controller
 
         // $te = DB::SELECT(
         //     "WITH tx as (select to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') tanggal, tbk_amount, tbk_sender_bank_id, ref_bank.bank_name from trx_overbooking inner join ref_bank on ref_bank.bank_id=trx_overbooking.tbk_sender_bank_id)
-        //     select yy.tanggal, vv.tbk_sender_bank_id bank_code, zz.bank_name bank_name, (select sum(tbk_amount) from tx where tanggal = yy.tanggal) total, (select count(1) from tx where tanggal = yy.tanggal) value 
+        //     select yy.tanggal, vv.tbk_sender_bank_id bank_code, zz.bank_name bank_name, (select sum(tbk_amount) from tx where tanggal = yy.tanggal) total, (select count(1) from tx where tanggal = yy.tanggal) value
         //     from (select distinct(tanggal) from tx) yy, (select distinct(tbk_sender_bank_id) from tx) vv, (select distinct(bank_name) from tx) zz order by yy.tanggal
         // ");
 
         // $data['']
 
         // dd($date);
-
+        $data['trxOverbooking'] = TrxOverBooking::where('ras_id', '100')
+            ->orderBy('tbk_created', 'desc')
+            ->get();
         $status = DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking)
         SELECT x.name keterangan, (select count(1) from st where name=x.name) value from (select distinct(name) from st) x order by x.name");
 
-        $tableTrans = DB::SELECT("SELECT y.bank_name bank_pengirim, x.tbk_created tanggal, x.tbk_amount jumlah, x.tbk_notes keterangan, 
-                            CASE x.tbk_type
-                            WHEN 'LS|GAJI' THEN 'Gaji'
-                            ELSE 'Non Gaji' END as tipe,
-                            
-                            CASE x.ras_id
-                            WHEN '000' THEN 'Success'
-                            WHEN '100' THEN 'Process'
-                            ELSE 'Failed' END as status
-                        from trx_overbooking x, ref_bank y where x.tbk_sender_bank_id=y.bank_id");
+
 
         $data['status'] = $status;
 
         $data['transaksi'] = $date;
 
-        $data['tableTrans'] = $tableTrans;
-
         $data['jenis'] = DB::SELECT("SELECT statustext type, count(statustext) amount from vw_overbooking_h group by statustext");
 
         $data['bank'] = DB::SELECT("SELECT vw_refbank.bank_name name, vw_refbank.bank_id, count(vw_overbooking_h.tbk_id) value from vw_overbooking_h inner join vw_refbank on vw_refbank.bank_id = vw_overbooking_h.tbk_sender_bank_id group by vw_refbank.bank_name, vw_overbooking_h.tbk_sender_bank_id, vw_refbank.bank_id");
-        
+
         $testBank =  $data['bank'];
         $getIndexBank = function ($bank_id) use ($testBank) {
             $key = array_search($bank_id, $testBank);
@@ -109,12 +102,12 @@ class DashboardController extends Controller
     //         $month = strtotime("+1 month", $month);
     //     }
     //     $arrKeys = [];
-    //     $q = $this->db->query("SELECT nm_ppat || ' - PPAT' nama, user_id userid from dat_ppat union select v.nm_pegawai || ' - User' nama, v.user_id userid from dat_pegawai v, dat_user y 
+    //     $q = $this->db->query("SELECT nm_ppat || ' - PPAT' nama, user_id userid from dat_ppat union select v.nm_pegawai || ' - User' nama, v.user_id userid from dat_pegawai v, dat_user y
     //         where v.user_id = y.user_id and y.usertype_id in ('2', '3')")->result();
     //     foreach ($q as $r) {
     //         $key = "user" . $r->USERID;
     //         array_push($arrKeys, array(
-    //             "key" => $key, 
+    //             "key" => $key,
     //             "name" => $r->NAMA
     //         ));
     //     }

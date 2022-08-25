@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <h6 class="card-header">Transaksi</h6>
@@ -133,14 +133,16 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <h6 class="card-header">Data Transaksi</h6>
-                    <div class="card-body" style="height:330px;overflow-y: auto;">
-                        <table class="table">
+                    <h6 class="card-header">Data Transaksi Ongoing</h6>
+                    <div class="card-body">
+                        <table class="table" id="lastOverBooking">
                             <thead>
                                 <tr>
+                                    <td>#</td>
+                                    <td>Partner Id</td>
                                     <td>Nama Bank</td>
                                     <td>Tanggal</td>
                                     <td>Jumlah</td>
@@ -150,20 +152,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['tableTrans'] as $table)
+                                <?php $i = 0; ?>
+                                @foreach ($data['trxOverbooking'] as $value)
                                     <tr>
-                                        <td>{{ $table->bank_pengirim }}</td>
-                                        <td>{{ substr($table->tanggal, 0, 10) }}</td>
-                                        <td>{{ $table->jumlah }}</td>
-                                        <td>{{ $table->keterangan }}</td>
-                                        <td>{{ $table->tipe }}</td>
-                                        <td class="badge badge-warning">{{ $table->status }}</td>
-                                        @if ($table->status == 'Success')
-                                            <td class="badge badge-success">{{ $table->status }}</td>
-                                        @elseif ($table->status == 'Process')
-                                            <td class="badge badge-warning">{{ $table->status }}</td>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $value->tbk_partnerid }}</td>
+                                        <td>{{ $value->senderBank->bank_name }}</td>
+                                        <td>{{ Helper::getFormatWib($value->tbk_created) }} </td>
+                                        <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
+                                        <td> {{ $value->tbk_notes }}</td>
+                                        <td> {{ $value->tbk_type }}</td>
+                                        @if ($value->ras_id == '000')
+                                            <td class="badge badge-success">Success</td>
+                                        @elseif ($value->ras_id == '100')
+                                            <td class="badge badge-warning">Process</td>
                                         @else
-                                            <td class="badge badge-danger">{{ $table->status }}</td>
+                                            <td class="badge badge-danger">Failed</td>
                                         @endif
                                     </tr>
                                 @endforeach
@@ -226,7 +230,7 @@
             }
 
             for (i in bank) {
-                createSeries(`value${bank[i].bank_id}  `, bank[i].name);
+                createSeries(`value${bank[i].bank_id}`, bank[i].name);
             }
 
 
@@ -292,42 +296,42 @@
                     "country": "Lithuania",
                     "litres": 501.9,
                     "units": 250
-                }, 
+                },
                 {
                     "country": "Czech Republic",
                     "litres": 301.9,
                     "units": 222
-                }, 
+                },
                 {
                     "country": "Ireland",
                     "litres": 201.1,
                     "units": 170
-                }, 
+                },
                 {
                     "country": "Germany",
                     "litres": 165.8,
                     "units": 122
-                }, 
+                },
                 {
                     "country": "Australia",
                     "litres": 139.9,
                     "units": 99
-                }, 
+                },
                 {
                     "country": "Austria",
                     "litres": 128.3,
                     "units": 85
-                }, 
+                },
                 {
                     "country": "UK",
                     "litres": 99,
                     "units": 93
-                }, 
+                },
                 {
                     "country": "Belgium",
                     "litres": 60,
                     "units": 50
-                }, 
+                },
                 {
                     "country": "The Netherlands",
                     "litres": 50,
@@ -453,6 +457,7 @@
             createTxType(null);
             createTxBank(null);
             createTxStatus(null);
+            $('#lastOverBooking').DataTable();
         });
     </script>
 @stop
