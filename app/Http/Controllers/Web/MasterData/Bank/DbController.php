@@ -1,6 +1,6 @@
 <?php
 
-namespace Vanguard\Http\Controllers\MasterData\Web\Bank;
+namespace Vanguard\Http\Controllers\Web\MasterData\Bank;
 
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
@@ -8,7 +8,7 @@ use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Request;
 use Vanguard\Http\Controllers\Library;
-use Vanguard\Http\Controllers\MasterData\Web\Bank\DbController as BankDbController;
+use Vanguard\Http\Controllers\Web\MasterData\Bank\DbController as BankDbController;
 
 class DbController extends Controller
 {
