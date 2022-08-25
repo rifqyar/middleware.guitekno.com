@@ -20,12 +20,12 @@
                             <tr>    
                                 {{-- <th>Action</th> --}}
                                 <th>Status</th>
-                                {{-- <th>ID</th> --}}
-                                <th>Sender Bank ID</th>
+                                <th>Partner ID</th>
+                                <th>Sender Bank</th>
                                 <th>Sender Account</th>
                                 <th>Sender Ammount</th>
                                 <th>Notes</th>
-                                <th>Recipient Bank ID</th>
+                                <th>Recipient Bank Name</th>
                                 <th>Recipient Account</th>
                                 <th>Recipient Ammount</th>
                                 <th>Amount</th>

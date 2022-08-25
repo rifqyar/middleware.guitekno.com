@@ -12,32 +12,15 @@ $(document).ready(function(){
         columns: [
             // { data: 'action', name: 'action' },
             { data: 'status', name: 'status' },
-            { data: 'tbk_sender_bank_id', name: 'tbk_sender_bank_id' },
+            { data: 'tbk_partnerid', name: 'tbk_partnerid' },
+            { data: 'sender_bank_name', name: 'sender_bank_name' },
             { data: 'tbk_sender_account', name: 'tbk_sender_account' },
-            { 
-                data: 'sender_amount', 
-                name: 'sender_amount' //,
-                // render: (data, type) => {
-                //     var number = $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display(data)
-
-                //     return number;
-                // }
-            },
+            { data: 'sender_amount', name: 'sender_amount'},
             { data: 'tbk_notes', name: 'tbk_notes' },
-            { data: 'tbk_recipient_bank_id', name: 'tbk_recipient_bank_id' },
+            { data: 'recipient_bank_name', name: 'recipient_bank_name' },
             { data: 'tbk_recipient_account', name: 'tbk_recipient_account' },
             { data: 'recipient_amount', name: 'recipient_amount'},
-            // render: (data, type) => {
-            //     var number = $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display(data)
-
-            //     return number;
-            // } },
             { data: 'amount', name: 'amount'},
-            // render: (data, type) => {
-            //     var number = $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display(data)
-
-            //     return number;
-            // } },
             { data: 'tbk_execution_time', name: 'tbk_execution_time' },
             { data: 'tbk_sp2d_desc', name: 'tbk_sp2d_desc' },
             { data: 'tbk_internal_status', name: 'tbk_internal_status' },
