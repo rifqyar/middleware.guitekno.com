@@ -23,14 +23,14 @@ class VanguardServiceProvider extends BaseVanguardServiceProvider
     {
         return [
             \Vanguard\Support\Plugins\Dashboard\Dashboard::class,
-            \Vanguard\Support\Plugins\Settings::class,
-            \Vanguard\Support\Plugins\Users::class,
-            \Vanguard\UserActivity\UserActivity::class,
-            \Vanguard\Support\Plugins\RolesAndPermissions::class,
             \Vanguard\MasterData\MasterData::class,
             \Vanguard\Support\Plugins\TrxLog::class,
             // \Vanguard\Support\Plugins\TrxOverbooking::class,
             \Vanguard\Support\Plugins\HistoryOverbooking::class,
+            \Vanguard\Support\Plugins\Settings::class,
+            \Vanguard\Support\Plugins\Users::class,
+            \Vanguard\UserActivity\UserActivity::class,
+            \Vanguard\Support\Plugins\RolesAndPermissions::class,
             \Vanguard\Announcements\Announcements::class,
         ];
     }
