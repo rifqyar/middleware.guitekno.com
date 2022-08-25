@@ -63,7 +63,7 @@
     },
     "autoload": {
         "files": [
-            "app/helpers/helper.php"
+            "App/Helpers/Helper.php"
         ],
         "psr-4": {
             "Vanguard\\": "app/",
