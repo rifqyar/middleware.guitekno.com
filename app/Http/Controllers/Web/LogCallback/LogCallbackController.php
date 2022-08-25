@@ -11,7 +11,14 @@ class LogCallbackController extends Controller
     public function index(Request $request)
     {
         $query = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc');
-        $data['datas'] = $query->paginate(5);
+
+        if($request->rst_id)
+        {
+            $rst_id = $request->rst_id;
+            $query->where('rst_id', 'LIKE', "%{$rst_id}%");
+        }
+
+        $data['datas'] = $query->paginate(5)->withQueryString();
         return view('log_callback.index', $data);
     }
 }

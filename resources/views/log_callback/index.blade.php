@@ -9,7 +9,7 @@
             <div class="card-body">
                 <div>
                     <h6>Filter</h6>
-                    <form class="form-group" method="get">
+                    <form class="form-group" method="GET">
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="sr-only">RST</label>
