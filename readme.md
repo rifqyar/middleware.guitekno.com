@@ -1,1 +1,1 @@
-## Dashboard middleware API
+##Dashboard Middleware
