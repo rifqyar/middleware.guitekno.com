@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -136,31 +136,77 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <h6 class="card-header">Data Transaksi Ongoing</h6>
+                    <div style="display: flex;justify-content:space-between">
+                        <div>
+                            <h6 class="card-header">10 Log Callback terakhir</h6>
+                        </div>
+                        <div class="card-header">
+                            <a href="/history-overbooking">
+                                <button class="btn btn-success ">
+                                    Lihat Semua
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
                     <div class="card-body">
                         <table class="table" id="lastOverBooking">
                             <thead>
                                 <tr>
-                                    <td>#</td>
-                                    <td>Partner Id</td>
-                                    <td>Nama Bank</td>
-                                    <td>Tanggal</td>
-                                    <td>Jumlah</td>
-                                    <td>Keterangan</td>
-                                    <td>Tipe</td>
-                                    <td>Status</td>
+                                    <th>Partner Id</th>
+                                    <th>Callback Pertama</th>
+                                    <th>Callback Terakhir</th>
+                                    <th>Sevice Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $i = 0; ?>
+                                @foreach ($data['logCallback'] as $value)
+                                    <tr>
+                                        <td>{{ $value->lcb_partnerid }}</td>
+                                        <td>{{ Helper::getFormatWib($value->lcb_created) }} </td>
+                                        <td>{{ Helper::getFormatWib($value->lcb_last_updated) }} </td>
+                                        <td>{{ $value->rst->rst_name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div style="display: flex;justify-content:space-between">
+                        <div>
+                            <h6 class="card-header">Data Transaksi Ongoing</h6>
+                        </div>
+                        <div class="card-header">
+                            <a href="/history-overbooking">
+                                <button class="btn btn-success ">
+                                    Lihat Semua
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="lastOverBooking">
+                            <thead>
+                                <tr>
+                                    <th>Partner Id</th>
+                                    <th>Nama Bank</th>
+                                    <th>Tanggal pengiriman</th>
+                                    <td>Jumlah</td>
+                                    <th>Tipe</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @foreach ($data['trxOverbooking'] as $value)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
                                         <td>{{ $value->tbk_partnerid }}</td>
                                         <td>{{ $value->senderBank->bank_name }}</td>
-                                        <td>{{ Helper::getFormatWib($value->tbk_created) }} </td>
+                                        <td>{{ Helper::getFormatWib($value->tbk_execution_time) }} </td>
                                         <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
-                                        <td> {{ $value->tbk_notes }}</td>
                                         <td> {{ $value->tbk_type }}</td>
                                         @if ($value->ras_id == '000')
                                             <td class="badge badge-success">Success</td>
@@ -457,7 +503,7 @@
             createTxType(null);
             createTxBank(null);
             createTxStatus(null);
-            $('#lastOverBooking').DataTable();
+            // $('#lastOverBooking').DataTable();
         });
     </script>
 @stop

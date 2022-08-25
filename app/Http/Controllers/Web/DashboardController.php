@@ -11,6 +11,7 @@ use Vanguard\Models\Test;
 use Vanguard\Models\TrxOverBooking;
 use Vanguard\Models\RefBank;
 use Vanguard\Models\DatBankSecret;
+use Vanguard\Models\LogCallback;
 
 class DashboardController extends Controller
 {
@@ -33,8 +34,12 @@ class DashboardController extends Controller
         $data['mostActiveBank'] = TrxOverBooking::mostActiveBank();
 
         $data['trxOverbooking'] = TrxOverBooking::where('ras_id', '100')
+            ->limit(10)
             ->orderBy('tbk_created', 'desc')
             ->get();
+        $data['logCallback'] = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc')
+            ->limit(10)->get();
+        // dd($data['logCallback']);
 
         $data['status'] = TrxOverBooking::status();
 
