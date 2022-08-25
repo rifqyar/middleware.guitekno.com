@@ -62,9 +62,6 @@
         "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {
-        "files": [
-            "./App/Helpers/Helper.php"
-        ],
         "psr-4": {
             "Vanguard\\": "app/",
             "Database\\Factories\\": "database/factories/",
