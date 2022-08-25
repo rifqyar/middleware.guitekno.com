@@ -3,6 +3,9 @@
 /**
  * Authentication
  */
+
+use Vanguard\Models\LogCallback;
+
 Route::get('login', 'Auth\LoginController@show');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
@@ -192,23 +195,23 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('activity/user/{user}/log', 'Users\ActivityController@index')->name('activity.user')
         ->middleware('permission:users.activity');
 
-        
+
     /**
      * Transaction Log
      */
 
-    Route::prefix('log-transaction')->group(function(){
-        Route::prefix('bank')->group(function(){
+    Route::prefix('log-transaction')->group(function () {
+        Route::prefix('bank')->group(function () {
             Route::get('/', "TrxLog\LogBank\MainController@index")->name('trxLog.bank')->middleware('auth');
             Route::get('/getData/{rst_id}/{perPage?}', "TrxLog\LogBank\MainController@getData");
         });
 
-        Route::prefix('sipd')->group(function(){
+        Route::prefix('sipd')->group(function () {
             Route::get('/', "TrxLog\LogSIPD\MainController@index")->name('trxLog.sipd')->middleware('auth');
             Route::get('/getData/{rst_id}/{perPage?}', "TrxLog\LogSIPD\MainController@getData");
         });
     });
-    
+
     /**
      * History Over Booking
      */
@@ -217,10 +220,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     /** CRUD Master Data */
     Route::prefix('master-data')->group(function () {
         // Route::get('/', 'MasterData\MasterDataController@index')->middleware('auth');
-        
-    
+
+
         Route::middleware(['permission:master.data_refBank'])->group(function () {
-            Route::prefix('bank')->group(function() {
+            Route::prefix('bank')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getRefBank')->name('masterdata.refbank');
                 Route::get('get/{id}', 'MasterData\Bank\MainController@getBankData');
                 Route::post('/', 'MasterData\Bank\MainController@post');
@@ -228,9 +231,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('{id}/{checked}/delete', 'MasterData\Bank\MainController@delete');
             });
         });
-    
+
         Route::middleware(['permission:master.data_bankSecret'])->group(function () {
-            Route::prefix('bank-secret')->group(function(){
+            Route::prefix('bank-secret')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getBankSecret')->name('masterdata.bankSecret');
                 Route::get('get-avail', 'MasterData\BankSecret\MainController@getAvailBank');
                 Route::post('/', 'MasterData\BankSecret\MainController@post');
@@ -238,9 +241,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::put('/', 'MasterData\BankSecret\MainController@put');
             });
         });
-    
+
         Route::middleware(['permission:master.data_bankEndpoint'])->group(function () {
-            Route::prefix('bank-endpoint')->group(function(){
+            Route::prefix('bank-endpoint')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getBankEndpoint')->name('masterdata.bankEndpoint');
                 Route::get('get-banksecret', 'MasterData\BankEndpoint\MainController@getBankSecret');
                 Route::get('get-endpoint', 'MasterData\BankEndpoint\MainController@getEndpointType');
@@ -249,12 +252,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
             });
         });
-    }); 
+    });
 
     /** Log Callback */
-    Route::get('log-callback', function(){
-        return 'WIP';
-    })->name('logCallback.index');
+    Route::get('log-callback', 'LogCallback\LogCallbackController@index')->name('logCallback.index');
 });
 
 
