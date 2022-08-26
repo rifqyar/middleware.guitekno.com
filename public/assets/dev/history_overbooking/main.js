@@ -45,15 +45,19 @@ function showData(filter = ''){
                 { data: 'recipient_bank_name', name: 'recipient_bank_name' },
                 { data: 'tbk_recipient_account', name: 'tbk_recipient_account' },
                 { data: 'recipient_amount', name: 'recipient_amount'},
-                { data: 'amount', name: 'amount'},
                 { data: 'tbk_execution_time', name: 'tbk_execution_time' },
                 { data: 'tbk_sp2d_desc', name: 'tbk_sp2d_desc' },
-                { data: 'tbk_internal_status', name: 'tbk_internal_status' },
                 { data: 'status_message', name: 'status_message' }
             ],
             columnDefs: [
-                { className: "text-center align-middle", targets: "_all" }
-            ]
+                { className: "text-center align-middle", targets: "_all" },
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                },
+            ],
+            order: [[9, 'desc']],
         });
     }
 }

@@ -13,10 +13,8 @@
                     <th>Recipient Bank Name</th>
                     <th>Recipient Account</th>
                     <th>Recipient Ammount</th>
-                    <th>Amount</th>
                     <th>Execution Time</th>
                     <th>Description</th>
-                    <th>Internal Status</th>
                     <th>Status Message</th>
                 </tr>
             </thead>
