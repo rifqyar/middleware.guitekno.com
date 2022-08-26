@@ -15,36 +15,53 @@
                                 <p>Service Type</p>
                                 <select class="form-control" name="rst_id">
                                     <option value="">All</option>
-                                    <option value="051" {{ $param['rst_id'] == '051' ? 'selected' : '' }}>SIPD / Otomatis
+
+                                    <option value="051"
+                                        {{ isset($param['rst_id']) && $param['rst_id'] == '051' ? 'selected' : '' }}>SIPD /
+                                        Otomatis
                                     </option>
-                                    <option value="052" {{ $param['rst_id'] == '052' ? 'selected' : '' }}>Bank</option>
+                                    <option value="052"
+                                        {{ isset($param['rst_id']) && $param['rst_id'] == '052' ? 'selected' : '' }}>Bank
+                                    </option>
+
                                 </select>
+                                {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
                             <div class="col-md-4">
                                 <p>Partner Id</p>
                                 <input type="text" class="form-control" name="partner_id"
-                                    value="{{ $param['partner_id'] }}">
+                                    value="{{ isset($param['partner_id']) && $param['partner_id'] }}">
                             </div>
+                            {{-- {{ var_dump($param['partner_id']) }} --}}
                             <div class="col-md-4">
                                 <p>Callback Terakhir</p>
                                 <div class="row">
                                     <div class="col-4">
                                         <select class="form-control" name="parameter">
                                             <option value="">All</option>
-                                            <option value="<" {{ $param['parameter'] == '<' ? 'selected' : '' }}>
+                                            <option value="<"
+                                                {{ isset($param['parameter']) && $param['parameter'] == '<' ? 'selected' : '' }}>
                                                 < </option>
-                                            <option value=">" {{ $param['parameter'] == '>' ? 'selected' : '' }}> >
+                                            <option value=">"
+                                                {{ isset($param['parameter']) && $param['parameter'] == '>' ? 'selected' : '' }}>
+                                                >
                                             </option>
-                                            <option value="=" {{ $param['parameter'] == '=' ? 'selected' : '' }}> =
+                                            <option value="="
+                                                {{ isset($param['parameter']) && $param['parameter'] == '=' ? 'selected' : '' }}>
+                                                =
                                             </option>
-                                            <option value=">=" {{ $param['parameter'] == '>=' ? 'selected' : '' }}> >=
+                                            <option value=">="
+                                                {{ isset($param['parameter']) && $param['parameter'] == '>=' ? 'selected' : '' }}>
+                                                >=
                                             </option>
-                                            <option value="<=" {{ $param['parameter'] == '>=' ? 'selected' : '' }}>
+                                            <option value="<="
+                                                {{ isset($param['parameter']) && $param['parameter'] == '<=' ? 'selected' : '' }}>
                                                 <= </option>
                                         </select>
                                     </div>
                                     <div class="col-8">
-                                        <input type="date" class="form-control" name="last_updated">
+                                        <input type="date" class="form-control" name="last_updated"
+                                            value={{ $param['last_updated'] }}>
                                     </div>
                                 </div>
 
