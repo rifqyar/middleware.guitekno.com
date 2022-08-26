@@ -3,13 +3,10 @@
 namespace Vanguard\Http\Controllers\Web;
 
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Controllers\Library;
-use Vanguard\Models\Test;
 use Vanguard\Models\TrxOverBooking;
-use Vanguard\Models\RefBank;
 use Vanguard\Models\DatBankSecret;
 use Vanguard\Models\LogCallback;
 
