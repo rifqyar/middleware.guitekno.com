@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="col-8">
                                         <input type="date" class="form-control" name="last_updated"
-                                            value={{ $param['last_updated'] }}>
+                                            value={{ isset($param['last_updated']) && $param['last_updated'] }}>
                                     </div>
                                 </div>
 
