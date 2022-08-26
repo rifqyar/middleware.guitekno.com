@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -107,11 +107,9 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card" style="height: 400px">
-                    <h6 class="card-header">Transaksi(Bank)</h6>
-                    <div class="card-body">
-                        <div class="pt-1 px-3">
-                            <div id="divTxBank" style="height: 290px"></div>
-                        </div>
+                    <h6 class="card-header"><b>Transaksi(Bank)</b></h6>
+                    <div class="card-body p-0">
+                        <div id="divTxBank" style="height: 100%"></div>
                     </div>
                 </div>
             </div>
@@ -120,17 +118,17 @@
                     <div class="col-md-12">
                         <div class="card" style="height: 192px">
                             {{-- <h6 class="card-header">Jenis Transaksi</h6> --}}
-                            <div class="card-body">
+                            <div class="card-body p-0">
                                 {{-- <p>Jenis Transaksi</p> --}}
-                                <div id="divTxType"></div>
+                                <div id="divTxType"style="height: 100%"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card" style="height: 190px">
                             {{-- <h6 class="card-header">Status Transaksi</h6> --}}
-                            <div class="card-body">
-                                <div id="divTxStatus" style="height: 150px"></div>
+                            <div class="card-body p-0">
+                                <div id="divTxStatus" style="height: 100%"></div>
                             </div>
                         </div>
                     </div>
@@ -141,10 +139,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <h6 class="card-header">Transaksi</h6>
-                    <div class="card-body">
-                        <div class="pt-4 px-3">
-                            <div id="divTxDaily" style="height:400px"></div>
-                        </div>
+                    <div class="card-body p-0">
+                        <div id="divTxDaily" style="height: 400px"></div>
                     </div>
                 </div>
             </div>
@@ -225,11 +221,11 @@
                                         <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
                                         <td> {{ $value->tbk_type }}</td>
                                         @if ($value->ras_id == '000')
-                                            <td class="badge badge-success">Success</td>
+                                            <td><span class="badge badge-success">Success</span></td>
                                         @elseif ($value->ras_id == '100')
-                                            <td class="badge badge-warning">Process</td>
+                                            <td><span class="badge badge-warning">Process</span></td>
                                         @else
-                                            <td class="badge badge-danger">Failed</td>
+                                            <td><span class="badge badge-danger">Failed</span></td>
                                         @endif
                                     </tr>
                                 @endforeach
@@ -339,6 +335,9 @@
 
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
+            var markerTemplate = chart.legend.markers.template;
+            markerTemplate.width = 12;
+            markerTemplate.height = 12;
         }
 
         function createTxBank(data) {
@@ -504,7 +503,9 @@
 
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
-
+            var markerTemplate = chart.legend.markers.template;
+            markerTemplate.width = 12;
+            markerTemplate.height = 12;
             chart.innerRadius = 25;
 
             var series = chart.series.push(new am4charts.PieSeries3D());
