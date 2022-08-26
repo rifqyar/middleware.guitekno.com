@@ -30,7 +30,7 @@
                             <div class="col-md-4">
                                 <p>Partner Id</p>
                                 <input type="text" class="form-control" name="partner_id"
-                                    value="{{ isset($param['partner_id']) && $param['partner_id'] }}">
+                                    @isset($param['partner_id']) value="{{ $param['partner_id'] }}" @endisset>
                             </div>
                             {{-- {{ var_dump($param['partner_id']) }} --}}
                             <div class="col-md-4">
@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="col-8">
                                         <input type="date" class="form-control" name="last_updated"
-                                            value={{ isset($param['last_updated']) && $param['last_updated'] }}>
+                                            @isset($param['last_updated']) value={{ $param['last_updated'] }} @endisset>
                                     </div>
                                 </div>
 
