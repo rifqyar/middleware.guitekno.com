@@ -18,6 +18,13 @@ class LogCallbackController extends Controller
         if ($request->partner_id) {
             $query->where('lcb_partnerid', $request->partner_id);
         }
+        if ($request->last_updated) {
+            // dd($request->between, $request->last_updated);
+            $query->whereDate('lcb_last_updated', $request->parameter, $request->last_updated);
+        }
+        if ($request->all()) {
+            $data['param'] = $request->all();
+        }
 
         $data['datas'] = $query->paginate(10)->withQueryString();
         return view('log_callback.index', $data);

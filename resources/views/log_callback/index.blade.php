@@ -15,13 +15,41 @@
                                 <p>Service Type</p>
                                 <select class="form-control" name="rst_id">
                                     <option value="">All</option>
-                                    <option value="051">SIPD / Otomatis</option>
-                                    <option value="052">Bank</option>
+                                    <option value="051" {{ $param['rst_id'] == '051' ? 'selected' : '' }}>SIPD / Otomatis
+                                    </option>
+                                    <option value="052" {{ $param['rst_id'] == '052' ? 'selected' : '' }}>Bank</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <p>Partner Id</p>
-                                <input type="text" class="form-control" name="partner_id">
+                                <input type="text" class="form-control" name="partner_id"
+                                    value="{{ $param['partner_id'] }}">
+                            </div>
+                            <div class="col-md-4">
+                                <p>Callback Terakhir</p>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select class="form-control" name="parameter">
+                                            <option value="">All</option>
+                                            <option value="<" {{ $param['parameter'] == '<' ? 'selected' : '' }}>
+                                                < </option>
+                                            <option value=">" {{ $param['parameter'] == '>' ? 'selected' : '' }}> >
+                                            </option>
+                                            <option value="=" {{ $param['parameter'] == '=' ? 'selected' : '' }}> =
+                                            </option>
+                                            <option value=">=" {{ $param['parameter'] == '>=' ? 'selected' : '' }}> >=
+                                            </option>
+                                            <option value="<=" {{ $param['parameter'] == '>=' ? 'selected' : '' }}>
+                                                <= </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="date" class="form-control" name="last_updated">
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                         <div class="row mt-4">
