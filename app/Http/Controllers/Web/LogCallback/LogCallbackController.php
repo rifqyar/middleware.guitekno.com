@@ -19,7 +19,7 @@ class LogCallbackController extends Controller
             $query->where('lcb_partnerid', $request->partner_id);
         }
 
-        $data['datas'] = $query->paginate(5)->withQueryString();
+        $data['datas'] = $query->paginate(10)->withQueryString();
         return view('log_callback.index', $data);
     }
 }

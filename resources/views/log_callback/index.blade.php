@@ -12,7 +12,7 @@
                     <form class="form-group" method="GET">
                         <div class="row">
                             <div class="col-md-4">
-                                <p>Partner Id</p>
+                                <p>Service Type</p>
                                 <select class="form-control" name="rst_id">
                                     <option value="">All</option>
                                     <option value="051">SIPD / Otomatis</option>
@@ -23,8 +23,9 @@
                                 <p>Partner Id</p>
                                 <input type="text" class="form-control" name="partner_id">
                             </div>
-                            <div class="col-md-4">
-                                <p></p>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
                                 <button type="submit" class="btn btn-primary mb-2">Filter</button>
                             </div>
                         </div>
@@ -32,7 +33,7 @@
                     </form>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive mt-4">
                     <table class="table t-overbooking" style="width: 100%">
                         <thead>
                             <tr>
