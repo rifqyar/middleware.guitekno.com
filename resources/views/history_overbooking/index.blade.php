@@ -41,9 +41,7 @@
         </div>
     </div>
 
-    <script src="{{ url('assets/dev/masterAPI.js') }}"></script>
-    {{-- <script src="{{ url('assets/js/masterAPI.min.js') }}"></script> --}}
-    <script src="{{ url("assets/dev/history_overbooking/main.js") }}"></script>
-    {{-- <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script> --}}
+    <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
+    <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script>
     
 @stop
