@@ -10,15 +10,12 @@ use Vanguard\Http\Controllers\Web\history_overbooking\DbController as Model;
 
 class MainController extends Controller
 {
-    /**
-     * Displays the application dashboard.
-     *
-     * @return Factory|View
-     */
     public function index(Req $req)
     {
-        $data = Model::getAll();
         if($req->ajax()){
+            $filter = isset($req->filter) ? $req->filter : '';
+            $data = Model::getAll($filter);
+
             return Datatables::of($data)
             ->addColumn('status', function($data) {
                 $bgColor = $data->statustext == 'Success' ? 'bg-success text-light' : ($data->statustext == 'Processed' ? 'bg-warning text-dark' : 'bg-danger text-light');
@@ -40,5 +37,39 @@ class MainController extends Controller
             ->make(true);
         }
         return view('history_overbooking.index');
+    }
+    
+    public function columnHeader(){
+        $data = Model::getColumnName();
+
+        return response()->json([
+            'status' => [
+                'code' => 200,
+                'msg' => 'OK'
+            ], 'data' => $data
+        ],200);
+    }
+
+    public function renderFilterForm(){
+        $column = Model::getColumnName([1, 26]);
+        $blade = view('history_overbooking.component.formFilter', compact('column'))->render();
+        return response()->json([
+            'status' => [
+                'code' => 200,
+                'msg' => 'OK'
+            ], 'html' => $blade
+        ], 200);
+    }
+
+    public function columnData($column_name){
+        $column = base64_decode($column_name);
+        $data = Model::getColumnData($column);
+
+        return response()->json([
+            'status' => [
+                'code' => 200,
+                'msg' => 'OK'
+            ], 'data' => $data
+        ], 200);
     }
 }

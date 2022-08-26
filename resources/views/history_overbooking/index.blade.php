@@ -17,39 +17,33 @@
     </style>
     <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
     <div id="overbooking-component">
-        <div class="card" id="list-data">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table t-overbooking" style="width: 100%">
-                        <thead>
-                            <tr>    
-                                {{-- <th>Action</th> --}}
-                                <th>Status</th>
-                                <th>Partner ID</th>
-                                <th>Sender Bank</th>
-                                <th>Sender Account</th>
-                                <th>Sender Ammount</th>
-                                <th>Notes</th>
-                                <th>Recipient Bank Name</th>
-                                <th>Recipient Account</th>
-                                <th>Recipient Ammount</th>
-                                <th>Amount</th>
-                                <th>Execution Time</th>
-                                <th>Description</th>
-                                <th>Internal Status</th>
-                                <th>Status Message</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-    
-                        </tbody>
-                    </table>
+        <div class="card">
+            <div id="filter">
+                <div class="d-flex m-5">
+                    <button class="btn btn-outline-success" onclick="addFilter('show')"> <i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All Data</button>
                 </div>
+                <div class="container-fluid ml-3" id="form-filter" style="display: none">
+                    <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Filter
+                    </button>
+                    {{-- @include('history_overbooking.component.formFilter') --}}
+                </div>
+
+                <button class="btn btn-outline-primary btn-sm m-5 float-right" id="setFilter" style="display: none" onclick="setFilter()">
+                    Show Filtered Data
+                </button>
+            </div>
+            <div id="list-data" style="display: none">
+                @include('history_overbooking.component.tableData')
             </div>
         </div>
     </div>
 
-    <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script>
+    <script src="{{ url('assets/dev/masterAPI.js') }}"></script>
+    {{-- <script src="{{ url('assets/js/masterAPI.min.js') }}"></script> --}}
+    <script src="{{ url("assets/dev/history_overbooking/main.js") }}"></script>
+    {{-- <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script> --}}
     
 @stop

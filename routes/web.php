@@ -215,7 +215,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     /**
      * History Over Booking
      */
-    Route::get('history-overbooking', 'history_overbooking\MainController@index')->name('historyOverbooking.index')->middleware('auth');
+    Route::middleware(['auth'])->group(function () {
+        Route::prefix('history-overbooking')->group(function(){
+            Route::get('/', 'history_overbooking\MainController@index')->name('historyOverbooking.index');
+            Route::get('/column-header', 'history_overbooking\MainController@columnHeader');
+            Route::get('/column-data/{column_name}', 'history_overbooking\MainController@columnData');
+            Route::get('/render-filter', 'history_overbooking\MainController@renderFilterForm');
+        });
+    });
 
     /** CRUD Master Data */
     Route::prefix('master-data')->group(function () {
