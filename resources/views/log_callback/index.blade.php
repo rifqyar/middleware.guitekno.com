@@ -12,7 +12,7 @@
                     <form class="form-group" method="GET">
                         <div class="row">
                             <div class="col-md-4">
-                                <label class="sr-only">RST</label>
+                                <p>Service Type</p>
                                 <select class="form-control" name="rst_id">
                                     <option value="">All</option>
                                     <option value="051">SIPD / Otomatis</option>
@@ -20,6 +20,21 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
+                                <p>Partner Id</p>
+                                <input type="text" class="form-control" name="partner_id">
+                            </div>
+                            <div class="col-md-4">
+                                <p>Callback Terakhir</p>
+                                <select class="form-control" name="between">
+                                    <option value="<">
+                                        < </option>
+                                    <option value=">"> > </option>
+                                </select>
+                                <input type="date" class="form-control" name="last_updated">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
                                 <button type="submit" class="btn btn-primary mb-2">Filter</button>
                             </div>
                         </div>
@@ -27,7 +42,7 @@
                     </form>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive mt-4">
                     <table class="table t-overbooking" style="width: 100%">
                         <thead>
                             <tr>

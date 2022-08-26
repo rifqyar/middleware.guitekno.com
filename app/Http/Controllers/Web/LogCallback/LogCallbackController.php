@@ -12,13 +12,19 @@ class LogCallbackController extends Controller
     {
         $query = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc');
 
-        if($request->rst_id)
+        if ($request->rst_id) {
+            $query->where('rst_id', $request->rst_id);
+        }
+        if ($request->partner_id) {
+            $query->where('lcb_partnerid', $request->partner_id);
+        }
+        if ($request->last_updated)
         {
-            $rst_id = $request->rst_id;
-            $query->where('rst_id', 'LIKE', "%{$rst_id}%");
+            // dd($request->between, $request->last_updated);
+            $query->whereDate('lcb_last_updated', $request->between, $request->last_updated);
         }
 
-        $data['datas'] = $query->paginate(5)->withQueryString();
+        $data['datas'] = $query->paginate(10)->withQueryString();
         return view('log_callback.index', $data);
     }
 }
