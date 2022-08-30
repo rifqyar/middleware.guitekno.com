@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -274,9 +274,9 @@
                     tanggal: data[i].tanggal
                 }
                 for (j in data[i].data) {
-                    var valueNmae = `value${data[i].data[j].tbk_sender_bank_id}`
-                    console.log()
-                    tempData[valueNmae] = data[i].data[j].total
+                    var valueName = `value${data[i].data[j].tbk_sender_bank_id}`
+                    // console.log(valueName, 'value')
+                    tempData[valueName] = data[i].data[j].total
                 }
                 console.log(tempData)
                 chartData.push(tempData);
@@ -331,13 +331,13 @@
             var data = <?= json_encode($data['jenis'], true) ?>;
 
             // Add data
-            {{-- chart.data = [{
-                "type": "Gaji",
-                "amount": 50
-                }, {
-                "type": "Non Gaji",
-                "amount": 50
-            }]; --}}
+            // chart.data = [{
+            //     "type": "Gaji",
+            //     "amount": 50
+            // }, {
+            //     "type": "Non Gaji",
+            //     "amount": 50
+            // }];
 
             chart.data = data;
 
