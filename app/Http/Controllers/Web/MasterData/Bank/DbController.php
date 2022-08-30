@@ -41,7 +41,7 @@ class DbController extends Controller
      */
 
     public static function postInsertUpdate($data, $action){
-        $arrSpParam = ['bank_id', 'bank_name'];
+        $arrSpParam = ['bank_id', 'bank_name', 'bank_status'];
         $rawSpParam = [];
         
         foreach ($arrSpParam as $arrV) {
