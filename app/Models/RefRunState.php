@@ -2,14 +2,16 @@
 
 namespace Vanguard\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RefServiceType extends Model
+class RefRunState extends Model
 {
-    protected $table = 'ref_service_type';
+    use HasFactory;
+    protected $table = 'ref_runstate';
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [
-        'rst_id', 'rst_name'
+        'rrs_id', 'rrs_desc'
     ];
 }

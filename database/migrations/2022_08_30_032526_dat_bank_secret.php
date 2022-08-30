@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('dat_bank_secret', function (Blueprint $table) {
+            $table->char('id', 15)->primary();
+            $table->char('code_bank', 3);
+            $table->char('client_id', 50);
+            $table->char('client_secret', 250);
+            $table->char('username', 50);
+            $table->char('password', 20);
+            $table->string('token')->nullable();
+            $table->string('expired_time')->nullable();
+            $table->foreign('code_bank')->references('bank_id')->on('ref_bank');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('dat_bank_secret');
+    }
+};

@@ -11,6 +11,9 @@ class DatBankSecret extends Model
     public $timestamps = false;
     protected $table = "dat_bank_secret";
     public $incrementing = false;
+    public $fillable = [
+        'id', 'code_bank', 'client_id', 'client_secret', 'username', 'password', 'token', 'expired_time'
+    ];
 
     public static function countBank()
     {

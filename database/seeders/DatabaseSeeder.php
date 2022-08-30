@@ -20,6 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\RolesSeeder::class);
         $this->call(\Database\Seeders\PermissionsSeeder::class);
         $this->call(\Database\Seeders\UserSeeder::class);
+        $this->call(\Database\Seeders\RstSeeder::class);
+        $this->call(\Database\Seeders\RasSeeder::class);
+        $this->call(\Database\Seeders\RefRunSeeder::class);
+        $this->call(\Database\Seeders\RefBankSeeder::class);
+        $this->call(\Database\Seeders\DbsSeeder::class);
+        $this->call(\Database\Seeders\RetSeeder::class);
+
 
         Model::reguard();
     }

@@ -4,11 +4,20 @@
  * Authentication
  */
 
+use Illuminate\Support\Facades\Http;
 use Vanguard\Models\LogCallback;
 
 Route::get('login', 'Auth\LoginController@show');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
+
+Route::get('insert-bank', function () {
+    $response = Http::get('https://raw.githubusercontent.com/mul14/gudang-data/master/bank/bank.json');
+    // dd(json_decode($response));
+    foreach (json_decode($response) as $value) {
+        echo $value->name . '<br>';
+    }
+});
 
 
 Route::group(['middleware' => ['registration', 'guest']], function () {
@@ -216,7 +225,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
      * History Over Booking
      */
     Route::middleware(['auth'])->group(function () {
-        Route::prefix('history-overbooking')->group(function(){
+        Route::prefix('history-overbooking')->group(function () {
             Route::get('/', 'history_overbooking\MainController@index')->name('historyOverbooking.index');
             Route::get('/column-header', 'history_overbooking\MainController@columnHeader');
             Route::get('/column-data/{column_name}', 'history_overbooking\MainController@columnData');
