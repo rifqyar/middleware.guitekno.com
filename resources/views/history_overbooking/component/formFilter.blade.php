@@ -11,11 +11,18 @@
 
     <div class="col-md-3 col-12">
         <div class="form-group">
-            <label for="field">Nama Field</label>
+            <label for="field">Filter by</label>
             <select name="field_name" id="" class="form-control required select-field" onchange="getValueColumn(this)">
                 <option></option>
                 @foreach ($column as $c)
-                    <option value="{{$c->column_name}}">{{$c->column_name}}</option>    
+                    <option value="{{$c->column_name}}">
+                        @php
+                            $name = '';
+                            $name = str_replace('TBK_', ' ', $c->column_name);
+                            $name = str_replace('_', ' ', $name);
+                            echo ucwords(strtolower($name));
+                        @endphp
+                    </option>    
                 @endforeach
             </select>
         </div>

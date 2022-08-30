@@ -227,8 +227,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     /** CRUD Master Data */
     Route::prefix('master-data')->group(function () {
         // Route::get('/', 'MasterData\MasterDataController@index')->middleware('auth');
-
-
         Route::middleware(['permission:master.data_refBank'])->group(function () {
             Route::prefix('bank')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getRefBank')->name('masterdata.refbank');

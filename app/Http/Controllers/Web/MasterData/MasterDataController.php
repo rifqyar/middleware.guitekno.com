@@ -43,7 +43,12 @@ class MasterDataController extends Controller
                     </button>
                 ';
             })
-            ->rawColumns(['action'])
+            ->addColumn('status', function($data){
+                $bgColor = $data->rrs_id == 01 ? 'bg-success text-light' : 'bg-warning text-dark';
+                $badge = '<span class="badge badge-pill '.$bgColor.' mr-2 text-light">'.$data->rrs_desc.'</span>';
+                return $badge;
+            })
+            ->rawColumns(['action', 'status'])
             ->make(true);
         }
 
