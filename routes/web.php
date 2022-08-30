@@ -264,7 +264,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     /** Crud  Api User */
 
-    Route::get('user-service', 'ApiUser\ApiUserController@index');
+    Route::get('user-service', 'ApiUser\ApiUserController@index')->name('user-service.index');
     Route::get('user-service/form', 'ApiUser\ApiUserController@form');
     Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
     Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');

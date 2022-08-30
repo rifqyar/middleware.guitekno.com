@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -105,11 +105,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <div class="card" style="height: 400px">
                     <h6 class="card-header"><b>Transaksi(Bank)</b></h6>
                     <div class="card-body p-0">
                         <div id="divTxBank" style="height: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="height: 400px">
+                    <h6 class="card-header"><b>Transaksi</b></h6>
+                    <div class="card-body p-0">
+                        <div id="divTxDaily" style="height: 100%"></div>
                     </div>
                 </div>
             </div>
@@ -134,8 +142,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
+            {{-- </div> --}}
+            {{-- <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <h6 class="card-header">Transaksi</h6>
@@ -143,7 +151,7 @@
                         <div id="divTxDaily" style="height: 400px"></div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -293,13 +301,13 @@
 
 
             chart.legend = new am4charts.Legend();
-            chart.legend.position = "right";
+            chart.legend.position = "bottom";
             chart.legend.scrollable = true;
             chart.cursor = new am4charts.XYCursor();
 
             // Add scrollbar
             chart.scrollbarX = new am4core.Scrollbar();
-            chart.scrollbarX.parent = chart.bottomAxesContainer;
+            chart.scrollbarX.parent = chart.topAxesContainer;
         }
 
         function createTxType(data) {
@@ -404,6 +412,7 @@
 
             // Create axes
             let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.width = 10
             categoryAxis.dataFields.category = "name";
             categoryAxis.renderer.labels.template.rotation = 270;
             categoryAxis.renderer.labels.template.hideOversized = false;
@@ -426,7 +435,7 @@
             series.name = "Value";
             series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
             series.columns.template.fillOpacity = .8;
-
+            series.columns.template.width = 80
             var columnTemplate = series.columns.template;
             columnTemplate.strokeWidth = 2;
             columnTemplate.strokeOpacity = 1;
@@ -444,76 +453,136 @@
             chart.cursor.lineX.strokeOpacity = 0;
             chart.cursor.lineY.strokeOpacity = 0;
 
-
-
         }
 
         function createTxStatus(data) {
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
-
-            var chart = am4core.create("divTxStatus", am4charts.PieChart3D);
             var data = <?= json_encode($data['status'], true) ?>;
-            console.log(data, "status");
-
-
-            {{-- chart.data = [
-                {
-                    country: "Lithuania",
-                    litres: 501.9
-                },
-                {
-                    country: "Czech Republic",
-                    litres: 301.9
-                },
-                {
-                    country: "Ireland",
-                    litres: 201.1
-                },
-                {
-                    country: "Germany",
-                    litres: 165.8
-                },
-                {
-                    country: "Australia",
-                    litres: 139.9
-                },
-                {
-                    country: "Austria",
-                    litres: 128.3
-                },
-                {
-                    country: "UK",
-                    litres: 99
-                },
-                {
-                    country: "Belgium",
-                    litres: 60
-                },
-                {
-                    country: "The Netherlands",
-                    litres: 50
+            console.log(data, "stack");
+            // Create chart instance
+            var chart = am4core.create("divTxStatus", am4charts.XYChart);
+            let obj = {
+                year: ""
+            }
+            data.forEach(e => {
+                obj = {
+                    ...obj,
+                    [e.keterangan]: e.value
                 }
-            ]; --}}
-
-            chart.data = data;
-
-            chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+            })
+            console.log(obj, 'obj')
+            // Add data
+            chart.data = [obj]
 
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
             var markerTemplate = chart.legend.markers.template;
             markerTemplate.width = 12;
             markerTemplate.height = 12;
-            chart.innerRadius = 25;
+            // Create axes
+            var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "year";
+            categoryAxis.renderer.grid.template.opacity = 0;
 
-            var series = chart.series.push(new am4charts.PieSeries3D());
-            series.dataFields.value = "value";
-            series.dataFields.category = "keterangan";
-            series.labels.template.disabled = true;
+            var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            valueAxis.min = 0;
+            valueAxis.renderer.grid.template.opacity = 0;
+            valueAxis.renderer.ticks.template.strokeOpacity = 0.5;
+            valueAxis.renderer.ticks.template.stroke = am4core.color("#495C43");
+            valueAxis.renderer.ticks.template.length = 10;
+            valueAxis.renderer.line.strokeOpacity = 0.5;
+            valueAxis.renderer.baseGrid.disabled = true;
+            valueAxis.renderer.minGridDistance = 40;
+
+            // Create series
+            function createSeries(field, name) {
+                var series = chart.series.push(new am4charts.ColumnSeries());
+                series.dataFields.valueX = field;
+                series.dataFields.categoryY = "year";
+                series.columns.template.height = 50
+                series.stacked = true;
+                series.name = name;
+
+                var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+                labelBullet.locationX = 0.5;
+                labelBullet.label.text = "{valueX}";
+                labelBullet.label.fill = am4core.color("#fff");
+            }
+            for (const property in obj) {
+                if (property != "year") createSeries(property, property)
+            }
+            // obj(e => {
+            // })
 
         }
+        // function createTxStatus(data) {
+        //     // Themes begin
+        //     am4core.useTheme(am4themes_animated);
+        //     // Themes end
+
+        //     var chart = am4core.create("divTxStatus", am4charts.PieChart3D);
+        //     var data = <?= json_encode($data['status'], true) ?>;
+        //     console.log(data, "status");
+
+
+        //     {{-- chart.data = [
+        //         {
+        //             country: "Lithuania",
+        //             litres: 501.9
+        //         },
+        //         {
+        //             country: "Czech Republic",
+        //             litres: 301.9
+        //         },
+        //         {
+        //             country: "Ireland",
+        //             litres: 201.1
+        //         },
+        //         {
+        //             country: "Germany",
+        //             litres: 165.8
+        //         },
+        //         {
+        //             country: "Australia",
+        //             litres: 139.9
+        //         },
+        //         {
+        //             country: "Austria",
+        //             litres: 128.3
+        //         },
+        //         {
+        //             country: "UK",
+        //             litres: 99
+        //         },
+        //         {
+        //             country: "Belgium",
+        //             litres: 60
+        //         },
+        //         {
+        //             country: "The Netherlands",
+        //             litres: 50
+        //         }
+        //     ]; --}}
+
+        //     chart.data = data;
+
+        //     chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+        //     chart.legend = new am4charts.Legend();
+        //     chart.legend.position = "right";
+        //     var markerTemplate = chart.legend.markers.template;
+        //     markerTemplate.width = 12;
+        //     markerTemplate.height = 12;
+        //     chart.innerRadius = 25;
+
+        //     var series = chart.series.push(new am4charts.PieSeries3D());
+        //     series.dataFields.value = "value";
+        //     series.dataFields.category = "keterangan";
+        //     series.labels.template.disabled = true;
+
+        // }
 
         $(document).ready(function() {
             createTxDailyChart(null);
