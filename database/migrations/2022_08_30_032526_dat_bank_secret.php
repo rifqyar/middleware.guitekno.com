@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('dat_bank_secret', function (Blueprint $table) {
             $table->char('id', 15)->primary();
             $table->char('code_bank', 3);
-            $table->char('client_id', 50);
-            $table->char('client_secret', 250);
-            $table->char('username', 50);
-            $table->char('password', 20);
+            $table->string('client_id', 50);
+            $table->string('client_secret', 250);
+            $table->string('username', 50);
+            $table->string('password', 20);
             $table->string('token')->nullable();
             $table->string('expired_time')->nullable();
             $table->foreign('code_bank')->references('bank_id')->on('ref_bank');

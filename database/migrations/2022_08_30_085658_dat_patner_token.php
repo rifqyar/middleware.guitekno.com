@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dat_bank_endpoint', function (Blueprint $table) {
-            $table->increments('id');
-            $table->char('dbs_id', 20);
-            $table->string('dbe_endpoint');
-            $table->char('ret_id', 15);
-            $table->char('rrs_id', 2);
+        Schema::create('dat_partnertoken', function (Blueprint $table) {
+            $table->integer('dpt_id')->primary();
+            $table->date('dpt_created')->nullable();
+            $table->string('dpt_partnerid', 32);
+            $table->string('dpt_token', 256);
+            $table->boolean('dpt_isexpired');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('dat_bank_endpoint');
+        //
     }
 };
