@@ -27,6 +27,7 @@ return new class extends Migration
             $table->char('rst_id', 3);
             $table->char('ras_id', 3)->nullable();
             $table->string('lst_acc_number', 20)->nullable();
+            $table->string('ip')->nullable();
         });
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('dat_bank_endpoint', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('dbs_id', 20);
+            $table->char('dbs_id', 15);
             $table->string('dbe_endpoint');
             $table->char('ret_id', 15);
             $table->char('rrs_id', 2);

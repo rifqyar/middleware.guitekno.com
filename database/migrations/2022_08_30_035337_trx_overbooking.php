@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('tbk_create_by')->nullable();
             $table->date('tbk_last_updated')->nullable();
             $table->string('tbk_last_update_by')->nullable();
-            $table->string('notes')->nullable();
+            $table->string('tbk_notes')->nullable();
             $table->char('tx_id', 32)->nullable();
             $table->char('tbk_partnerid', 32);
+            $table->char('tbk_tx_id', 32);
             $table->double('tbk_amount', 15, 0);
             $table->string('tbk_userid')->nullable();
             $table->char('tbk_sender_bank_id', 3);
