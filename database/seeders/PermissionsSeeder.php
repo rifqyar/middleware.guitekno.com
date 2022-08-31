@@ -66,6 +66,25 @@ class PermissionsSeeder extends Seeder
             'removable' => false
         ]);
 
+        $permissions[] = Permission::create([
+            'name' => 'master.data_bankEndpoint',
+            'display_name' => 'master.data_bankEndpoint',
+            'description' => '',
+            'removable' => false
+        ]);
+        $permissions[] = Permission::create([
+            'name' => 'master.data_bankSecret',
+            'display_name' => 'master.data_bankSecret',
+            'description' => '',
+            'removable' => false
+        ]);
+        $permissions[] = Permission::create([
+            'name' => 'master.data_refBank',
+            'display_name' => 'master.data_refBank',
+            'description' => '',
+            'removable' => false
+        ]);
+
         $adminRole->attachPermissions($permissions);
     }
 }

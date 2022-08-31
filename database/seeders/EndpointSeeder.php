@@ -28,8 +28,23 @@ class EndpointSeeder extends Seeder
             'overBooking' =>
             'http://36.66.184.26:5897/bjtg/api/v1/overBookingTrx',
             'inquiry' =>
-            'http://36.66.184.26:5897/bjtg/api/v1/inquiryAccountTrx'
+            'http://36.66.184.26:5897/bjtg/api/v1/inquiryAccountTrx',
+            'checkStatus' => 'http://36.66.184.26:5897/bjtg/api/v1/checkStatusTrx',
+            'getHistory' => 'http://36.66.184.26:5897/bjtg/api/v1/getHistoryTrx',
         ];
+
+        $endpointKaltim = [
+            'getToken' =>
+            'https://sipd-test.bankaltimtara.co.id/getToken',
+            'overBooking' =>
+            'https://sipd-test.bankaltimtara.co.id/overBooking',
+            'inquiry' =>
+            'https://sipd-test.bankaltimtara.co.id/inquiry',
+            'checkStatus' => 'https://sipd-test.bankaltimtara.co.id/checkTrx',
+            'getHistory' => '',
+        ];
+
+        $kaltim = DatBankSecret::where('code_bank', '124')->first();
 
         foreach ($ref as $r) {
             EndPointModel::insert([
@@ -38,14 +53,10 @@ class EndpointSeeder extends Seeder
                 'ret_id' => $r->id,
                 'rrs_id' => '00',
             ]);
-        }
 
-        $dat = DatBankSecret::where('code_bank', '124')->first();
-        $ref = RefEndpointType::where('name', '<>', 'getHistory')->get();
-        foreach ($ref as $r) {
             EndPointModel::insert([
-                'dbs_id' => $dat->id,
-                'dbe_endpoint' => 'http',
+                'dbs_id' => $kaltim->id,
+                'dbe_endpoint' => $endpointKaltim[$r->name],
                 'ret_id' => $r->id,
                 'rrs_id' => '00',
             ]);
