@@ -37,25 +37,26 @@ class DbController extends Controller
      * POST DATA
      */
 
-    public static function postInsertUpdate($data, $action){
-        $arrSpParam = ['bank_secret','endpoint', 'endpoint_type'];
+    public static function postInsertUpdate($data, $action)
+    {
+        $arrSpParam = ['bank_secret', 'endpoint', 'endpoint_type', 'status'];
         $rawSpParam = [];
-        
+
         foreach ($arrSpParam as $arrV) {
             $rawSpParam[$arrV] = null;
         }
 
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
-        $query = 'CALL sp_'.$action.'_bankEndpoint '.$rawQuery['query'];
-
-        $exec = BEDbController::execQuery($query, 'statement');
+        $query = 'CALL sp_' . $action . '_bankEndpoint ' . $rawQuery['query'];
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
 
-    public static function deleteData($id){
-        $query = "CALL sp_del_bankEndpoint ('$id')";
-        $exec = BEDbController::execQuery($query, 'statement');
+    public static function deleteData($dbs_id, $id)
+    {
+        $query = "CALL sp_del_bankEndpoint ('$dbs_id', '$id')";
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
     
