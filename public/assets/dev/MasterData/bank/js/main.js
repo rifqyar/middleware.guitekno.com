@@ -16,6 +16,7 @@ $(document).ready(function(){
        columns: [
                 { data: 'bank_id', name: 'bank_id' },
                 { data: 'bank_name', name: 'bank_name' },
+                { data: 'status', name: 'status'},
                 { data: 'action', name: 'action' },
              ]
     });
@@ -72,8 +73,9 @@ function getRefBank(el){
     if (text.length == 3 && !text.includes('_')){
         apiCall(`master-data/bank/get/${text}`, 'GET', '', () => {}, () => {}, null, (res) => {
             if (res.status.code = 200){
-                var data = res.data
-                if (data.length > 0){
+                var data = res.data[0].totaldata
+                console.log(data)
+                if (data > 0){
                     mainComponent.find(addComponent).find('#maxCharBank').fadeOut()
                     mainComponent.find(addComponent).find('#bankIDUsed').fadeIn()
                     mainComponent.find(addComponent).find('input[name="bank_id"]').addClass('is-invalid')
@@ -112,7 +114,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
     } 
 
     if (canInput == true){
-        var form = mainComponent.find(fAddComponent).find('input')
+        var form = mainComponent.find(fAddComponent).find('.form-control')
         for (let i = 0; i < form.length; i++) {
             fillResData(form[i].name, form[i].value, 'bank_res_data')
         }
@@ -158,6 +160,7 @@ function editBank(data){
 
     mainComponent.find(fEditComponent).find('input[name="bank_id"]').val(data.bank_id)
     mainComponent.find(fEditComponent).find('input[name="bank_name"]').val(data.bank_name)
+    mainComponent.find(fEditComponent).find(`select[name="bank_status"] option[value="${data.rrs_id}"]`).attr('selected', 'selected')
 }
 
 mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
@@ -183,7 +186,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
     } 
 
     if (canInput == true){
-        var form = mainComponent.find(fEditComponent).find('input')
+        var form = mainComponent.find(fEditComponent).find('.form-control')
         for (let i = 0; i < form.length; i++) {
             fillResData(form[i].name, form[i].value, 'bank_res_data')
         }

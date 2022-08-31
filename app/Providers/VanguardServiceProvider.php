@@ -27,6 +27,7 @@ class VanguardServiceProvider extends BaseVanguardServiceProvider
             \Vanguard\Support\Plugins\LogCallback::class,
             // \Vanguard\Support\Plugins\TrxOverbooking::class,
             \Vanguard\Support\Plugins\HistoryOverbooking::class,
+            \Vanguard\Support\Plugins\ListUser::class,
             \Vanguard\Support\Plugins\TrxLog::class,
             // \Vanguard\Support\Plugins\Settings::class,
             \Vanguard\Support\Plugins\Users::class,

@@ -13,16 +13,25 @@
     <hr>
     <form action="javascript:void(0)" id="form-edit">
         <div class="row">
-            <div class="col-6 col-md-6">
+            <div class="col-12 col-md-4">
                 <div class="form-group">
                     <label for="bank_id">Bank ID</label>
                     <input type="text" class="form-control required" name="bank_id" readonly>
                 </div>
             </div>
-            <div class="col-6 col-md-6">
+            <div class="col-12 col-md-4">
                 <div class="form-group">
                     <label for="bank_name">Bank Name</label>
                     <input type="text" class="form-control required" name="bank_name">
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="form-group">
+                    <label for="statusBank">Status Bank</label>
+                    <select name="bank_status" id="statusBank" class="form-control required">
+                        <option value="00">Stagging</option>
+                        <option value="01">Production</option>
+                    </select>
                 </div>
             </div>
             <div class="col-12 col-md-12">

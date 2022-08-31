@@ -8,17 +8,17 @@ use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Request;
 use Vanguard\Http\Controllers\Library;
-use Vanguard\Http\Controllers\Web\MasterData\Bank\DbController as BankDbController;
 
-class DbController extends Controller
+class DbController
 {
     /**
      * GET DATA
      */
-    public static function getBank($id = null){
+    public static function getBank($id = null)
+    {
         $where = '';
         $statement = "*";
-        if ($id != null){
+        if ($id != null) {
             $where = "WHERE bank_id = '$id'";
             $statement = "COUNT(1) as totaldata";
         }
@@ -28,7 +28,8 @@ class DbController extends Controller
         return $data;
     }
 
-    public static function cekData($id){
+    public static function cekData($id)
+    {
         /**
          * Cek data before delete
          */
@@ -40,29 +41,32 @@ class DbController extends Controller
      * POST DATA
      */
 
-    public static function postInsertUpdate($data, $action){
-        $arrSpParam = ['bank_id', 'bank_name'];
+    public static function postInsertUpdate($data, $action)
+    {
+        $arrSpParam = ['bank_id', 'bank_name', 'bank_status'];
         $rawSpParam = [];
-        
+
         foreach ($arrSpParam as $arrV) {
             $rawSpParam[$arrV] = null;
         }
 
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
-        $query = 'CALL sp_'.$action.'_RefBank '.$rawQuery['query'];
-        
-        $exec = BankDbController::execQuery($query, 'statement');
+        $query = 'CALL sp_' . $action . '_RefBank ' . $rawQuery['query'];
+
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
 
-    public static function deleteData($id){
+    public static function deleteData($id)
+    {
         $query = "CALL sp_del_RefBank ('$id')";
-        $exec = BankDbController::execQuery($query, 'statement');
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
-    
-    public static function execQuery($sp, $type){
+
+    public static function execQuery($sp, $type)
+    {
         try {
             $exec = DB::$type($sp);
             return response()->json([
@@ -70,7 +74,7 @@ class DbController extends Controller
                     'code' => 200,
                     'msg' => 'OK'
                 ], 'detail' => 'Process Running Successfully'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => [

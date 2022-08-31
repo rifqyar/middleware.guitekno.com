@@ -18,8 +18,8 @@ class MainController extends Controller
 
             return Datatables::of($data)
             ->addColumn('status', function($data) {
-                $bgColor = $data->statustext == 'Success' ? 'bg-success text-light' : ($data->statustext == 'Processed' ? 'bg-warning text-dark' : 'bg-danger text-light');
-                $badge = '<span class="badge badge-pill '.$bgColor.' mr-2 text-light">'.$data->statustext.'</span>';
+                $bgColor = $data->status_text == 'Success' ? 'bg-success text-light' : ($data->status_text == 'Processed' ? 'bg-warning text-dark' : 'bg-danger text-light');
+                $badge = '<span class="badge badge-pill '.$bgColor.' mr-2 text-light">'.$data->status_text.'</span>';
                 return $badge;
             })
             ->addColumn('action', function($data){
