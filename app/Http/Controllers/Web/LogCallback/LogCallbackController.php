@@ -10,7 +10,7 @@ class LogCallbackController extends Controller
 {
     public function index(Request $request)
     {
-        $query = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc');
+        $query = LogCallback::orderBy('lcb_last_updated', 'desc');
 
         if ($request->all()) {
             $data['param'] = $request->all();
