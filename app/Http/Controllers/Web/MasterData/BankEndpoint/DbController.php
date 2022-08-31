@@ -41,7 +41,7 @@ class DbController
 
     public static function postInsertUpdate($data, $action)
     {
-        $arrSpParam = ['bank_secret', 'endpoint', 'endpoint_type'];
+        $arrSpParam = ['bank_secret', 'endpoint', 'endpoint_type', 'status'];
         $rawSpParam = [];
 
         foreach ($arrSpParam as $arrV) {
