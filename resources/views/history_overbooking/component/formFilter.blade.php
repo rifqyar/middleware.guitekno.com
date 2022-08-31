@@ -18,7 +18,8 @@
                     <option value="{{$c->column_name}}">
                         @php
                             $name = '';
-                            $name = str_replace('TBK_', ' ', $c->column_name);
+                            $name = strtolower($name);
+                            $name = str_replace('tbk_', '', $c->column_name);
                             $name = str_replace('_', ' ', $name);
                             echo ucwords(strtolower($name));
                         @endphp
