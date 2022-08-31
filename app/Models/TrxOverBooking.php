@@ -64,12 +64,7 @@ class TrxOverBooking extends Model
 
     public static function mostActiveBank()
     {
-<<<<<<< HEAD
         $data = DB::SELECT("SELECT * FROM vw_MostActiveBank");
-
-=======
-        $data = DB::SELECT("SELECT * FROM vw_MostActiveBank"); 
->>>>>>> 2b2422b8aaee578a31e579f522cfa80f53accb9a
         return count($data) > 0 ? $data[0] : '-';
     }
 
