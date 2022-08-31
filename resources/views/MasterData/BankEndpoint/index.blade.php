@@ -41,6 +41,7 @@
                                 <th>Bank Name</th>
                                 <th>Endpoint Type</th>
                                 <th>Endpoint Name</th>
+                                <th>Status Endpoint</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

@@ -60,8 +60,8 @@ class MainController extends Controller
         return response()->json($post->original, $post->original['status']['code']);
     }
 
-    public function delete($id){
-        $post = Model::deleteData($id);
+    public function delete($dbs_id, $id){
+        $post = Model::deleteData($dbs_id, $id);
         return response()->json($post->original, $post->original['status']['code']);
     }
 }

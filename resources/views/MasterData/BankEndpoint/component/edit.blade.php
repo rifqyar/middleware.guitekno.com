@@ -13,24 +13,34 @@
     <hr>
     <form action="javascript:void(0)" id="form-edit">
         <div class="row">
-            <div class="col-4 col-md-4 col-sm-12">
+            <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="bank_secret">Bank Secret</label>
                     <input type="text" class="form-control required" name="bank_secret" readonly>
                 </div>
             </div>
 
-            <div class="col-4 col-md-4 col-sm-12">
+            <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="endpoint">Endpoint</label>
                     <input type="text" class="form-control required" name="endpoint">
                 </div>
             </div>
 
-            <div class="col-4 col-md-4 col-sm-12">
+            <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="endpoint_type">Endpoint Type</label>
                     <input type="text" class="form-control required" name="endpoint_type" readonly>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label for="status">Status Endpoint</label>
+                    <select class="status-select form-control required" name="status" style="width: 100%; height: 100%">
+                        <option value="00">Stagging</option>
+                        <option value="01">Production</option>
+                    </select>
                 </div>
             </div>
             <div class="col-12 col-md-12">

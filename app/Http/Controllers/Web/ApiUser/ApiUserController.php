@@ -17,7 +17,7 @@ class ApiUserController extends Controller
 
     public function post(Request $request)
     {
-        $data = DatApiUser::orderBy('bank_id', 'asc');
+        $data = DatApiUser::select('*');
         return DataTables::eloquent($data)->addIndexColumn()
             ->editColumn('bank_id', function ($row) {
                 return $row->bank->bank_name;

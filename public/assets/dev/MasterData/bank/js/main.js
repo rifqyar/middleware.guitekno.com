@@ -41,6 +41,7 @@ $(document).ready(function(){
     
                 mainComponent.find(fEditComponent).find('input[name="bank_id"]').val(data.bank_id)
                 mainComponent.find(fEditComponent).find('input[name="bank_name"]').val(data.bank_name)
+                mainComponent.find(fEditComponent).find(`select[name="bank_status"] option[value="${data.rrs_id}"]`).attr('selected', 'selected')
             }
         }
     }

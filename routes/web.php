@@ -262,7 +262,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('get-banksecret', 'MasterData\BankEndpoint\MainController@getBankSecret');
                 Route::get('get-endpoint', 'MasterData\BankEndpoint\MainController@getEndpointType');
                 Route::post('/', 'MasterData\BankEndpoint\MainController@post');
-                Route::get('{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
+                Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
             });
         });
