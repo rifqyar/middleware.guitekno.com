@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('dpt_created')->nullable();
             $table->string('dpt_partnerid', 32);
             $table->string('dpt_token', 256);
-            $table->boolean('dpt_isexpired');
+            $table->integer('dpt_isexpired');
         });
     }
 

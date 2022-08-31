@@ -20,7 +20,6 @@ return new class extends Migration
             $table->date('tbk_last_updated')->nullable();
             $table->string('tbk_last_update_by')->nullable();
             $table->string('tbk_notes')->nullable();
-            $table->char('tx_id', 32)->nullable();
             $table->char('tbk_partnerid', 32);
             $table->char('tbk_tx_id', 32);
             $table->double('tbk_amount', 15, 0);
