@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dat_partnertoken', function (Blueprint $table) {
-            $table->integer('dpt_id')->primary();
+            $table->increments('dpt_id');
             $table->date('dpt_created')->nullable();
             $table->string('dpt_partnerid', 32);
             $table->string('dpt_token', 256);
