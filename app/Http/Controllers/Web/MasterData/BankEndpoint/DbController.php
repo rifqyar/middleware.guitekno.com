@@ -51,14 +51,13 @@ class DbController
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
         $query = 'CALL sp_' . $action . '_bankEndpoint ' . $rawQuery['query'];
-
         $exec = self::execQuery($query, 'statement');
         return $exec;
     }
 
-    public static function deleteData($id)
+    public static function deleteData($dbs_id, $id)
     {
-        $query = "CALL sp_del_bankEndpoint ('$id')";
+        $query = "CALL sp_del_bankEndpoint ('$dbs_id', '$id')";
         $exec = self::execQuery($query, 'statement');
         return $exec;
     }
