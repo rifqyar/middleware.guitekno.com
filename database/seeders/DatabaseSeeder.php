@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\DbsSeeder::class);
         $this->call(\Database\Seeders\RetSeeder::class);
         $this->call(\Database\Seeders\EndpointSeeder::class);
+        $this->call(\Database\Seeders\DauSeeder::class);
+        // $this->call(\Database\Seeders\VwPfSeeder::class);
 
         Model::reguard();
     }

@@ -33,5 +33,14 @@ class DbsSeeder extends Seeder
             'username' => 'tester',
             'password' => 'tester'
         ]);
+
+        DatBankSecret::create([
+            'id' => Str::random(15),
+            'code_bank' => '000',
+            'client_id' => '82d41c9feb784cb98f6fe1ad27d2b260',
+            'client_secret' => 'WDT',
+            'username' => 'wdt_id_client_test',
+            'password' => 'wdt_key_client_test'
+        ]);
     }
 }

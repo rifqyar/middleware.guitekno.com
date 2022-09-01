@@ -12,7 +12,7 @@
     <tbody>
         @foreach ($datas as $index => $value)
             <tr>
-                <td>{{ $value->diw_address }}</td>
+                <td>{{ $bank->bank_name }}</td>
                 <td>{{ $value->diw_address }}</td>
                 <td>
                     <button class="btn btn-danger btn-sm"

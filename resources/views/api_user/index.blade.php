@@ -165,7 +165,7 @@
             $('#modal-listIp').modal('hide')
             $.ajax({
                     method: "delete",
-                    url: `user-service/ip/delete/${id}`,
+                    url: `/user-service/ip/delete/${id}`,
                 })
                 .done(function(res) {
                     getIp(bank_code)
@@ -183,13 +183,14 @@
             $('#modal-add-ip').modal('hide')
             $.ajax({
                     method: "post",
-                    url: `user-service/ip/save`,
+                    url: `/user-service/ip/save`,
                     data: {
                         bank_id: $('#id_bank_form').val(),
                         ip_address: $('#ip_form').val(),
                     }
                 })
                 .done(function(res) {
+                    $('#ip_form').val('')
                     getIp($('#id_bank_form').val())
                 })
         }

@@ -23,7 +23,7 @@ class ApiUserController extends Controller
                 return $row->bank->bank_name;
             })
             ->addColumn('action', function ($row) {
-                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View</a>";
+                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View Ip List</a>";
                 return $btn;
             })
             ->rawColumns(['action'])

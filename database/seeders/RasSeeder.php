@@ -94,5 +94,11 @@ class RasSeeder extends Seeder
             'ras_message' => 'Bank account is not found',
             'ras_description' => 'Bank account is not found'
         ]);
+
+        RefApiStatus::create([
+            'ras_id' => '303',
+            'ras_message' => 'Invalid npwp',
+            'ras_description' => 'Invalid npwp'
+        ]);
     }
 }

@@ -10,6 +10,7 @@ use Vanguard\Models\{
     DatBankSecret,
     EndPointModel
 };
+use Illuminate\Support\Str;
 
 class EndpointSeeder extends Seeder
 {
@@ -45,8 +46,17 @@ class EndpointSeeder extends Seeder
         ];
 
         $kaltim = DatBankSecret::where('code_bank', '124')->first();
+        $sipd = DatBankSecret::where('code_bank', '000')->first();
 
         foreach ($ref as $r) {
+            if ($r->name == 'getToken') {
+                EndPointModel::insert([
+                    'dbs_id' => $sipd->id,
+                    'dbe_endpoint' => 'https://sipkd-staging.digitalservice.id/ib/get-token',
+                    'ret_id' => $r->id,
+                    'rrs_id' => '00',
+                ]);
+            }
             EndPointModel::insert([
                 'dbs_id' => $dat->id,
                 'dbe_endpoint' => $endpointJateng[$r->name],
@@ -61,5 +71,16 @@ class EndpointSeeder extends Seeder
                 'rrs_id' => '00',
             ]);
         }
+        $ref = RefEndpointType::create([
+            'id' => Str::random(15),
+            'name' => 'callbackSipd'
+        ]);
+        // $ref = RefEndpointType::where('name', 'callbackSipd')->first();
+        EndPointModel::insert([
+            'dbs_id' => $sipd->id,
+            'dbe_endpoint' => 'https://sipkd-staging.digitalservice.id/ib/callback',
+            'ret_id' => $ref->id,
+            'rrs_id' => '00',
+        ]);
     }
 }

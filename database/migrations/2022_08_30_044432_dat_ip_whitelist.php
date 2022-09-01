@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dat_ipwhitelist', function (Blueprint $table) {
-            $table->char('bank_id', 3)->primary();
-            $table->decimal('diw_index', $precision = 2, $scale = 0);
+            $table->increments('id');
+            $table->char('bank_id', 3);
+            $table->decimal('diw_index', $precision = 2, $scale = 0)->nullable();
             $table->string('diw_address');
             $table->foreign('bank_id')->references('bank_id')->on('ref_bank');
         });

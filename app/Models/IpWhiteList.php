@@ -10,7 +10,7 @@ class IpWhiteList extends Model
     use HasFactory;
     protected $table = 'dat_ipwhitelist';
     public $timestamps = false;
-    public $incrementing = false;
+    // public $incrementing = false;
     protected $fillable = [
         'bank_id', 'diw_index', 'diw_address'
     ];
