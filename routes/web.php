@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('/', 'MasterData\MasterDataController@getBankSecret')->name('masterdata.bankSecret');
                 Route::get('get-avail', 'MasterData\BankSecret\MainController@getAvailBank');
                 Route::post('/', 'MasterData\BankSecret\MainController@post');
-                Route::get('{id}/{checked}/delete', 'BankSecret\MainController@delete');
+                Route::get('{id}/{checked}/delete', 'MasterData\BankSecret\MainController@delete');
                 Route::put('/', 'MasterData\BankSecret\MainController@put');
             });
         });
@@ -277,6 +277,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/form', 'ApiUser\ApiUserController@form');
     Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
     Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');
+
+    Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
+    Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
+    Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
 });
 
 
