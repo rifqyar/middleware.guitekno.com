@@ -38,13 +38,13 @@
                         } else if (isset($statusCode->status) && !isset($statusCode->response)){
                             $statusCode = $statusCode->status->code;
                         } else {
-                            $statusCode = is_array($statusCode) ? $statusCode[0]->success : (isset($statusCode->success) ? $statusCode->success : $statusCode->statusCode);
+                            $statusCode = is_array($statusCode) ? $statusCode[0]->success : (isset($statusCode->success) ? $statusCode->success : (isset($statusCode->token) ? 'true' : 'false'));
                         }
 
-                        if (isset($dt->lbt_request)){
+                        if (isset($dt->lbt_request) && $dt->lbt_request != 'undefined'){
                             $requestData = base64_encode(json_encode($dt->lbt_request));
                         } 
-                        if(isset($dt->lbt_response)){
+                        if(isset($dt->lbt_response) && $dt->lbt_response != 'undefined'){
                             $responseData = base64_encode(json_encode($dt->lbt_response));
                         }
                     @endphp
@@ -71,7 +71,7 @@
                     <td class="text-center align-middle">{{$dt->rst_name}}</td>
                     <td class="text-center align-middle">{!! $badge !!} </td>
                     <td class="text-center align-middle">
-                        <button class="btn btn-icon" onclick="showDetail(`{!! $responseData !!}`,`{!! $requestData !!}`, `{!!$statusCode!!}`)" data-toggle="tooltip" data-placement="top" title="View Detail Data">
+                        <button class="btn btn-icon" onclick="showDetail(`{!! $responseData !!}`,`{!! $requestData !!}`, `{{$statusCode}}`)" data-toggle="tooltip" data-placement="top" title="View Detail Data">
                             <i class="fas fa-eye"></i>
                         </button>
                     </td>
