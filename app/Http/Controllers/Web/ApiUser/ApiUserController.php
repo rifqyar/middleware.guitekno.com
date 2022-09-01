@@ -22,8 +22,8 @@ class ApiUserController extends Controller
             ->editColumn('bank_id', function ($row) {
                 return $row->bank->bank_name;
             })
-            ->addColumn('action', function () {
-                $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
+            ->addColumn('action', function ($row) {
+                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View</a>";
                 return $btn;
             })
             ->rawColumns(['action'])
