@@ -4,16 +4,16 @@
 @section('page-heading', __('Log Callback'))
 
 @section('content')
-    <div id="log_callback-component">
+    <div id="overbooking-component">
         <div class="card" id="list-data">
             <div class="card-body">
                 <div>
                     <h6>Filter</h6>
-                    <form class="form-group" method="GET" action="javascript:void(0)">
+                    <form class="form-group" method="GET">
                         <div class="row">
                             <div class="col-md-4">
                                 <p>Service Type</p>
-                                <select class="form-control filter" name="rst_id">
+                                <select class="form-control" name="rst_id">
                                     <option value="">All</option>
 
                                     <option value="051"
@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-md-4">
                                 <p>Partner Id</p>
-                                <input type="text" class="form-control filter" name="partner_id"
+                                <input type="text" class="form-control" name="partner_id"
                                     @isset($param['partner_id']) value="{{ $param['partner_id'] }}" @endisset>
                             </div>
                             {{-- {{ var_dump($param['partner_id']) }} --}}
@@ -37,7 +37,7 @@
                                 <p>Callback Terakhir</p>
                                 <div class="row">
                                     <div class="col-4">
-                                        <select class="form-control filter" name="parameter">
+                                        <select class="form-control" name="parameter">
                                             <option value="">All</option>
                                             <option value="<"
                                                 {{ isset($param['parameter']) && $param['parameter'] == '<' ? 'selected' : '' }}>
@@ -60,7 +60,7 @@
                                         </select>
                                     </div>
                                     <div class="col-8">
-                                        <input type="date" class="form-control filter" name="last_updated"
+                                        <input type="date" class="form-control" name="last_updated"
                                             @isset($param['last_updated']) value={{ $param['last_updated'] }} @endisset>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col">
-                                <button type="submit" class="btn btn-primary mb-2" onclick="test()">Filter</button>
+                                <button type="submit" class="btn btn-primary mb-2">Filter</button>
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="table-responsive mt-4">
-                    <table class="table t-log_callback" style="width: 100%">
+                    <table class="table t-overbooking" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>Partner Id</th>
@@ -88,42 +88,23 @@
                                 <th>Sevice Type</th>
                             </tr>
                         </thead>
-                        <tbody id="data">
+                        <tbody>
+                            @foreach ($datas as $index => $value)
+                                <tr>
+                                    <td>{{ $value->lcb_partnerid }}</td>
+                                    <td>{{ Helper::getFormatWib($value->lcb_created) }} </td>
+                                    <td>{{ Helper::getFormatWib($value->lcb_last_updated) }} </td>
+                                    <td>{{ $value->rst->rst_name }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+
+                    {{ $datas->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        $(function (){
-            renderTable()
-        })
 
-        function test(){
-            // '?rst_id=&partner_id=&parameter=&last_updated='
-            let param = '?'
-            $('.filter').each((k, v) => {
-                param += $(v).attr('name')+'='+$(v).val()+'&'
-            })
-            param = param.slice(0, -1)
-            renderTable(param) 
-        }
-
-        function renderTable(param = ''){
-            $('.t-log_callback').DataTable().destroy();
-            $('.t-log_callback').DataTable({
-                processing: false,
-                serverSide: false,
-                ajax: `${$('meta[name="baseurl"]').attr('content')}log-callback${param}`,
-                columns: [
-                    { data: 'lcb_partnerid', name: 'lcb_partnerid' },
-                    { data: 'created', name: 'created' },
-                    { data: 'last_update', name: 'last_update' },
-                    { data: 'service', name: 'service' },
-                ]
-            });
-        }
-    </script>
 @stop
