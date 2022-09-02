@@ -16,6 +16,7 @@ $(document).ready(function(){
        columns: [
                 { data: 'id', name: 'id' },
                 { data: 'code_bank', name: 'code_bank' },
+                { data: 'bank_name', name: 'bank_name' },
                 { data: 'client_id', name: 'client_id' },
                 { data: 'client_secret', name: 'client_secret' },
                 { data: 'username', name: 'username' },

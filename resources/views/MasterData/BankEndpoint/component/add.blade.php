@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
-                    <label for="bank_secret">Bank Secret</label>
+                    <label for="bank_secret">Bank</label>
                     <select class="bank_secret-select form-control required" name="bank_secret" style="width: 100%; height: 100%">
                     </select>
                 </div>

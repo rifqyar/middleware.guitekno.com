@@ -37,6 +37,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Code Bank</th>
+                                <th>Bank Name</th>
                                 <th>Client ID</th>
                                 <th>Client Secret</th>
                                 <th>Username</th>

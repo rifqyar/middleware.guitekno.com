@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
-                    <label for="bank_secret">Bank Secret</label>
+                    <label for="bank_secret">Bank</label>
                     <input type="text" class="form-control required" name="bank_secret" readonly>
                 </div>
             </div>
