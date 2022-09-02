@@ -114,15 +114,16 @@
         function renderTable(param = ''){
             $('.t-log_callback').DataTable().destroy();
             $('.t-log_callback').DataTable({
-                processing: false,
-                serverSide: false,
+                processing: true,
+                serverSide: true,
                 ajax: `${$('meta[name="baseurl"]').attr('content')}log-callback${param}`,
                 columns: [
                     { data: 'lcb_partnerid', name: 'lcb_partnerid' },
                     { data: 'created', name: 'created' },
                     { data: 'last_update', name: 'last_update' },
                     { data: 'service', name: 'service' },
-                ]
+                ],
+                lengthMenu: [5, 10, 20, 50, 100, 200, 500],
             });
         }
     </script>
