@@ -83,8 +83,9 @@ function back(from, to){
 }
 
 function getAvailBank(from){
+    const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_id-select') :  mainComponent.find(fEditComponent).find('.bank_id-select')
+    selectComponent.html('')
     apiCall('master-data/bank-secret/get-avail', 'GET', '', () => {}, () => {}, null, (res) => {
-        const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_id-select') :  mainComponent.find(fEditComponent).find('.bank_id-select')
         var option = '<option></option>'
         selectComponent.append(option)
         

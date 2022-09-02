@@ -78,8 +78,9 @@ function back(from, to){
 }
 
 function getBankSecret(from){
+    const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_secret-select') :  mainComponent.find(fEditComponent).find('.bank_secret-select')
+    selectComponent.html('')
     apiCall('master-data/bank-endpoint/get-banksecret', 'GET', '', () => {}, () => {}, null, (res) => {
-        const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_secret-select') :  mainComponent.find(fEditComponent).find('.bank_secret-select')
         var option = '<option></option>'
         res.data.map((val) => {
             option += `<option value="${val.id}">${val.bank_name}<option/>` 
@@ -89,8 +90,9 @@ function getBankSecret(from){
 }
 
 function getEndpointType(from){
+    const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.endpoint_type-select') :  mainComponent.find(fEditComponent).find('.endpoint_type-select')
+    selectComponent.html('')
     apiCall('master-data/bank-endpoint/get-endpoint', 'GET', '', () => {}, () => {}, null, (res) => {
-        const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.endpoint_type-select') :  mainComponent.find(fEditComponent).find('.endpoint_type-select')
         var option = '<option></option>'
         res.data.map((val) => {
             option += `<option value="${val.id}">${val.name}<option/>` 
