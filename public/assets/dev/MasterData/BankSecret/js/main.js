@@ -89,7 +89,7 @@ function getAvailBank(from){
         selectComponent.append(option)
         
         res.data.map((val) => {
-            option += `<option value="${val.bank_id}">${val.bank_id}<option/>` 
+            option += `<option value="${val.bank_id}">${val.bank_id} - ${val.bank_name}<option/>` 
             // selectComponent.append(option)
         })
 
