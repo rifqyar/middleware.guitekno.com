@@ -131,7 +131,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
             fillResData(formInput[i].name, formInput[i].value, 'bSecret_res_data')
         }
 
-        apiCall(`master-data/bank-secret/`, 'POST',
+        apiCall(`master-data/bank-secret`, 'POST',
         'bSecret_res_data', () => {
             swal({
                 title: 'Saving Data...',
@@ -234,7 +234,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
             }
         }
 
-        apiCall(`master-data/bank-secret/`, 'PUT',
+        apiCall(`master-data/bank-secret`, 'PUT',
         'bSecret_res_data', () => {
             swal({
                 title: 'Updating Data...',

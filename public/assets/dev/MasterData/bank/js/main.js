@@ -191,7 +191,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function () {
             fillResData(form[i].name, form[i].value, 'bank_res_data')
         }
 
-        apiCall(`master-data/bank/`, 'PUT',
+        apiCall(`master-data/bank`, 'PUT',
             'bank_res_data', () => {
                 swal({
                     title: 'Updating Data...',
