@@ -119,7 +119,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
             fillResData(form[i].name, form[i].value, 'bank_res_data')
         }
 
-        apiCall(`master-data/bank/`, 'POST',
+        apiCall(`master-data/bank`, 'POST',
             'bank_res_data', () => {
                 swal({
                     title: 'Saving Data...',
