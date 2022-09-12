@@ -253,6 +253,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::post('/', 'MasterData\BankSecret\MainController@post');
                 Route::get('{id}/{checked}/delete', 'MasterData\BankSecret\MainController@delete');
                 Route::put('/', 'MasterData\BankSecret\MainController@put');
+                Route::get('deleteToken/{id}', 'MasterData\BankSecret\MainController@deleteToken');
             });
         });
 

@@ -62,6 +62,14 @@ class MasterDataController extends Controller
             ->addColumn('action', function($data) {
                 $JSON_Sting = json_encode($data);
                 return '
+                <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                    <button
+                        class="btn btn-icon"
+                        onclick="viewDetail(`'.base64_encode($JSON_Sting).'`)"
+                        title="View Detail"
+                        data-toggle="tooltip" data-placement="top">
+                        <i class="fas fa-eye"></i>
+                    </button>
                     <button
                         class="btn btn-icon"
                         onclick="editBank(`'.base64_encode($JSON_Sting).'`)"
@@ -76,6 +84,7 @@ class MasterDataController extends Controller
                         data-toggle="tooltip" data-placement="top">
                         <i class="fas fa-trash"></i>
                     </button>
+                </div>
                 ';
             })
             ->rawColumns(['action'])
