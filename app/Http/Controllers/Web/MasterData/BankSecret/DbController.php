@@ -53,6 +53,12 @@ class DbController
         return $exec;
     }
 
+    public static function deleteToken($id){
+        $query = "UPDATE DAT_BANK_SECRET SET token = NULL, expired_time = NULL WHERE ID = '$id'";
+        $exec = self::execQuery($query, 'statement');
+        return $exec;
+    }
+
     public static function execQuery($sp, $type)
     {
         try {

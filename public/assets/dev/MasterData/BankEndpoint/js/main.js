@@ -131,7 +131,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
             fillResData(form[i].name, form[i].value, 'bEndpoint_res_data')
         }
 
-        apiCall(`master-data/bank-endpoint/`, 'POST',
+        apiCall(`master-data/bank-endpoint`, 'POST',
         'bEndpoint_res_data', () => {
             swal({
                 title: 'Saving Data...',
@@ -206,7 +206,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
             fillResData(form[i].name, form[i].value, 'bEndpoint_res_data')
         }
 
-        apiCall(`master-data/bank-endpoint/`, 'PUT',
+        apiCall(`master-data/bank-endpoint`, 'PUT',
         'bEndpoint_res_data', () => {
             swal({
                 title: 'Updating Data...',

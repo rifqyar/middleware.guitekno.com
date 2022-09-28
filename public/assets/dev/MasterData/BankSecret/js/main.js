@@ -5,10 +5,6 @@ const fAddComponent = $('#form-add')
 const fEditComponent = $('#form-edit')
 
 $(document).ready(function(){
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-    
     $('.t-bankSecret').DataTable({
        processing: true,
        serverSide: true,
@@ -22,7 +18,15 @@ $(document).ready(function(){
                 { data: 'username', name: 'username' },
                 { data: 'password', name: 'password' },
                 { data: 'action', name: 'action' },
-             ]
+             ],
+             columnDefs: [
+                { className: "align-middle", targets: 7 },
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 7,
+                },
+            ],
     });
 
     if (sessionStorage.getItem('component-bs') == null){
@@ -131,7 +135,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
             fillResData(formInput[i].name, formInput[i].value, 'bSecret_res_data')
         }
 
-        apiCall(`master-data/bank-secret/`, 'POST',
+        apiCall(`master-data/bank-secret`, 'POST',
         'bSecret_res_data', () => {
             swal({
                 title: 'Saving Data...',
@@ -234,7 +238,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
             }
         }
 
-        apiCall(`master-data/bank-secret/`, 'PUT',
+        apiCall(`master-data/bank-secret`, 'PUT',
         'bSecret_res_data', () => {
             swal({
                 title: 'Updating Data...',
@@ -347,4 +351,92 @@ function deleteBank(data){
                 }
             }, true)
     }
+}
+
+function viewDetail(data){
+    data = JSON.parse(window.atob(data))
+    var now,exp,diffTS,h,m,s,diffString,color,button
+
+    if (data.expired_time != null){
+        now = new Date();
+        exp = new Date(parseInt(data.expired_time))
+    
+        if (exp < now) 
+            exp.setDate(exp.getDate() + 1)
+    
+        diffTS = exp-now
+    
+        h = Math.floor(diffTS / 1000 / 60 / 60)
+        m = Math.floor(diffTS / 1000 / 60) - (h * 60)
+        s = diffTS % 60
+        
+        diffString = `Your Token Expired in ${h} Hours ${m} Minutes ${s} Seconds`
+    
+        if (h > 0 && m > 30){
+            color= 'text-primary'
+        } else if (m < 30 && s > 15) {
+            color = 'text-warning'
+        } else if (m == 0 && s < 15){
+            color = 'text-danger'
+        }
+
+        button = `
+            <div class="d-flex flex-row-reverse">
+                <button class="btn btn-danger ml-4" onclick="deleteToken('${data.id}')">
+                    Delete Token
+                </button>
+                <button class="btn btn-warning" data-dismiss="modal">
+                    Close
+                </button>
+            </div>`;
+    } else {
+        diffString = "This bank secret does not have a token"
+        color = 'text-danger'
+
+        button = `
+            <div class="d-flex flex-row-reverse">
+                <button class="btn btn-warning" data-dismiss="modal">
+                    Close
+                </button>
+            </div>`;
+    }
+
+    $('#footer-modal').html(button)
+    $('#token').html(data.token)
+    $('#exp').html(data.expired_time == null ? '' : exp)
+    $('#info').addClass(color).html(diffString)
+
+    $('#detail-bs').modal('show')
+}
+
+function deleteToken(id){
+    apiCall(`master-data/bank-secret/deleteToken/${id}`, 'GET',
+        '', () => {
+            swal({
+                title: 'Deleting Token...',
+                content: {
+                  element: "i",
+                  attributes: {
+                    className: "fas fa-spinner fa-spin text-large",
+                  },
+                },
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        },() => {},
+        {"X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")},
+        (res) => {
+            if (res.status.code == 200){
+                $.toast({
+                    heading: 'Success Delete Token Bank',
+                    icon: 'success',
+                    position: 'top-right'
+                })
+                swal.close()
+
+                $('.t-bankSecret').DataTable().ajax.reload();
+                $('#detail-bs').modal('hide')
+            }
+        }, true)
 }

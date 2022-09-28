@@ -64,4 +64,9 @@ class MainController extends Controller
         $post = Model::deleteData($id);
         return response()->json($post->original, $post->original['status']['code']);
     }
+
+    public function deleteToken($id){
+        $post = Model::deleteToken($id);
+        return response()->json($post->original, $post->original['status']['code']); 
+    }
 }
