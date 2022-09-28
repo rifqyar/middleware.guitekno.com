@@ -65,8 +65,8 @@
     @include('MasterData/BankSecret/component/modal')
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url("assets/dev/MasterData/BankSecret/js/main.js") }}"></script>
-    {{-- <script src="{{ url("vendor/plugins/master-data/BankSecret/js/main.min.js") }}"></script> --}}
+    {{-- <script src="{{ url("assets/dev/MasterData/BankSecret/js/main.js") }}"></script> --}}
+    <script src="{{ url("vendor/plugins/master-data/BankSecret/js/main.min.js") }}"></script>
     <script>
         $(function(){
             $('[data-toggle="tooltip"]').tooltip()
