@@ -32,23 +32,27 @@
                 </div>
                 <div class="col-lg-2 col-12">
                     <div class="d-flex flex-end">
-                        <b>Total Data : {{$data['totalAllData'][0]->total}}</b>
+                        <b>Total Data : {{ $data['totalAllData'][0]->total }}</b>
                     </div>
                 </div>
             </div>
-            @if(count($data['header']) > 0)
+            @if (count($data['header']) > 0)
                 @foreach ($data['header'] as $h)
                     <div class="card mb-2">
-                        <div class="card-header d-flex justify-content-between align-items-center" data-name="{{$h->rst_name}}" id="{{$h->rst_id}}">
-                            <h6 class="d-flex align-items-center" onclick="collapse('{{$h->rst_id}}')" style="cursor: pointer"> 
-                                {{$h->rst_name}} 
-                                <button class="btn btn-icon btn-sm btn-warning ml-3" onclick="getData(`{{$h->rst_id}}`)" style="display: none"><i class="fas fa-refresh text-white"></i></button>
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            data-name="{{ $h->rst_name }}" id="{{ $h->rst_id }}">
+                            <h6 class="d-flex align-items-center" onclick="collapse('{{ $h->rst_id }}')"
+                                style="cursor: pointer">
+                                {{ $h->rst_name }}
+                                <button class="btn btn-icon btn-sm btn-warning ml-3"
+                                    onclick="getData(`{{ $h->rst_id }}`)" style="display: none"><i
+                                        class="fas fa-refresh text-white"></i></button>
                             </h6>
                             <span class="badge badge-info mr-2">
-                                {{$h->total}}
+                                {{ $h->total }}
                             </span>
                         </div>
-                        <div class="card-body data-log-bank" id="data-{{$h->rst_id}}" style="display: none">
+                        <div class="card-body data-log-bank" id="data-{{ $h->rst_id }}" style="display: none">
                         </div>
                     </div>
                 @endforeach
@@ -66,6 +70,6 @@
     @include('TrxLog.LogBank.component.modal')
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url("vendor/plugins/trxlog/bank/main.min.js") }}"></script>
-    
+    <script src="{{ url('vendor/plugins/trxlog/bank/main.min.js') }}"></script>
+
 @stop

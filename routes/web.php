@@ -149,6 +149,17 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             ->middleware('permission:permissions.manage');
 
         Route::resource('permissions', 'PermissionsController')->middleware('permission:permissions.manage');
+
+        Route::resource('types', 'TypesController')->middleware('permission:types.manage');
+    });
+
+    /**
+     * User Types
+     */
+
+    Route::prefix('user-types')->group(function () {
+        Route::get('/', "UserTypes\TypesUser\MainController@index")->middleware('auth');
+        Route::get('/create', "UserTypes\TypesUser\MainController@create")->name('types.create')->middleware('auth');
     });
 
 
