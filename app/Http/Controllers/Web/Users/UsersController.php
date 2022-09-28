@@ -14,6 +14,7 @@ use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
+use Vanguard\Models\Province;
 
 /**
  * Class UsersController
@@ -58,12 +59,13 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function create(CountryRepository $countryRepository, RoleRepository $roleRepository)
+    public function create(CountryRepository $countryRepository, Province $province, RoleRepository $roleRepository)
     {
         return view('user.add', [
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
-            'statuses' => UserStatus::lists()
+            'statuses' => UserStatus::lists(),
+            'province' => Province::all()
         ]);
     }
 
@@ -79,6 +81,8 @@ class UsersController extends Controller
     {
         return [0 => __('Select a Country')] + $countryRepository->lists()->toArray();
     }
+
+
 
     /**
      * Stores new user into the database.
