@@ -39,7 +39,7 @@ class TrxOverBooking extends Model
 
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
-            $value->data = DB::select("select tbk_sender_bank_id,sum(tbk_amount) total from trx_overbooking where tbk_created::text like '%{$value->tanggal}%'
+            $value->data = DB::select("select tbk_sender_bank_id,sum(tbk_amount) total from trx_overbooking where tbk_create_by like '%{$value->tanggal}%'
             group by tbk_sender_bank_id");
         }
 
