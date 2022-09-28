@@ -26,6 +26,14 @@
             <input type="text" class="form-control input-solid" id="last_name" name="last_name"
                 placeholder="@lang('Last Name')" value="{{ $edit ? $user->last_name : '' }}">
         </div>
+        <div class="form-group">
+            <label for="status">@lang('User Type')</label>
+            {!! Form::select('status', $statuses, $edit ? $user->status : '', [
+                'class' => 'form-control input-solid',
+                'id' => 'status',
+                $profile ? 'disabled' : '',
+            ]) !!}
+        </div>
     </div>
 
     <div class="col-md-6">
