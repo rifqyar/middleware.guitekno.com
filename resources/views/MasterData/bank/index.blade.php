@@ -59,7 +59,5 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{url("assets/dev/MasterData/bank/js/main.js")}}"></script>
-    {{-- <script src="{{ url("vendor/plugins/master-data/bank/js/main.min.js") }}"></script> --}}
-    
+    <script src="{{ url("vendor/plugins/master-data/bank/js/main.min.js") }}"></script>
 @stop

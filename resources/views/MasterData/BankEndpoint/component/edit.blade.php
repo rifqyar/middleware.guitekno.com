@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-12 col-md-6 col-sm-12">
                 <div class="form-group">
-                    <label for="bank_secret">Bank Secret</label>
+                    <label for="bank_secret">Bank</label>
                     <input type="text" class="form-control required" name="bank_secret" readonly>
                 </div>
             </div>
@@ -38,7 +38,6 @@
                 <div class="form-group">
                     <label for="status">Status Endpoint</label>
                     <select class="status-select form-control required" name="status" style="width: 100%; height: 100%">
-                        <option></option>
                         <option value="00">Stagging</option>
                         <option value="01">Production</option>
                     </select>

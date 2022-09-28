@@ -60,7 +60,7 @@ class DbController
 
     public static function deleteData($id)
     {
-        $query = "CALL sp_del_RefBank ('$id')";
+        $query = "CALL sp_delete_RefBank ('$id')";
         $exec = self::execQuery($query, 'statement');
         return $exec;
     }

@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -81,7 +81,7 @@
                             </div>
                             <div class="pr-3">
                                 @if ($data['mostActiveBank'])
-                                    <h2 class="text-right"> {{ $data['mostActiveBank']->bank_name }} </h2>
+                                    <h2 class="text-right"> {{ $data['mostActiveBank']->bank_name ?? '' }} </h2>
                                 @else
                                     <h2 class="text-right"> - </h2>
                                 @endif
@@ -339,13 +339,13 @@
             var data = <?= json_encode($data['jenis'], true) ?>;
 
             // Add data
-            // chart.data = [{
-            //     "type": "Gaji",
-            //     "amount": 50
-            // }, {
-            //     "type": "Non Gaji",
-            //     "amount": 50
-            // }];
+            {{-- chart.data = [{
+                "type": "Gaji",
+                "amount": 50
+                }, {
+                "type": "Non Gaji",
+                "amount": 50
+            }]; --}}
 
             chart.data = data;
 

@@ -36,10 +36,11 @@ class TrxOverBooking extends Model
     {
         $query = DB::select("select to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') tanggal from trx_overbooking
         group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD')");
+
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
-            $value->data = DB::select("select TBK_SENDER_BANK_ID,sum(TBK_AMOUNT) total from trx_overbooking where TBK_CREATED like '%{$value->tanggal}%'
-            group by TBK_SENDER_BANK_ID");
+            $value->data = DB::select("select tbk_sender_bank_id,sum(tbk_amount) total from trx_overbooking where tbk_created::text like '%{$value->tanggal}%'
+            group by tbk_sender_bank_id");
         }
 
         return $query;
@@ -63,12 +64,12 @@ class TrxOverBooking extends Model
 
     public static function mostActiveBank()
     {
-        return DB::SELECT("SELECT * FROM vw_MostActiveBank")[0];
+        $data = DB::SELECT("SELECT * FROM vw_MostActiveBank");
+        return count($data) > 0 ? $data[0] : '-';
     }
 
     public static function countTrxBank()
     {
         return DB::SELECT("SELECT ref_bank.bank_name name, ref_bank.bank_id, count(vw_overbooking_h.tbk_id) value from vw_overbooking_h inner join ref_bank on ref_bank.bank_id = vw_overbooking_h.tbk_sender_bank_id group by ref_bank.bank_name, vw_overbooking_h.tbk_sender_bank_id, ref_bank.bank_id");
     }
-
 }

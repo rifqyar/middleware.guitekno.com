@@ -20,6 +20,7 @@ $(document).ready(function(){
             { data: 'bank_name', name: 'bank_name' },
             { data: 'ret_id', name: 'ret_id' },
             { data: 'name', name: 'name' },
+            { data: 'status', name: 'status' },
             { data: 'action', name: 'action' },
         ]
     });
@@ -44,6 +45,7 @@ $(document).ready(function(){
                 mainComponent.find(fEditComponent).find('input[name="bank_secret"]').val(data.dbs_id)
                 mainComponent.find(fEditComponent).find('input[name="endpoint"]').val(data.dbe_endpoint)
                 mainComponent.find(fEditComponent).find('input[name="endpoint_type"]').val(data.ret_id)
+                mainComponent.find(fEditComponent).find(`select[name="status"] option[value="${data.rrs_id}"]`).attr('selected', 'selected')
             }
         } else if (openedComponent == 'add') {
             getBankSecret('add')
@@ -76,19 +78,21 @@ function back(from, to){
 }
 
 function getBankSecret(from){
+    const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_secret-select') :  mainComponent.find(fEditComponent).find('.bank_secret-select')
+    selectComponent.html('')
     apiCall('master-data/bank-endpoint/get-banksecret', 'GET', '', () => {}, () => {}, null, (res) => {
-        const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.bank_secret-select') :  mainComponent.find(fEditComponent).find('.bank_secret-select')
         var option = '<option></option>'
         res.data.map((val) => {
-            option += `<option value="${val.id}">${val.client_id}<option/>` 
+            option += `<option value="${val.id}">${val.bank_name}<option/>` 
         })
         selectComponent.append(option)
     }, true);
 }
 
 function getEndpointType(from){
+    const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.endpoint_type-select') :  mainComponent.find(fEditComponent).find('.endpoint_type-select')
+    selectComponent.html('')
     apiCall('master-data/bank-endpoint/get-endpoint', 'GET', '', () => {}, () => {}, null, (res) => {
-        const selectComponent = from == 'add' ? mainComponent.find(fAddComponent).find('.endpoint_type-select') :  mainComponent.find(fEditComponent).find('.endpoint_type-select')
         var option = '<option></option>'
         res.data.map((val) => {
             option += `<option value="${val.id}">${val.name}<option/>` 
@@ -127,7 +131,7 @@ mainComponent.find(addComponent).find('#btn-save').on('click', function () {
             fillResData(form[i].name, form[i].value, 'bEndpoint_res_data')
         }
 
-        apiCall(`master-data/bank-endpoint/`, 'POST',
+        apiCall(`master-data/bank-endpoint`, 'POST',
         'bEndpoint_res_data', () => {
             swal({
                 title: 'Saving Data...',
@@ -172,6 +176,7 @@ function editBankEndpoint(data){
     mainComponent.find(fEditComponent).find('input[name="bank_secret"]').val(data.dbs_id)
     mainComponent.find(fEditComponent).find('input[name="endpoint"]').val(data.dbe_endpoint)
     mainComponent.find(fEditComponent).find('input[name="endpoint_type"]').val(data.ret_id)
+    mainComponent.find(fEditComponent).find(`select[name="status"] option[value="${data.rrs_id}"]`).attr('selected', 'selected')
 }
 
 mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
@@ -201,7 +206,7 @@ mainComponent.find(fEditComponent).find('#btn-save').on('click', function(){
             fillResData(form[i].name, form[i].value, 'bEndpoint_res_data')
         }
 
-        apiCall(`master-data/bank-endpoint/`, 'PUT',
+        apiCall(`master-data/bank-endpoint`, 'PUT',
         'bEndpoint_res_data', () => {
             swal({
                 title: 'Updating Data...',
@@ -241,7 +246,7 @@ function deleteBankEndpoint(data){
         buttons: true
     }).then((confirm) => {
         if(confirm == true){
-            apiCall(`master-data/bank-endpoint/${data.dbs_id}/delete`, 'GET', '', 
+            apiCall(`master-data/bank-endpoint/${data.dbs_id}/${data.id}/delete`, 'GET', '', 
             () => {
                 swal({
                     title: 'Deleting Data...',

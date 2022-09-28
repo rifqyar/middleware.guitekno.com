@@ -62,6 +62,14 @@ class MasterDataController extends Controller
             ->addColumn('action', function($data) {
                 $JSON_Sting = json_encode($data);
                 return '
+                <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                    <button
+                        class="btn btn-icon"
+                        onclick="viewDetail(`'.base64_encode($JSON_Sting).'`)"
+                        title="View Detail"
+                        data-toggle="tooltip" data-placement="top">
+                        <i class="fas fa-eye"></i>
+                    </button>
                     <button
                         class="btn btn-icon"
                         onclick="editBank(`'.base64_encode($JSON_Sting).'`)"
@@ -76,6 +84,7 @@ class MasterDataController extends Controller
                         data-toggle="tooltip" data-placement="top">
                         <i class="fas fa-trash"></i>
                     </button>
+                </div>
                 ';
             })
             ->rawColumns(['action'])
@@ -109,7 +118,12 @@ class MasterDataController extends Controller
                     </button>
                 ';
             })
-            ->rawColumns(['action'])
+            ->addColumn('status', function($data){
+                $bgColor = $data->rrs_id == 01 ? 'bg-success text-light' : 'bg-warning text-dark';
+                $badge = '<span class="badge badge-pill '.$bgColor.' mr-2 text-light">'.$data->rrs_desc.'</span>';
+                return $badge;
+            })
+            ->rawColumns(['action', 'status'])
             ->make(true);
         }
 

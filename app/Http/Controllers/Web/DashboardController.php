@@ -34,7 +34,8 @@ class DashboardController extends Controller
             ->limit(10)
             ->orderBy('tbk_created', 'desc')
             ->get();
-        $data['logCallback'] = LogCallback::orderBy('LCB_LAST_UPDATED', 'desc')
+
+        $data['logCallback'] = LogCallback::orderBy('lcb_last_updated', 'desc')
             ->limit(10)->get();
         // dd($data['logCallback']);
 

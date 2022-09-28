@@ -4,11 +4,20 @@
  * Authentication
  */
 
+use Illuminate\Support\Facades\Http;
 use Vanguard\Models\LogCallback;
 
 Route::get('login', 'Auth\LoginController@show');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
+
+Route::get('insert-bank', function () {
+    $response = Http::get('https://raw.githubusercontent.com/mul14/gudang-data/master/bank/bank.json');
+    // dd(json_decode($response));
+    foreach (json_decode($response) as $value) {
+        echo $value->name . '<br>';
+    }
+});
 
 
 Route::group(['middleware' => ['registration', 'guest']], function () {
@@ -242,8 +251,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('/', 'MasterData\MasterDataController@getBankSecret')->name('masterdata.bankSecret');
                 Route::get('get-avail', 'MasterData\BankSecret\MainController@getAvailBank');
                 Route::post('/', 'MasterData\BankSecret\MainController@post');
-                Route::get('{id}/{checked}/delete', 'BankSecret\MainController@delete');
+                Route::get('{id}/{checked}/delete', 'MasterData\BankSecret\MainController@delete');
                 Route::put('/', 'MasterData\BankSecret\MainController@put');
+                Route::get('deleteToken/{id}', 'MasterData\BankSecret\MainController@deleteToken');
             });
         });
 
@@ -253,7 +263,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('get-banksecret', 'MasterData\BankEndpoint\MainController@getBankSecret');
                 Route::get('get-endpoint', 'MasterData\BankEndpoint\MainController@getEndpointType');
                 Route::post('/', 'MasterData\BankEndpoint\MainController@post');
-                Route::get('{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
+                Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
             });
         });
@@ -268,6 +278,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/form', 'ApiUser\ApiUserController@form');
     Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
     Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');
+
+    Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
+    Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
+    Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
 });
 
 

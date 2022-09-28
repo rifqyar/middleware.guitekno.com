@@ -40,8 +40,8 @@ function showDetail(res, req, status){
     $('.nav-link').removeClass('active')
     $('.tab-pane').hide()
 
-    let resData = JSON.parse(JSON.parse(window.atob(res)))
-    let reqData = JSON.parse(JSON.parse(window.atob(req)))
+    let resData = res != '' ? JSON.parse(JSON.parse(window.atob(res))) : null
+    let reqData = req != '' ? JSON.parse(JSON.parse(window.atob(req))) : null
     reqData = Array.isArray(reqData) == false ? [reqData] : reqData
     resData = Array.isArray(resData) == false ? [resData] : resData
 
@@ -77,8 +77,9 @@ function renderTable(data, containerID, detail = false, detailTitle = ''){
         elRow += '</tr>';
     }
     elRow += '</tbody>'
+    
+    let table = data[0] != null ? tagHead[1] + elRow : '<center><h4 class="text-danger">There in an error on data</h4></center>'
 
-    let table = tagHead[1] + elRow
     $('#detail-log-bank').find(containerID).html(table)
     if (detail == true){
         detailTitle = detailTitle.split('_').join(' ')
