@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -7,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('page-title') - {{ setting('app_name') }}</title>
-
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
     {!! HTML::style('assets/css/app.css') !!}
     {!! HTML::style('assets/css/fontawesome-all.min.css') !!}
 
@@ -15,6 +17,7 @@
 
     @hook('auth:styles')
 </head>
+
 <body class="auth">
 
     <div class="container">
@@ -27,4 +30,5 @@
     @yield('scripts')
     @hook('auth:scripts')
 </body>
+
 </html>
