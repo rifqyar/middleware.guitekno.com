@@ -12,7 +12,7 @@ class Helper
 
     public static function getFormatWib($tanggal)
     {
-        return date('d-m-Y H:i', strtotime($tanggal)) . ' Wib';
+        return date('d-m-Y H:i', strtotime($tanggal . "+7 hour",)) . ' Wib';
     }
 
     public static function cleanFormString($string)
