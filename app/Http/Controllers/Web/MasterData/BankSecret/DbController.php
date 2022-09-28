@@ -8,49 +8,53 @@ use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Request;
 use Vanguard\Http\Controllers\Library;
-use Vanguard\Http\Controllers\Web\MasterData\BankSecret\DbController as BSDbController;
 
-class DbController extends Controller
+class DbController
 {
     /**
      * GET DATA
      */
-    public static function getBank(){
+    public static function getBank()
+    {
         $data = DB::SELECT("SELECT * FROM vw_AvailBankSecret");
 
         return $data;
     }
 
-    public static function cekData($id){
+    public static function cekData($id)
+    {
         return DB::SELECT("SELECT COUNT(1) AS total from vw_BankEndpoint where dbs_id = '$id'");
     }
     /**
      * POST DATA
      */
 
-    public static function postInsertUpdate($data, $action){
-        $arrSpParam = ['id','bank_id', 'client_id', 'client_secret', 'username', 'password'];
+    public static function postInsertUpdate($data, $action)
+    {
+        $arrSpParam = ['id', 'bank_id', 'client_id', 'client_secret', 'username', 'password'];
         $rawSpParam = [];
-        
+
         foreach ($arrSpParam as $arrV) {
             $rawSpParam[$arrV] = null;
         }
 
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
-        $query = 'CALL sp_'.$action.'_bankSecret '.$rawQuery['query'];
+        $query = 'CALL sp_' . $action . '_bankSecret ' . $rawQuery['query'];
 
-        $exec = BSDbController::execQuery($query, 'statement');
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
 
-    public static function deleteData($id){
+    public static function deleteData($id)
+    {
         $query = "CALL sp_del_bankSecret ('$id')";
-        $exec = BSDbController::execQuery($query, 'statement');
+        $exec = self::execQuery($query, 'statement');
         return $exec;
     }
-    
-    public static function execQuery($sp, $type){
+
+    public static function execQuery($sp, $type)
+    {
         try {
             $exec = DB::$type($sp);
             return response()->json([
@@ -58,7 +62,7 @@ class DbController extends Controller
                     'code' => 200,
                     'msg' => 'OK'
                 ], 'detail' => 'Process Running Successfully'
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => [

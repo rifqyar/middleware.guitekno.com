@@ -216,7 +216,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
      * History Over Booking
      */
     Route::middleware(['auth'])->group(function () {
-        Route::prefix('history-overbooking')->group(function(){
+        Route::prefix('history-overbooking')->group(function () {
             Route::get('/', 'history_overbooking\MainController@index')->name('historyOverbooking.index');
             Route::get('/column-header', 'history_overbooking\MainController@columnHeader');
             Route::get('/column-data/{column_name}', 'history_overbooking\MainController@columnData');
@@ -227,8 +227,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     /** CRUD Master Data */
     Route::prefix('master-data')->group(function () {
         // Route::get('/', 'MasterData\MasterDataController@index')->middleware('auth');
-
-
         Route::middleware(['permission:master.data_refBank'])->group(function () {
             Route::prefix('bank')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getRefBank')->name('masterdata.refbank');
@@ -263,6 +261,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     /** Log Callback */
     Route::get('log-callback', 'LogCallback\LogCallbackController@index')->name('logCallback.index');
+
+    /** Crud  Api User */
+
+    Route::get('user-service', 'ApiUser\ApiUserController@index')->name('user-service.index');
+    Route::get('user-service/form', 'ApiUser\ApiUserController@form');
+    Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
+    Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');
 });
 
 
