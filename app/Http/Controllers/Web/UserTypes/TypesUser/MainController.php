@@ -39,6 +39,13 @@ class MainController extends Controller
             ->withSuccess(__('Type created successfully.'));
     }
 
+    public function edit(Types $types)
+    {
+        return view('UserTypes.permission.action.create-edit', [
+            'types' => $types,
+            'edit' => true
+        ]);
+    }
 
 
 }

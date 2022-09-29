@@ -42,7 +42,7 @@ class EloquentType implements TypeRepository
 
         event(new Created($types));
 
-        return $role;
+        return $types;
     }
 
     /**

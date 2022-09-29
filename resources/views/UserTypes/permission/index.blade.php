@@ -43,11 +43,10 @@
                             @foreach ($types as $type)
                                 <tr>
                                     <td>{{ $type->ut_name }}</td>
-                                    {{-- <td>{{ $role->display_name }}</td>
-                                    <td>{{ $role->users_count }}</td> --}}
+                                    <td>{{ $type->users_count }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('roles.edit', $type) }}" class="btn btn-icon"
-                                            title="@lang('Edit Role')" data-toggle="tooltip" data-placement="top">
+                                        <a href="{{ route('types.edit', $type) }}" class="btn btn-icon"
+                                            title="@lang('Edit Types')" data-toggle="tooltip" data-placement="top">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         @if ($type->removable)
