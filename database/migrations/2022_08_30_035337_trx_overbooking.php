@@ -39,6 +39,7 @@ return new class extends Migration
             $table->date('tbk_ntpn_date')->nullable();
             $table->string('tbk_ntb')->nullable();
             $table->string('tbk_type')->nullable();
+            $table->string('tbk_kode_wilayah')->nullable();
             $table->char('ras_id', 3)->nullable();
             $table->foreign('ras_id')->references('ras_id')->on('ref_api_status');
         });
