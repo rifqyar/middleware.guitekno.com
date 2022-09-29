@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('ref_user_types', function (Blueprint $table) {
             //
-            $table->unsignedInteger('usertype_id')->nullable();
-            $table->unsignedInteger('province_id')->nullable();
-            $table->unsignedInteger('dati2_id')->nullable();
+            $table->string('ut_displayname')->nullable();
+            $table->string('ut_desc')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -28,11 +28,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('ref_user_types', function (Blueprint $table) {
             //
-            $table->dropColumn('usertype_id');
-            $table->dropColumn('province_id');
-            $table->dropColumn('dati2_id');
+            $table->dropColumn('ut_displayname');
+            $table->dropColumn('ut_desc');
         });
     }
 };

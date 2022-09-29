@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('ref_propinsi', function (Blueprint $table) {
             //
-            $table->char('ut_id', 2)->nullable();
+            $table->unsignedInteger('ut_id')->nullable();
             $table->foreign('ut_id')->references('ut_id')->on('ref_user_types');
         });
     }

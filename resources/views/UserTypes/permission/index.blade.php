@@ -39,8 +39,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (count($data['types']))
-                            @foreach ($data['types'] as $type)
+                        @if (count($types))
+                            @foreach ($types as $type)
                                 <tr>
                                     <td>{{ $type->ut_name }}</td>
                                     {{-- <td>{{ $role->display_name }}</td>

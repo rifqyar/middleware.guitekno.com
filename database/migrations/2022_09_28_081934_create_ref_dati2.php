@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ref_dati2', function (Blueprint $table) {
-            $table->char('prop_id', 2);
-            $table->char('dati2_id', 2)->primary();
+            $table->unsignedInteger('prop_id');
+            $table->increments('dati2_id');
             $table->string('dati2_nama');
             $table->foreign('prop_id')->references('prop_id')->on('ref_propinsi');
         });

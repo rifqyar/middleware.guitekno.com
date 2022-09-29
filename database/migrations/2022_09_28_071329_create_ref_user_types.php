@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ref_user_types', function (Blueprint $table) {
-            $table->char('ut_id', 3)->primary();
+            $table->increments('ut_id');
             $table->string('ut_name');
         });
     }

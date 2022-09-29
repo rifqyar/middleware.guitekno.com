@@ -158,8 +158,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
      */
 
     Route::prefix('user-types')->group(function () {
-        Route::get('/', "UserTypes\TypesUser\MainController@index")->middleware('auth');
+        Route::get('/', "UserTypes\TypesUser\MainController@index")->name('types.index')->middleware('auth');
         Route::get('/create', "UserTypes\TypesUser\MainController@create")->name('types.create')->middleware('auth');
+        Route::post('/create', "UserTypes\TypesUser\MainController@post")->name('types.post')->middleware('auth');
     });
 
 

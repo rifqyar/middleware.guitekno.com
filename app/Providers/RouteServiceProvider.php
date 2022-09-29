@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\Session\SessionRepository;
 use Vanguard\Repositories\User\UserRepository;
+use Vanguard\Repositories\UserTypes\TypeRepository;
+
 
 class RouteServiceProvider extends ServiceProvider
 {

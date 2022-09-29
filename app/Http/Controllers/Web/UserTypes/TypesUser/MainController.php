@@ -2,13 +2,20 @@
 
 namespace Vanguard\Http\Controllers\Web\UserTypes\TypesUser;
 
-use Illuminate\Http\Request as Req;
 use Vanguard\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
-use Vanguard\Http\Controllers\Web\UserTypes\TypesUser\DbController as Model;
+use Vanguard\Http\Requests\UserTypes\CreateTypeRequest;
+use Vanguard\Repositories\UserTypes\TypeRepository;
+use Vanguard\Repositories\User\UserRepository;
+use Vanguard\Types;
+// use Illuminate\Http\Request as Req;
+// use Vanguard\Http\Controllers\Web\UserTypes\TypesUser\DbController as Model;
 
 class MainController extends Controller
 {
+    public function __construct(private TypeRepository $types)
+    {
+    }
+
     /**
      * Displays the application dashboard.
      *
@@ -16,29 +23,22 @@ class MainController extends Controller
      */
     public function index()
     {
-        $data['types'] = Model::getAll();
-        // dd($data);
-
-        return view('UserTypes.permission.index', compact('data'));
+        return view('UserTypes.permission.index', ['types' => $this->types->getAllWithUsersCount()]);
     }
 
     public function create()
     {
-        $data['types'] = Model::getAll();
-        // dd($data);
-
-        return view('UserTypes.permission.action.create', compact('data'));
+        return view('UserTypes.permission.action.create-edit', ['edit' => false]);
     }
 
-    // public function getData($rst_id, $perPage = 10){
-    //     $data = Model::getPaginate($perPage, $rst_id);
-    //     $blade = view('TrxLog.LogBank.component.tableData', compact('data'))->render();
+    public function post(CreateTypeRequest $request)
+    {
+        $this->types->create($request->all());
 
-    //     return response()->json([
-    //         'status' => [
-    //             'code' => 200,
-    //             'msg' => 'OK'
-    //         ], 'blade' => $blade
-    //     ], 200);
-    // }
+        return redirect()->route('types.index')
+            ->withSuccess(__('Type created successfully.'));
+    }
+
+
+
 }

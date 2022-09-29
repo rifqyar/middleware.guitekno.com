@@ -16,5 +16,4 @@ class DbController
         return $data;
     }
 
-
 }
