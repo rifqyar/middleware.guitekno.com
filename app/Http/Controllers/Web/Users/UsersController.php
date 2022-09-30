@@ -12,8 +12,10 @@ use Vanguard\Repositories\Activity\ActivityRepository;
 use Vanguard\Repositories\Country\CountryRepository;
 use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\User\UserRepository;
+use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
+use Vanguard\Type;
 use Vanguard\Models\Province;
 
 /**
@@ -59,13 +61,17 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function create(CountryRepository $countryRepository, Province $province, RoleRepository $roleRepository)
+    public function create(CountryRepository $countryRepository, Province $province, TypeRepository $type, RoleRepository $roleRepository)
     {
+        // $data = Type::all();
+        // echo json_encode($data);
+        // die();
         return view('user.add', [
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::all()
+            'province' => Province::all(),
+            'type' => $this->parseType($type)
         ]);
     }
 
@@ -82,7 +88,15 @@ class UsersController extends Controller
         return [0 => __('Select a Country')] + $countryRepository->lists()->toArray();
     }
 
+    private function parseType(TypeRepository $typeRepo)
+    {
+        return [0 => __('Select a Type')] + $typeRepo->lists()->toArray();
+    }
 
+    private function parseProvince()
+    {
+
+    }
 
     /**
      * Stores new user into the database.
@@ -122,7 +136,7 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function edit(User $user, CountryRepository $countryRepository, RoleRepository $roleRepository)
+    public function edit(User $user, CountryRepository $countryRepository, TypeRepository $type, Province $province, RoleRepository $roleRepository)
     {
         return view('user.edit', [
             'edit' => true,
@@ -130,6 +144,8 @@ class UsersController extends Controller
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
+            'province' => Province::all(),
+            'type' => $this->parseType($type),
             'socialLogins' => $this->users->getUserSocialLogins($user->id)
         ]);
     }

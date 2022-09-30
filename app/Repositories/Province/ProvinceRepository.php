@@ -2,9 +2,9 @@
 
 namespace Vanguard\Repositories\UserTypes;
 
-use Vanguard\Type;
+use Vanguard\Province;
 
-interface TypeRepository
+interface ProvinceRepository
 {
     /**
      * Get all system roles.
@@ -20,7 +20,7 @@ interface TypeRepository
      * @param string $key
      * @return mixed
      */
-    public function lists($column = 'ut_name', $key = 'ut_id');
+    public function lists($column = 'prop_nama', $key = 'prop_id');
 
     /**
      * Get all system roles with number of users for each role.

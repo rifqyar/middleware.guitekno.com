@@ -39,6 +39,13 @@ class PermissionsSeeder extends Seeder
         ]);
 
         $permissions[] = Permission::create([
+            'name' => 'types.manage',
+            'display_name' => 'Manage Types',
+            'description' => 'Manage user types.',
+            'removable' => false
+        ]);
+
+        $permissions[] = Permission::create([
             'name' => 'permissions.manage',
             'display_name' => 'Manage Permissions',
             'description' => 'Manage role permissions.',

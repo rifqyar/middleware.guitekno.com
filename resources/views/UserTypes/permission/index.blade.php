@@ -42,6 +42,7 @@
                         @if (count($types))
                             @foreach ($types as $type)
                                 <tr>
+                                    {{-- {{ var_dump($type->ut_id) }} --}}
                                     <td>{{ $type->ut_name }}</td>
                                     <td>{{ $type->users_count }}</td>
                                     <td class="text-center">

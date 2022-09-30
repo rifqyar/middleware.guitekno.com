@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('page-title', __('Roles'))
-@section('page-heading', __('Create New Types'))
-{{-- @section('page-heading', $edit ? $role->name : __('Create New Role')) --}}
+@section('page-title', __('User Types'))
+{{-- @section('page-heading', __('Create New Types')) --}}
+@section('page-heading', $edit ? $type->ut_name : __('Create New Types'))
 
 @section('breadcrumbs')
     <li class="breadcrumb-item">
@@ -13,19 +13,25 @@
         {{-- {{ __($edit ? 'Edit' : 'Create') }} --}}
     </li>
     <li class="breadcrumb-item active">
-        @lang('Create')
+        {{-- @lang('Create') --}}
+        {{ __($edit ? 'Edit' : 'Create') }}
+
     </li>
 @stop
 
 @section('content')
 
+    {{-- {{ var_dump($type) }} --}}
+
     @include('partials.messages')
 
-    @if ($edit)
+    {!! Form::open(['route' => 'types.post', 'id' => 'role-form']) !!}
+
+    {{-- @if ($edit)
         {!! Form::open(['route' => ['types.update', $types], 'method' => 'PUT', 'id' => 'role-form']) !!}
     @else
         {!! Form::open(['route' => 'types.post', 'id' => 'role-form']) !!}
-    @endif
+    @endif --}}
 
     <div class="card">
         <div class="card-body">
@@ -42,9 +48,9 @@
                     <div class="form-group">
                         <label for="ut_name">@lang('Name')</label>
                         <input type="text" class="form-control input-solid" id="ut_name" name="ut_name"
-                            placeholder="@lang('Type Name')">
+                            placeholder="@lang('Type Name')" value="{{ $edit ? $type->ut_name : '' }}">
                         {{-- <input type="text" class="form-control input-solid" id="name" name="name"
-                            placeholder="@lang('Role Name')" value="{{ $edit ? $role->name : old('name') }}"> --}}
+                            placeholder="@lang('Type Name')" value="{{ $edit ? $role->name : old('name') }}"> --}}
                     </div>
                     <div class="form-group">
                         <label for="ut_displayname">@lang('Display Name')</label>

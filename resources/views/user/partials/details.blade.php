@@ -27,8 +27,8 @@
                 placeholder="@lang('Last Name')" value="{{ $edit ? $user->last_name : '' }}">
         </div>
         <div class="form-group">
-            <label for="status">@lang('User Type')</label>
-            {!! Form::select('status', $statuses, $edit ? $user->status : '', [
+            <label for="type">@lang('User Type')</label>
+            {!! Form::select('type', $type, $edit ? $user->usertype_id : '', [
                 'class' => 'form-control input-solid',
                 'id' => 'status',
                 $profile ? 'disabled' : '',

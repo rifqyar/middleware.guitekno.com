@@ -2,11 +2,12 @@
 
 namespace Vanguard\Http\Controllers\Web\UserTypes\TypesUser;
 
+use Cache;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Requests\UserTypes\CreateTypeRequest;
 use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Repositories\User\UserRepository;
-use Vanguard\Types;
+use Vanguard\Type;
 // use Illuminate\Http\Request as Req;
 // use Vanguard\Http\Controllers\Web\UserTypes\TypesUser\DbController as Model;
 
@@ -16,11 +17,6 @@ class MainController extends Controller
     {
     }
 
-    /**
-     * Displays the application dashboard.
-     *
-     * @return Factory|View
-     */
     public function index()
     {
         return view('UserTypes.permission.index', ['types' => $this->types->getAllWithUsersCount()]);
@@ -39,10 +35,13 @@ class MainController extends Controller
             ->withSuccess(__('Type created successfully.'));
     }
 
-    public function edit(Types $types)
+    public function edit(TypeRepository $type)
     {
+        // $data = Type::all();
+        // echo json_encode($type);
+        // die();
         return view('UserTypes.permission.action.create-edit', [
-            'types' => $types,
+            'type' => $type->lists(),
             'edit' => true
         ]);
     }

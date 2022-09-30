@@ -2,18 +2,18 @@
 
 namespace Vanguard\Events\Types;
 
-use Vanguard\Types;
+use Vanguard\Type;
 
 abstract class TypesEvent
 {
     /**
      * @var Role
      */
-    protected $types;
+    protected $type;
 
-    public function __construct(Types $types)
+    public function __construct(Type $type)
     {
-        $this->types = $types;
+        $this->type = $type;
     }
 
     /**
@@ -21,6 +21,6 @@ abstract class TypesEvent
      */
     public function getTypes()
     {
-        return $this->types;
+        return $this->type;
     }
 }

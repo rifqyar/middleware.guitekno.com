@@ -47,7 +47,7 @@ class User extends Authenticatable implements TwoFactorAuthenticatableContract, 
      */
     protected $fillable = [
         'email', 'password', 'username', 'first_name', 'last_name', 'phone', 'avatar',
-        'address', 'country_id', 'birthday', 'last_login', 'confirmation_token', 'status',
+        'address', 'country_id', 'usertype_id', 'province_id', 'birthday', 'last_login', 'confirmation_token', 'status',
         'remember_token', 'role_id', 'email_verified_at'
     ];
 
