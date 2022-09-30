@@ -4,7 +4,6 @@ namespace Vanguard\Repositories\UserTypes;
 
 use Vanguard\Events\Types\Created;
 use Vanguard\Events\Types\Deleted;
-use Vanguard\Events\Types\Updated;
 use Vanguard\Type;
 
 class EloquentType implements TypeRepository
@@ -22,7 +21,7 @@ class EloquentType implements TypeRepository
      */
     public function getAllWithUsersCount()
     {
-        return Type::withCount('users')->get();
+        return Type::withCount('users')->orderBy('ut_id', 'ASC')->get();
     }
 
     /**
@@ -45,19 +44,6 @@ class EloquentType implements TypeRepository
         return $types;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function update($id, array $data)
-    {
-        $types = $this->find($id);
-
-        $types->update($data);
-
-        event(new Updated($types));
-
-        return $types;
-    }
 
     /**
      * {@inheritdoc}
@@ -86,7 +72,7 @@ class EloquentType implements TypeRepository
      */
     public function lists($column = 'ut_name', $key = 'ut_id')
     {
-        return Type::pluck($column, $key);
+        return Type::pluck($column, $key)->orderBy($key, 'ASC');
     }
 
     /**

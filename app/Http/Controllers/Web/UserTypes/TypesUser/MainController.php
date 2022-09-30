@@ -5,10 +5,12 @@ namespace Vanguard\Http\Controllers\Web\UserTypes\TypesUser;
 use Cache;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Requests\UserTypes\CreateTypeRequest;
+// use Vanguard\Http\Requests\UserTypes\UpdateTypeRequest;
 use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Type;
-// use Illuminate\Http\Request as Req;
+// use Vanguard\Http\Requests\Request;
+use Illuminate\Http\Request as Req;
 // use Vanguard\Http\Controllers\Web\UserTypes\TypesUser\DbController as Model;
 
 class MainController extends Controller
@@ -35,15 +37,37 @@ class MainController extends Controller
             ->withSuccess(__('Type created successfully.'));
     }
 
-    public function edit(TypeRepository $type)
+    public function edit(TypeRepository $type, $id)
     {
-        // $data = Type::all();
-        // echo json_encode($type);
+        // $data = $type->find(1);
+        // echo json_encode($id);
         // die();
         return view('UserTypes.permission.action.create-edit', [
-            'type' => $type->lists(),
+            'type' => $type->find($id),
             'edit' => true
         ]);
+    }
+
+    public function update($id, Req $request)
+    {
+        // $data = $type->id;
+        $data = [
+            'ut_name' => $request['ut_name'],
+            'ut_displayname' => $request['display_name'],
+            'ut_desc' => $request['description']
+        ];
+        // echo json_encode($data);
+        // die();
+
+        // $this->types->update($id, $request->all());
+        Type::where('ut_id', $id)->update($data);
+        return redirect()->route('types.index')
+            ->withSuccess(__('Role updated successfully.'));
+    }
+
+    public function destroy($id, Req $request)
+    {
+
     }
 
 

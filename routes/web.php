@@ -168,8 +168,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/', "UserTypes\TypesUser\MainController@index")->name('types.index')->middleware('auth');
         Route::get('/create', "UserTypes\TypesUser\MainController@create")->name('types.create')->middleware('auth');
         Route::post('/create', "UserTypes\TypesUser\MainController@post")->name('types.post')->middleware('auth');
-        Route::get('/{id}/edit', "UserTypes\TypesUser\MainController@edit")->name('types.edit')->middleware('permission:roles.manage');
-
+        Route::get('/{id}/edit', "UserTypes\TypesUser\MainController@edit")->name('types.edit')->middleware('auth');
+        Route::put('/update/{id}', "UserTypes\TypesUser\MainController@update")->name('types.update')->middleware('auth');
+        Route::delete('users/{id}', "UserTypes\TypesUser\MainController@destroy")->name('types.destroy')->middleware('auth');
     });
 
 

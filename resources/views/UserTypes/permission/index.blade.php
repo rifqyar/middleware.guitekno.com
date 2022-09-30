@@ -46,7 +46,7 @@
                                     <td>{{ $type->ut_name }}</td>
                                     <td>{{ $type->users_count }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('types.edit', $type) }}" class="btn btn-icon"
+                                        <a href="{{ route('types.edit', $type->ut_id) }}" class="btn btn-icon"
                                             title="@lang('Edit Types')" data-toggle="tooltip" data-placement="top">
                                             <i class="fas fa-edit"></i>
                                         </a>

@@ -53,14 +53,6 @@ interface TypeRepository
      */
     public function create(array $data);
 
-    /**
-     * Update specified role.
-     *
-     * @param $id Role Id
-     * @param array $data
-     * @return Role
-     */
-    public function update($id, array $data);
 
     /**
      * Remove role from repository.
