@@ -62,12 +62,16 @@ class MainController extends Controller
         // $this->types->update($id, $request->all());
         Type::where('ut_id', $id)->update($data);
         return redirect()->route('types.index')
-            ->withSuccess(__('Role updated successfully.'));
+            ->withSuccess(__('Type updated successfully.'));
     }
 
-    public function destroy($id, Req $request)
+    public function destroy($id)
     {
-
+        // echo json_encode($id);
+        // die();
+        Type::where('ut_id', $id)->delete();
+        return redirect()->route('types.index')
+            ->withSuccess(__('Type deleted successfully.'));
     }
 
 

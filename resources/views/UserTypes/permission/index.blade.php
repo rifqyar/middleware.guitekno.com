@@ -51,7 +51,7 @@
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         @if ($type->removable)
-                                            <a href="{{ route('roles.destroy', $type) }}" class="btn btn-icon"
+                                            <a href="{{ route('types.destroy', $type->ut_id) }}" class="btn btn-icon"
                                                 title="@lang('Delete Role')" data-toggle="tooltip" data-placement="top"
                                                 data-method="DELETE" data-confirm-title="@lang('Please Confirm')"
                                                 data-confirm-text="@lang('Are you sure that you want to delete this role?')"
