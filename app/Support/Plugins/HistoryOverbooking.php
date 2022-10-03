@@ -12,6 +12,7 @@ class HistoryOverbooking extends Plugin
         return Item::create(__('History Overbooking'))
             ->route('historyOverbooking.index')
             ->icon('fas fa-history')
-            ->active("history-overbooking*");
+            ->active("history-overbooking*")
+            ->permissions("history-overbooking");
     }
 }

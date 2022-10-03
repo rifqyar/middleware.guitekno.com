@@ -12,6 +12,7 @@ class LogCallback extends Plugin
         return Item::create(__('Log Callback'))
             ->route('logCallback.index')
             ->icon('fas fa-history')
-            ->active("log-callback*");
+            ->active("log-callback*")
+            ->permissions("log-callback");
     }
 }

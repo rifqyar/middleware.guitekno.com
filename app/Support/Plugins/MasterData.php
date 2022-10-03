@@ -32,6 +32,7 @@ class MasterData extends Plugin
                 $refBank,
                 $bankSecret,
                 $bankEndpoint
-            ]);
+            ])
+            ->permissions('master.data');
     }
 }
