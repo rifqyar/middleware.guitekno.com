@@ -26,9 +26,4 @@ class Province extends Model
     {
         return $this->hasMany(User::class, 'usertype_id');
     }
-
-    // public static function findProvince($id)
-    // {
-    //     return DB::select("select prop_nama from ref_propinsi where ut_id = {$id}");
-    // }
 }

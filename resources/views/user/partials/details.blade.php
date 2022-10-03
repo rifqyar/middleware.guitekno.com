@@ -4,7 +4,7 @@
             <label for="first_name">@lang('Role')</label>
             {!! Form::select('role_id', $roles, $edit ? $user->role->id : '', [
                 'class' => 'form-control input-solid',
-                'id' => 'role_id',
+                'id' => 'role',
                 $profile ? 'disabled' : '',
             ]) !!}
         </div>
@@ -26,13 +26,13 @@
             <input type="text" class="form-control input-solid" id="last_name" name="last_name"
                 placeholder="@lang('Last Name')" value="{{ $edit ? $user->last_name : '' }}">
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="type">@lang('User Type')</label>
             {!! Form::select('usertype_id', $type, $edit ? $user->usertype_id : '', [
                 'class' => 'form-control input-solid',
                 'id' => 'tipe',
             ]) !!}
-        </div>
+        </div> --}}
     </div>
 
     <div class="col-md-6">
@@ -60,17 +60,22 @@
                 'class' => 'form-control input-solid',
             ]) !!}
         </div>
-        <div class="form-group">
+        {{-- id="province" --}}
+        <div class="form-group" id="province_div" style="display:none;">
             <label for="address">@lang('Province')</label>
-            <select class="form-control input-solid" name="province_id" id="province">
-                <option>Select a Province</option>
-            </select>
+            {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
+                'class' => 'form-control input-solid',
+                'id' => 'province',
+                $profile ? 'disabled' : '',
+            ]) !!}
         </div>
-        <div class="form-group">
+        <div class="form-group" id="regency_div" style="display:none;">
             <label for="address">@lang('Regency')</label>
-            <select class="form-control input-solid" name="dati2_id" id="regency">
-                <option>Select a Regency</option>
-            </select>
+            {!! Form::select('dati2_id', $province, $edit ? $user->province_id : '', [
+                'class' => 'form-control input-solid',
+                'id' => 'regency',
+                $profile ? 'disabled' : '',
+            ]) !!}
         </div>
     </div>
 
@@ -86,56 +91,34 @@
 
 <script>
     $(document).ready(function() {
-        $('#tipe').on('change', function() {
+        $('#role').on('change', function() {
             // $('#province').empty();
-            let tipeID = $(this).val();
-            console.log(tipeID)
+            var tipeID = $(this).val();
+            // console.log(tipeID)
 
-            if (tipeID) {
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ route('users.province') }}?tipeID=" + tipeID,
-                    dataType: 'json',
-                    success: function(data) {
-                        // console.log(data)
-                        $.each(data, function(key, value) {
-                            console.log(value)
-
-                            $('#province').append('<option value="' + value
-                                .prop_id +
-                                '">' +
-                                value.prop_nama + '</option>').prop(
-                                'selectedIndex', 0);
-                        })
-                    }
+            if (tipeID === '4' || tipeID === '5') {
+                $.get("{{ route('users.province') }}?tipeID=" + tipeID, function(data) {
+                    $('#province_div').removeAttr("style");
+                    $('#province').html(data);
+                    // console.log(data)
                 })
+            } else {
+                $('#province').val("0").change()
+                $('#province_div').hide()
             }
         });
 
-
-
         $('#province').on('change', function() {
-            let provID = $(this).val();
-            console.log(provID)
+            var provID = $(this).val();
 
-            if (provID) {
-                $.ajax({
-                    type: 'GET',
-                    url: "{{ route('users.regency') }}?provID=" + provID,
-                    dataType: 'json',
-                    success: function(data) {
-                        $.each(data, function(key, value) {
-                            console.log(value)
-
-                            $('#regency').append('<option value="' + value
-                                .dati2_id +
-                                '">' +
-                                value.dati2_nama + '</option>');
-                        })
-                    }
-                })
+            if (provID === '0') {
+                $('#regency_div').hide();
             } else {
-                $('#regency').empty();
+                $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
+                    console.log(data)
+                    $('#regency_div').removeAttr("style");
+                    $('#regency').html(data)
+                })
             }
         })
 

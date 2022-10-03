@@ -72,8 +72,7 @@ class UsersController extends Controller
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::all(),
-            'type' => $this->parseType($type)
+            'province' => Province::all()
             // 'type' => $type->lists()
         ]);
     }
@@ -81,16 +80,39 @@ class UsersController extends Controller
     public function getProvince(Request $request)
     {
         $id = $request->tipeID;
-        $provinces = Province::all()->where('ut_id', $id);
-        // return $provinces;
-        return response()->json($provinces);
+
+        $option = "<option value='0'>Select a Province</option>";
+        if($id === '4')
+        {
+            $provinces = Province::all()->where('ut_id', $id);
+            foreach ($provinces as $province)
+            {
+                $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
+            }
+        }
+        else
+        {
+            $provinces = Province::all()->where('ut_id', '4');
+            foreach ($provinces as $province)
+            {
+                $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
+            }
+        }
+        return $option;
     }
 
     public function getRegency(Request $request)
     {
         $id = $request->provID;
-        $regency = Dati2::all()->where('prop_id', $id);
-        return response()->json($regency);
+        $regencies = Dati2::all()->where('prop_id', $id);
+        // return response()->json($regency);
+
+        $option = "<option>Select a Regency</option>";
+        foreach ($regencies as $regency)
+        {
+            $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
+        }
+        return $option;
     }
 
     /**
@@ -111,11 +133,6 @@ class UsersController extends Controller
         return [0 => __('Select a Type')] + $typeRepo->lists()->toArray();
     }
 
-    // private function parseProvince()
-    // {
-
-    // }
-
     /**
      * Stores new user into the database.
      *
@@ -126,10 +143,6 @@ class UsersController extends Controller
     {
         // When user is created by administrator, we will set his
         // status to Active by default.
-
-        // $test = $request->all();
-        // echo json_encode($test);
-        // die();
 
         $data = $request->all() + [
             'status' => UserStatus::ACTIVE,
