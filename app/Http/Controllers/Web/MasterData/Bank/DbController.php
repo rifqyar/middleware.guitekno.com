@@ -43,7 +43,7 @@ class DbController
 
     public static function postInsertUpdate($data, $action)
     {
-        $arrSpParam = ['bank_id', 'bank_name', 'bank_status'];
+        $arrSpParam = ['bank_id', 'bank_name', 'bank_status', 'bank_email'];
         $rawSpParam = [];
 
         foreach ($arrSpParam as $arrV) {
@@ -53,7 +53,7 @@ class DbController
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
         $query = 'CALL sp_' . $action . '_RefBank ' . $rawQuery['query'];
-
+        // dd($query);
         $exec = self::execQuery($query, 'statement');
         return $exec;
     }

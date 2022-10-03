@@ -16,6 +16,7 @@ $(document).ready(function () {
         columns: [
             { data: 'bank_id', name: 'bank_id' },
             { data: 'bank_name', name: 'bank_name' },
+            { data: 'email', name: 'email' },
             { data: 'status', name: 'status' },
             { data: 'action', name: 'action' },
         ]
@@ -160,6 +161,7 @@ function editBank(data) {
 
     mainComponent.find(fEditComponent).find('input[name="bank_id"]').val(data.bank_id)
     mainComponent.find(fEditComponent).find('input[name="bank_name"]').val(data.bank_name)
+    mainComponent.find(fEditComponent).find('input[name="bank_email"]').val(data.email)
     mainComponent.find(fEditComponent).find(`select[name="bank_status"] option[value="${data.rrs_id}"]`).attr('selected', 'selected')
 }
 
