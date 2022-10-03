@@ -16,7 +16,8 @@ use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
 use Vanguard\Type;
-use Vanguard\Models\Province;
+use Vanguard\Province;
+use Vanguard\Dati2;
 
 /**
  * Class UsersController
@@ -64,7 +65,8 @@ class UsersController extends Controller
     public function create(CountryRepository $countryRepository, Province $province, TypeRepository $type, RoleRepository $roleRepository)
     {
         // $data = Type::all();
-        // echo json_encode($data);
+        // $test = Province::all()->where('ut_id', '2');
+        // echo json_encode($test);
         // die();
         return view('user.add', [
             'countries' => $this->parseCountries($countryRepository),
@@ -72,7 +74,23 @@ class UsersController extends Controller
             'statuses' => UserStatus::lists(),
             'province' => Province::all(),
             'type' => $this->parseType($type)
+            // 'type' => $type->lists()
         ]);
+    }
+
+    public function getProvince(Request $request)
+    {
+        $id = $request->tipeID;
+        $provinces = Province::all()->where('ut_id', $id);
+        // return $provinces;
+        return response()->json($provinces);
+    }
+
+    public function getRegency(Request $request)
+    {
+        $id = $request->provID;
+        $regency = Dati2::all()->where('prop_id', $id);
+        return response()->json($regency);
     }
 
     /**
@@ -93,10 +111,10 @@ class UsersController extends Controller
         return [0 => __('Select a Type')] + $typeRepo->lists()->toArray();
     }
 
-    private function parseProvince()
-    {
+    // private function parseProvince()
+    // {
 
-    }
+    // }
 
     /**
      * Stores new user into the database.
@@ -108,6 +126,11 @@ class UsersController extends Controller
     {
         // When user is created by administrator, we will set his
         // status to Active by default.
+
+        // $test = $request->all();
+        // echo json_encode($test);
+        // die();
+
         $data = $request->all() + [
             'status' => UserStatus::ACTIVE,
             'email_verified_at' => now()

@@ -72,7 +72,8 @@ class EloquentType implements TypeRepository
      */
     public function lists($column = 'ut_name', $key = 'ut_id')
     {
-        return Type::pluck($column, $key)->orderBy($key, 'ASC');
+        // ->orderBy($key, 'ASC')
+        return Type::orderBy($key, 'ASC')->pluck($column, $key);
     }
 
     /**

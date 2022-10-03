@@ -28,10 +28,9 @@
         </div>
         <div class="form-group">
             <label for="type">@lang('User Type')</label>
-            {!! Form::select('type', $type, $edit ? $user->usertype_id : '', [
+            {!! Form::select('usertype_id', $type, $edit ? $user->usertype_id : '', [
                 'class' => 'form-control input-solid',
-                'id' => 'status',
-                $profile ? 'disabled' : '',
+                'id' => 'tipe',
             ]) !!}
         </div>
     </div>
@@ -63,11 +62,14 @@
         </div>
         <div class="form-group">
             <label for="address">@lang('Province')</label>
-            <select class="form-control input-solid" name="province_id" id="">
+            <select class="form-control input-solid" name="province_id" id="province">
                 <option>Select a Province</option>
-                @foreach ($province as $p)
-                    <option value="{{ $p->prop_id }}">{{ $p->prop_nama }}</option>
-                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="address">@lang('Regency')</label>
+            <select class="form-control input-solid" name="dati2_id" id="regency">
+                <option>Select a Regency</option>
             </select>
         </div>
     </div>
@@ -81,3 +83,62 @@
         </div>
     @endif
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#tipe').on('change', function() {
+            // $('#province').empty();
+            let tipeID = $(this).val();
+            console.log(tipeID)
+
+            if (tipeID) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('users.province') }}?tipeID=" + tipeID,
+                    dataType: 'json',
+                    success: function(data) {
+                        // console.log(data)
+                        $.each(data, function(key, value) {
+                            console.log(value)
+
+                            $('#province').append('<option value="' + value
+                                .prop_id +
+                                '">' +
+                                value.prop_nama + '</option>').prop(
+                                'selectedIndex', 0);
+                        })
+                    }
+                })
+            }
+        });
+
+
+
+        $('#province').on('change', function() {
+            let provID = $(this).val();
+            console.log(provID)
+
+            if (provID) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('users.regency') }}?provID=" + provID,
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            console.log(value)
+
+                            $('#regency').append('<option value="' + value
+                                .dati2_id +
+                                '">' +
+                                value.dati2_nama + '</option>');
+                        })
+                    }
+                })
+            } else {
+                $('#regency').empty();
+            }
+        })
+
+
+    })
+</script>

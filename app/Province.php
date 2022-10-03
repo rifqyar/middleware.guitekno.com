@@ -5,6 +5,7 @@ namespace Vanguard;
 use Database\Factories\TypesFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Vanguard\Support\Authorization\AuthorizationRoleTrait;
 
 class Province extends Model
@@ -15,14 +16,19 @@ class Province extends Model
 
     protected $primaryKey = 'prop_id';
 
-    protected $fillable = ['prop_nama', 'ut_id'];
+    protected $fillable = ['prop_id', 'prop_nama', 'ut_id'];
 
     // protected $casts = [
     //     'removable' => 'boolean'
     // ];
 
-    // public function users()
+    public function users()
+    {
+        return $this->hasMany(User::class, 'usertype_id');
+    }
+
+    // public static function findProvince($id)
     // {
-    //     return $this->hasMany(User::class, 'usertype_id');
+    //     return DB::select("select prop_nama from ref_propinsi where ut_id = {$id}");
     // }
 }
