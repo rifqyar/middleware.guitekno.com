@@ -10,7 +10,6 @@ $(document).ready(function(){
        serverSide: true,
        ajax: `${$('meta[name="baseurl"]').attr('content')}master-data/bank-secret`,
        columns: [
-                { data: 'id', name: 'id' },
                 { data: 'code_bank', name: 'code_bank' },
                 { data: 'bank_name', name: 'bank_name' },
                 { data: 'client_id', name: 'client_id' },
@@ -20,11 +19,11 @@ $(document).ready(function(){
                 { data: 'action', name: 'action' },
              ],
              columnDefs: [
-                { className: "align-middle", targets: 7 },
+                { className: "align-middle", targets: 6 },
                 {
                     searchable: false,
                     orderable: false,
-                    targets: 7,
+                    targets: 6,
                 },
             ],
     });

@@ -35,11 +35,9 @@
                     <table class="table t-bankEndpoint" style="width: 100%">
                         <thead>
                             <tr>
-                                <th>DBS ID</th>
                                 <th>Endpoint</th>
                                 <th>Code Bank</th>
                                 <th>Bank Name</th>
-                                <th>Endpoint Type</th>
                                 <th>Endpoint Name</th>
                                 <th>Status Endpoint</th>
                                 <th>Action</th>

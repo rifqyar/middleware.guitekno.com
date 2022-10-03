@@ -35,7 +35,6 @@
                     <table class="table t-bankSecret" style="width: 100%">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Code Bank</th>
                                 <th>Bank Name</th>
                                 <th>Client ID</th>

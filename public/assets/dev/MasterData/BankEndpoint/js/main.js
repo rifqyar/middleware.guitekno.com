@@ -14,11 +14,9 @@ $(document).ready(function(){
        serverSide: true,
        ajax: `${$('meta[name="baseurl"]').attr('content')}master-data/bank-endpoint`,
        columns: [
-            { data: 'dbs_id', name: 'dbs_id' },
             { data: 'dbe_endpoint', name: 'dbe_endpoint' },
             { data: 'code_bank', name: 'code_bank' },
             { data: 'bank_name', name: 'bank_name' },
-            { data: 'ret_id', name: 'ret_id' },
             { data: 'name', name: 'name' },
             { data: 'status', name: 'status' },
             { data: 'action', name: 'action' },
