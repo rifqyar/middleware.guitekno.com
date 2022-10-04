@@ -12,6 +12,7 @@ use Vanguard\Repositories\Activity\ActivityRepository;
 use Vanguard\Repositories\Country\CountryRepository;
 use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\User\UserRepository;
+use Vanguard\Repositories\Province\ProvinceRepository;
 use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
@@ -72,7 +73,8 @@ class UsersController extends Controller
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::all()
+            'province' => Province::all(),
+            'regency' => Dati2::pluck('dati2_nama', 'dati2_id'),
             // 'type' => $type->lists()
         ]);
     }
@@ -128,11 +130,6 @@ class UsersController extends Controller
         return [0 => __('Select a Country')] + $countryRepository->lists()->toArray();
     }
 
-    private function parseType(TypeRepository $typeRepo)
-    {
-        return [0 => __('Select a Type')] + $typeRepo->lists()->toArray();
-    }
-
     /**
      * Stores new user into the database.
      *
@@ -172,16 +169,19 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function edit(User $user, CountryRepository $countryRepository, TypeRepository $type, Province $province, RoleRepository $roleRepository)
+    public function edit(User $user, CountryRepository $countryRepository, Province $province, Dati2 $regency,RoleRepository $roleRepository)
     {
+        // $test = $user->province_id;
+        // echo json_encode($test);
+        // die();
         return view('user.edit', [
             'edit' => true,
             'user' => $user,
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::all(),
-            'type' => $this->parseType($type),
+            'province' => Province::pluck('prop_nama', 'prop_id'),
+            'regency' => Dati2::where('prop_id', $user->province_id)->pluck('dati2_nama', 'dati2_id'),
             'socialLogins' => $this->users->getUserSocialLogins($user->id)
         ]);
     }

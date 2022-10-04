@@ -16,6 +16,8 @@ use Vanguard\Repositories\User\EloquentUser;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Repositories\UserTypes\EloquentType;
+use Vanguard\Repositories\Province\ProvinceRepository;
+use Vanguard\Repositories\Province\EloquentProvince;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

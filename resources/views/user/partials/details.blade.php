@@ -26,13 +26,12 @@
             <input type="text" class="form-control input-solid" id="last_name" name="last_name"
                 placeholder="@lang('Last Name')" value="{{ $edit ? $user->last_name : '' }}">
         </div>
-        {{-- <div class="form-group">
-            <label for="type">@lang('User Type')</label>
-            {!! Form::select('usertype_id', $type, $edit ? $user->usertype_id : '', [
+        <div class="form-group">
+            <label for="address">@lang('Country')</label>
+            {!! Form::select('country_id', $countries, $edit ? $user->country_id : '', [
                 'class' => 'form-control input-solid',
-                'id' => 'tipe',
             ]) !!}
-        </div> --}}
+        </div>
     </div>
 
     <div class="col-md-6">
@@ -54,29 +53,41 @@
             <input type="text" class="form-control input-solid" id="address" name="address"
                 placeholder="@lang('Address')" value="{{ $edit ? $user->address : '' }}">
         </div>
-        <div class="form-group">
-            <label for="address">@lang('Country')</label>
-            {!! Form::select('country_id', $countries, $edit ? $user->country_id : '', [
-                'class' => 'form-control input-solid',
-            ]) !!}
-        </div>
+
         {{-- id="province" --}}
-        <div class="form-group" id="province_div" style="display:none;">
-            <label for="address">@lang('Province')</label>
-            {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
-                'class' => 'form-control input-solid',
-                'id' => 'province',
-                $profile ? 'disabled' : '',
-            ]) !!}
-        </div>
-        <div class="form-group" id="regency_div" style="display:none;">
-            <label for="address">@lang('Regency')</label>
-            {!! Form::select('dati2_id', $province, $edit ? $user->province_id : '', [
-                'class' => 'form-control input-solid',
-                'id' => 'regency',
-                $profile ? 'disabled' : '',
-            ]) !!}
-        </div>
+        @if ($edit)
+            <div class="form-group" id="province_div">
+                <label for="address">@lang('Province')</label>
+                {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'province',
+                    $profile ? 'disabled' : '',
+                ]) !!}
+            </div>
+            <div class="form-group" id="regency_div">
+                <label for="address">@lang('Regency')</label>
+                {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'regency',
+                    $profile ? 'disabled' : '',
+                ]) !!}
+            </div>
+        @else
+            <div class="form-group" id="province_div" style="display:none;">
+                <label for="address">@lang('Province')</label>
+                {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'province',
+                ]) !!}
+            </div>
+            <div class="form-group" id="regency_div" style="display:none;">
+                <label for="address">@lang('Regency')</label>
+                {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'regency',
+                ]) !!}
+            </div>
+        @endif
     </div>
 
     @if ($edit)
@@ -107,6 +118,8 @@
                 $('#province_div').hide()
             }
         });
+
+
 
         $('#province').on('change', function() {
             var provID = $(this).val();

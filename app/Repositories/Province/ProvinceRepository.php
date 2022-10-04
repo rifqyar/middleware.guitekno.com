@@ -1,6 +1,6 @@
 <?php
 
-namespace Vanguard\Repositories\UserTypes;
+namespace Vanguard\Repositories\Province;
 
 use Vanguard\Province;
 
