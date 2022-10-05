@@ -23,6 +23,6 @@ class TrxLog extends Plugin
             ->addChildren([
                 $logBank,
                 $logSIPD
-            ]);
+            ])->permissions("transaction-log");
     }
 }

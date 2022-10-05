@@ -12,6 +12,7 @@ class ListUser extends Plugin
         return Item::create(__('User Service'))
             ->route('user-service.index')
             ->icon('fas fa-users')
-            ->active("user-service*");
+            ->active("user-service*")
+            ->permissions("user-services");
     }
 }
