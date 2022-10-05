@@ -56,33 +56,22 @@
 
         {{-- id="province" --}}
         @if ($edit)
-            @if ($user->dati2_id === null || $user->dati2_id === '0')
-                <div class="form-group" id="province_div">
-                    <label for="address">@lang('Province')</label>
-                    {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
-                        'class' => 'form-control input-solid',
-                        'id' => 'province',
-                        $profile ? 'disabled' : '',
-                    ]) !!}
-                </div>
-            @else
-                <div class="form-group" id="province_div">
-                    <label for="address">@lang('Province')</label>
-                    {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
-                        'class' => 'form-control input-solid',
-                        'id' => 'province',
-                        $profile ? 'disabled' : '',
-                    ]) !!}
-                </div>
-                <div class="form-group" id="regency_div">
-                    <label for="address">@lang('Regency')</label>
-                    {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
-                        'class' => 'form-control input-solid',
-                        'id' => 'regency',
-                        $profile ? 'disabled' : '',
-                    ]) !!}
-                </div>
-            @endif
+            <div class="form-group" id="province_div">
+                <label for="address">@lang('Province')</label>
+                {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'province',
+                    $profile ? 'disabled' : '',
+                ]) !!}
+            </div>
+            <div class="form-group" id="regency_div">
+                <label for="address">@lang('Regency')</label>
+                {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
+                    'class' => 'form-control input-solid',
+                    'id' => 'regency',
+                    $profile ? 'disabled' : '',
+                ]) !!}
+            </div>
         @else
             <div class="form-group" id="province_div" style="display:none;">
                 <label for="address">@lang('Province')</label>
@@ -130,16 +119,17 @@
             }
         });
 
-
-
         $('#province').on('change', function() {
             var provID = $(this).val();
+            var roleID = $('#role').val();
+
+            console.log(roleID)
+            console.log(provID)
 
             if (provID === '0') {
                 $('#regency_div').hide();
-            } else {
+            } else if (roleID === '5') {
                 $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
-                    console.log(data)
                     $('#regency_div').removeAttr("style");
                     $('#regency').html(data)
                 })

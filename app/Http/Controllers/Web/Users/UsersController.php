@@ -108,13 +108,10 @@ class UsersController extends Controller
         $regencies = Dati2::all()->where('prop_id', $id);
         // return response()->json($regency);
 
-        if($id === '5')
+        $option = "<option value='0'>Select a Regency</option>";
+        foreach ($regencies as $regency)
         {
-            $option = "<option>Select a Regency</option>";
-            foreach ($regencies as $regency)
-            {
-                $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
-            }
+            $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
         }
         return $option;
     }
@@ -182,10 +179,20 @@ class UsersController extends Controller
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::pluck('prop_nama', 'prop_id'),
-            'regency' => Dati2::where('prop_id', $user->province_id)->pluck('dati2_nama', 'dati2_id'),
+            'province' => $this->parseProvince(),
+            'regency' => $this->parseRegency($user->province_id),
             'socialLogins' => $this->users->getUserSocialLogins($user->id)
         ]);
+    }
+
+    private function parseProvince()
+    {
+        return [0 => __('Select a Province')] + Province::pluck('prop_nama', 'prop_id')->toArray();
+    }
+
+    private function parseRegency($prop_id)
+    {
+        return [0 => __('Select a Regency')] + Dati2::where('prop_id', $prop_id)->pluck('dati2_nama', 'dati2_id')->toArray();
     }
 
     /**

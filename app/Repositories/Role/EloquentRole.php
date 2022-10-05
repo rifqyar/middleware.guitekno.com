@@ -84,7 +84,7 @@ class EloquentRole implements RoleRepository
     /**
      * {@inheritdoc}
      */
-    public function lists($column = 'name', $key = 'id')
+    public function lists($column = 'display_name', $key = 'id')
     {
         return Role::pluck($column, $key);
     }
