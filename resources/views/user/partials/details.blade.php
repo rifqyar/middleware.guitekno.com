@@ -123,8 +123,8 @@
             var provID = $(this).val();
             var roleID = $('#role').val();
 
-            console.log(roleID)
-            console.log(provID)
+            // console.log(roleID)
+            // console.log(provID)
 
             if (provID === '0') {
                 $('#regency_div').hide();
