@@ -82,21 +82,26 @@ class UsersController extends Controller
         $id = $request->tipeID;
 
         $option = "<option value='0'>Select a Province</option>";
-        if($id === '4')
+        // if($id === '4')
+        // {
+        //     $provinces = Province::all()->where('role_id', $id);
+        //     foreach ($provinces as $province)
+        //     {
+        //         $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
+        //     }
+        // }
+        // else
+        // {
+        //     $provinces = Province::all()->where('role_id', '4');
+        //     foreach ($provinces as $province)
+        //     {
+        //         $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
+        //     }
+        // }
+        $provinces = Province::all();
+        foreach ($provinces as $province)
         {
-            $provinces = Province::all()->where('role_id', $id);
-            foreach ($provinces as $province)
-            {
-                $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
-            }
-        }
-        else
-        {
-            $provinces = Province::all()->where('role_id', '4');
-            foreach ($provinces as $province)
-            {
-                $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
-            }
+            $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
         }
         return $option;
     }

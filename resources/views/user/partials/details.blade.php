@@ -54,7 +54,6 @@
                 placeholder="@lang('Address')" value="{{ $edit ? $user->address : '' }}">
         </div>
 
-        {{-- id="province" --}}
         @if ($edit)
             <div class="form-group" id="province_div">
                 <label for="address">@lang('Province')</label>
@@ -111,6 +110,7 @@
                 $.get("{{ route('users.province') }}?tipeID=" + tipeID, function(data) {
                     $('#province_div').removeAttr("style");
                     $('#province').html(data);
+                    $('#regency_div').hide();
                     // console.log(data)
                 })
             } else {
@@ -123,8 +123,8 @@
             var provID = $(this).val();
             var roleID = $('#role').val();
 
-            // console.log(roleID)
-            // console.log(provID)
+            console.log(roleID)
+            console.log(provID)
 
             if (provID === '0') {
                 $('#regency_div').hide();
