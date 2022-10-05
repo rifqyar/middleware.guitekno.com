@@ -16,7 +16,7 @@ class Province extends Model
 
     protected $primaryKey = 'prop_id';
 
-    protected $fillable = ['prop_id', 'prop_nama', 'ut_id'];
+    protected $fillable = ['prop_id', 'prop_nama', 'role_id'];
 
     // protected $casts = [
     //     'removable' => 'boolean'
@@ -24,6 +24,6 @@ class Province extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'usertype_id');
+        return $this->hasMany(User::class, 'role_id');
     }
 }

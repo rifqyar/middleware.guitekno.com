@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->unsignedInteger('country_id')->nullable();
             $table->unsignedInteger('role_id');
+            $table->unsignedInteger('province_id')->nullable();
+            $table->unsignedInteger('dati2_id')->nullable();
             $table->date('birthday')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->string('status', 20)->index();

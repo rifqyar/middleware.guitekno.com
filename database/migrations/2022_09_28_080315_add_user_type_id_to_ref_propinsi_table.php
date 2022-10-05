@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('ref_propinsi', function (Blueprint $table) {
             //
-            $table->unsignedInteger('ut_id')->nullable();
-            $table->foreign('ut_id')->references('ut_id')->on('ref_user_types');
+            $table->unsignedInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
@@ -29,7 +29,7 @@ return new class extends Migration
     {
         Schema::table('ref_propinsi', function (Blueprint $table) {
             //
-            $table->dropColumn('ut_id');
+            $table->dropColumn('role_id');
         });
     }
 };

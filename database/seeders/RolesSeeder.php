@@ -28,7 +28,6 @@ class RolesSeeder extends Seeder
             'removable' => false
         ]);
 
-
         Role::create([
             'name' => 'Nasional',
             'display_name' => 'Nasional',

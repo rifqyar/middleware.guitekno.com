@@ -73,9 +73,8 @@ class UsersController extends Controller
             'countries' => $this->parseCountries($countryRepository),
             'roles' => $roleRepository->lists(),
             'statuses' => UserStatus::lists(),
-            'province' => Province::all(),
-            'regency' => Dati2::pluck('dati2_nama', 'dati2_id'),
-            // 'type' => $type->lists()
+            'province' => Province::pluck('prop_nama', 'prop_id'),
+            'regency' => Dati2::pluck('dati2_nama', 'dati2_id')
         ]);
     }
 
@@ -86,7 +85,7 @@ class UsersController extends Controller
         $option = "<option value='0'>Select a Province</option>";
         if($id === '4')
         {
-            $provinces = Province::all()->where('ut_id', $id);
+            $provinces = Province::all()->where('role_id', $id);
             foreach ($provinces as $province)
             {
                 $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
@@ -94,7 +93,7 @@ class UsersController extends Controller
         }
         else
         {
-            $provinces = Province::all()->where('ut_id', '4');
+            $provinces = Province::all()->where('role_id', '4');
             foreach ($provinces as $province)
             {
                 $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
@@ -109,10 +108,13 @@ class UsersController extends Controller
         $regencies = Dati2::all()->where('prop_id', $id);
         // return response()->json($regency);
 
-        $option = "<option>Select a Regency</option>";
-        foreach ($regencies as $regency)
+        if($id === '5')
         {
-            $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
+            $option = "<option>Select a Regency</option>";
+            foreach ($regencies as $regency)
+            {
+                $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
+            }
         }
         return $option;
     }
