@@ -9,6 +9,8 @@ use Vanguard\Repositories\Country\CountryRepository;
 use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Support\Enum\UserStatus;
+use Vanguard\Province;
+use Vanguard\Dati2;
 
 /**
  * Class ProfileController
@@ -40,6 +42,8 @@ class ProfileController extends Controller
             'edit' => true,
             'roles' => $roles,
             'countries' => [0 => __('Select a Country')] + $this->countries->lists()->toArray(),
+            'province' => Province::pluck('prop_nama', 'prop_id'),
+            'regency' => Dati2::pluck('dati2_nama', 'dati2_id'),
             'socialLogins' => $this->users->getUserSocialLogins(auth()->id()),
             'statuses' => UserStatus::lists()
         ]);

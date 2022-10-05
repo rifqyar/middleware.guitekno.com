@@ -15,13 +15,16 @@
             font-size: 12px;
         }
     </style>
-    <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    <script type='text/javascript'
+        src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
     <div id="overbooking-component">
         <div class="card">
             <div id="filter">
                 <div class="d-flex m-5">
-                    <button class="btn btn-outline-success" onclick="addFilter('show')"> <i class="fas fa-filter"></i> Filter</button>
-                    <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All Data</button>
+                    <button class="btn btn-outline-success" onclick="addFilter('show')"> <i class="fas fa-filter"></i>
+                        Filter</button>
+                    <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
+                        Data</button>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
@@ -31,7 +34,8 @@
                     {{-- @include('history_overbooking.component.formFilter') --}}
                 </div>
 
-                <button class="btn btn-outline-primary btn-sm m-5 float-right" id="setFilter" style="display: none" onclick="setFilter()">
+                <button class="btn btn-outline-primary btn-sm m-5 float-right" id="setFilter" style="display: none"
+                    onclick="setFilter()">
                     Show Filtered Data
                 </button>
             </div>
@@ -42,6 +46,7 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url("vendor/plugins/history_overbooking/main.min.js") }}"></script>
-    
+    <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script>
+    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script> --}}
+
 @stop

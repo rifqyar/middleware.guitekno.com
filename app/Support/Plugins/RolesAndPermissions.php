@@ -19,19 +19,13 @@ class RolesAndPermissions extends Plugin
             ->active("permissions*")
             ->permissions('permissions.manage');
 
-        $types = Item::create(__('User Types'))
-            ->route('types.index')
-            ->active("types*")
-            ->permissions('types.manage');
-
         return Item::create(__('Roles & Permissions'))
             ->href('#roles-dropdown')
             ->icon('fas fa-users-cog')
             ->permissions(['roles.manage', 'permissions.manage'])
             ->addChildren([
                 $roles,
-                $permissions,
-                $types
+                $permissions
             ]);
     }
 }

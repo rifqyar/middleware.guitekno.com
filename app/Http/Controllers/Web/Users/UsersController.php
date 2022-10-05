@@ -16,7 +16,6 @@ use Vanguard\Repositories\Province\ProvinceRepository;
 use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
-use Vanguard\Type;
 use Vanguard\Province;
 use Vanguard\Dati2;
 
