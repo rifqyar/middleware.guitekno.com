@@ -26,6 +26,15 @@ function getData(id){
         $(`#data-${id}`).html(res.blade)
         $(`#data-${id}`).find('th').css('white-space', 'nowrap')
         $(`#data-${id}`).find('td').css('white-space', 'nowrap')
+
+        // Show Filter if in array of rst
+        let arrRst = ['012', '011', '021', '022']
+        if (arrRst.includes(id)){
+            $(`#data-${id}`).find('#filter').fadeIn()
+            $(`#data-${id}`).find('.btn-filter').attr(`onclick`, `addFilter('${id}')`)
+            $(`#data-${id}`).find('.btn-showAllData').attr(`onclick`, `getData('${id}')`)
+            $(`#data-${id}`).find('#setFilter').attr(`onclick`, `setFilter('${id}')`)
+        }
     }, true)
 }
 
@@ -121,4 +130,75 @@ function closeDetailData(el){
     $(el).parent().find('.detail-data').html('')
     $(el).parentsUntil('#detail-log-bank').find('.title-detail').html('')
     $(el).fadeOut()
+}
+
+function addFilter(rst_id){
+    let filterContainer = $(`#data-${rst_id}`).find('#filter').find('#form-filter')
+
+    if(filterContainer.children().length == 0){
+        apiCall('log-transaction/bank/render-filter', '', 'GET', () => {
+            swal({
+                title: 'Render Filter...',
+                content: {
+                    element: "i",
+                    attributes: {
+                    className: "fas fa-spinner fa-spin text-large",
+                    },
+                },
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        }, null, null, (res) => {
+            swal.close()
+            filterContainer.html(res.blade)
+            filterContainer.slideDown()
+            $(`#data-${rst_id}`).find('#filter').find('#setFilter').fadeIn()
+        })
+    }
+}
+
+function changeOperatorTgl(e){
+    if ($(e).val() != '0'){
+        $('input[name="tgl"]').addClass('required')
+    } else {
+        $('input[name="tgl"]').removeClass('required')
+    }
+}
+
+function setFilter(id){
+    const formContainer = $(`#data-${id}`).find('#filter').find('#form-filter').find('.form-container')
+    let required = formContainer.find('.required')
+    console.log(required)
+    var canInput = true
+
+    required.removeClass('is-invalid')
+    
+    for(var i = 0; i < required.length; i++){
+        if (required[i].value == ''){
+            canInput = false
+            mainComponent.find(formContainer).find(`input[name="${required[i].name}"]`).addClass('is-invalid')
+            var form_name = required[i].name.replace('_', ' ').toUpperCase()
+            $.toast({
+                heading: 'Warning',
+                text: `Form ${form_name} is Required`,
+                icon: 'warning',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }
+    }
+
+    if (canInput){
+        console.log(required)
+        console.log($(required[0]).val())
+        var filter = `(lst_request like '%"bank_code":"${$(required[0]).val()}"%' or lst_response like '%"bank_code":"${$(required[0]).val()}"%')`
+        if (0 != $(required[1]).val()){
+            filter += `and lst_created = '${$(required[2]).val()}'`
+        }
+        // console.log(filter)
+        // filter = window.btoa(filter)
+        // // showData(filter)
+    }
 }

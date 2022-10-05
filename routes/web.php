@@ -213,6 +213,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::prefix('bank')->group(function () {
             Route::get('/', "TrxLog\LogBank\MainController@index")->name('trxLog.bank')->middleware('auth');
             Route::get('/getData/{rst_id}/{perPage?}', "TrxLog\LogBank\MainController@getData");
+            Route::get('/render-filter', 'TrxLog\LogBank\MainController@renderFilter');
         });
 
         Route::prefix('sipd')->group(function () {

@@ -4,6 +4,25 @@
     }
 </style>
 <div class="container-fluid">
+    <div id="filter" style="display: none">
+        <div class="d-flex mb-3">
+            <button class="btn btn-sm btn-outline-success btn-filter" {{--onclick="addFilter()"--}}> <i class="fas fa-filter"></i> Filter</button>
+            <button class="btn btn-sm btn-success ml-4 btn-showAllData" {{--onclick="showData()"--}}> <i class="fas fa-database"></i> Show All Data</button>
+        </div>
+
+        <div class="container-fluid" id="form-filter" style="display: none">
+        </div>
+
+        <button class="btn btn-outline-primary btn-sm mb-2 float-right" id="setFilter" style="display: none" {{--onclick="setFilter()"--}}>
+            Show Filtered Data
+        </button>
+    </div>
+    {{-- <form action="javascript:void(0)">
+        <div class="form-group">
+            <label for="bpd">BPD</label>
+            <input type="text" class="form-control" name="bpd" >
+        </div>
+    </form> --}}
     <div class="table-responsive">
         <table class="table t-logBank" style="width: 100%">
             <thead>

@@ -34,4 +34,16 @@ class MainController extends Controller
             ], 'blade' => $blade
         ], 200);
     }
+
+    public function renderFilter(){
+        $bpd = Model::getBpd();
+        $blade = view('TrxLog.LogBank.component.filter', compact('bpd'))->render();
+
+        return response()->json([
+            'status' => [
+                'code' => 200,
+                'msg' => 'OK'
+            ], 'blade' => $blade
+        ]);
+    }
 }

@@ -35,4 +35,10 @@ class DbController
 
         return $data;
     }
+
+    public static function getBpd(){
+        $data = DB::select("SELECT * from vw_RefBank order by bank_id");
+
+        return $data;
+    }
 }
