@@ -197,7 +197,7 @@ function setFilter(id){
     }
 
     if (canInput){
-        var bpd = typeof $('input[name="bpd"]').val() == 'undefined' ? null : $('input[name="bpd"]').val();
+        var bpd = typeof $('select[name="bpd"] option:selected').val() == 'undefined' ? null : $('select[name="bpd"] option:selected').val();
         var tgl = typeof $('input[name="tgl"]').val() == "undefined" ? null : $('input[name="tgl"]').val();
         var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
 

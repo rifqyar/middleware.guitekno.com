@@ -59,7 +59,7 @@ class DbController
         } else {
             $data = DB::table("vw_logbanktransaction")->where('rst_id', $rst_id);
         }
-        // dd($data->paginate($perPage));
+
         return $data->paginate($perPage);
     }
 
