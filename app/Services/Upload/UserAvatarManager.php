@@ -78,7 +78,7 @@ class UserAvatarManager
      */
     private function getDestinationDirectory()
     {
-        return '/upload/users';
+        return '\upload\users';
     }
 
     /**
