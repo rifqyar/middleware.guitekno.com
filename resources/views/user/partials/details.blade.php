@@ -65,7 +65,7 @@
             </div>
             <div class="form-group" id="regency_div">
                 <label for="address">@lang('Regency')</label>
-                {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
+                {!! Form::select('dati_id', $regency, $edit ? $user->dati2_id : '', [
                     'class' => 'form-control input-solid',
                     'id' => 'regency',
                     $profile ? 'disabled' : '',
@@ -105,8 +105,9 @@
             // $('#province').empty();
             var tipeID = $(this).val();
             // console.log(tipeID)
-
-            if (tipeID === '4' || tipeID === '5') {
+            ['7', '8'].includes(tipeID)
+            // if (tipeID === '7' || tipeID === '8') {
+            if (['7', '8'].includes(tipeID)) {
                 $.get("{{ route('users.province') }}", function(data) {
                     $('#regency_div').hide();
                     $('#province_div').removeAttr("style");
@@ -127,8 +128,8 @@
             console.log(provID)
 
             if (provID === '0') {
-                $('#regency_div').hide();
-            } else if (roleID === '5') {
+                $('#regency').empty();
+            } else if (roleID === '8') {
                 $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
                     $('#regency_div').removeAttr("style");
                     $('#regency').html(data)
