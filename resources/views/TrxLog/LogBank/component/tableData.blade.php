@@ -130,6 +130,11 @@
                 $(`#data-${rst_id}`).html(res.blade)
                 $(`#data-${rst_id}`).find('th').css('white-space', 'nowrap')
                 $(`#data-${rst_id}`).find('td').css('white-space', 'nowrap')
+
+                $(`#data-${rst_id}`).find('#filter').fadeIn()
+                $(`#data-${rst_id}`).find('.btn-filter').attr(`onclick`, `addFilter('${rst_id}')`)
+                $(`#data-${rst_id}`).find('.btn-showAllData').attr(`onclick`, `getData('${rst_id}')`)
+                $(`#data-${rst_id}`).find('#setFilter').attr(`onclick`, `setFilter('${rst_id}')`)
             }
         })
     });

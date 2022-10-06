@@ -11,9 +11,9 @@ function collapse(id){
 
 }
 
-function getData(id){
+function getData(id, filter = null){
     let perPage = $('select[name="perPage"] option:selected').val()
-    let url = 'log-transaction/bank/getData/'+id+'/'+perPage
+    let url = filter != null ? 'log-transaction/bank/getData/'+id+'/'+perPage+'/'+filter : 'log-transaction/bank/getData/'+id+'/'+perPage
     apiCall(url, 'GET', null, () => {
         $(`#data-${id}`).html(`
             <div class="row justify-content-center">   
@@ -27,14 +27,10 @@ function getData(id){
         $(`#data-${id}`).find('th').css('white-space', 'nowrap')
         $(`#data-${id}`).find('td').css('white-space', 'nowrap')
 
-        // Show Filter if in array of rst
-        let arrRst = ['012', '011', '021', '022']
-        if (arrRst.includes(id)){
-            $(`#data-${id}`).find('#filter').fadeIn()
-            $(`#data-${id}`).find('.btn-filter').attr(`onclick`, `addFilter('${id}')`)
-            $(`#data-${id}`).find('.btn-showAllData').attr(`onclick`, `getData('${id}')`)
-            $(`#data-${id}`).find('#setFilter').attr(`onclick`, `setFilter('${id}')`)
-        }
+        $(`#data-${id}`).find('#filter').fadeIn()
+        $(`#data-${id}`).find('.btn-filter').attr(`onclick`, `addFilter('${id}')`)
+        $(`#data-${id}`).find('.btn-showAllData').attr(`onclick`, `getData('${id}')`)
+        $(`#data-${id}`).find('#setFilter').attr(`onclick`, `setFilter('${id}')`)
     }, true)
 }
 
@@ -150,10 +146,19 @@ function addFilter(rst_id){
                 closeOnEsc: false
             });
         }, null, null, (res) => {
-            swal.close()
             filterContainer.html(res.blade)
-            filterContainer.slideDown()
             $(`#data-${rst_id}`).find('#filter').find('#setFilter').fadeIn()
+            
+            let arrRst = ['012', '022']
+            if (!arrRst.includes(rst_id)){
+                $(`#data-${rst_id}`).find('#form_bpd').fadeOut(100)
+                $(`#data-${rst_id}`).find('#form_bpd').find('.required').each((k, v) => {
+                    $(v).removeClass('required')
+                })
+            }
+
+            filterContainer.slideDown()
+            swal.close()
         })
     }
 }
@@ -161,15 +166,16 @@ function addFilter(rst_id){
 function changeOperatorTgl(e){
     if ($(e).val() != '0'){
         $('input[name="tgl"]').addClass('required')
+        $('input[name="tgl"]').removeAttr('disabled')
     } else {
         $('input[name="tgl"]').removeClass('required')
+        $('input[name="tgl"]').prop('disabled', 'disabled')
     }
 }
 
 function setFilter(id){
     const formContainer = $(`#data-${id}`).find('#filter').find('#form-filter').find('.form-container')
     let required = formContainer.find('.required')
-    console.log(required)
     var canInput = true
 
     required.removeClass('is-invalid')
@@ -191,14 +197,12 @@ function setFilter(id){
     }
 
     if (canInput){
-        console.log(required)
-        console.log($(required[0]).val())
-        var filter = `(lst_request like '%"bank_code":"${$(required[0]).val()}"%' or lst_response like '%"bank_code":"${$(required[0]).val()}"%')`
-        if (0 != $(required[1]).val()){
-            filter += `and lst_created = '${$(required[2]).val()}'`
-        }
-        // console.log(filter)
-        // filter = window.btoa(filter)
-        // // showData(filter)
+        var bpd = typeof $('input[name="bpd"]').val() == 'undefined' ? null : $('input[name="bpd"]').val();
+        var tgl = typeof $('input[name="tgl"]').val() == "undefined" ? null : $('input[name="tgl"]').val();
+        var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
+
+        var filter = window.btoa(`{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}"}`)
+        
+        getData(id, filter)
     }
 }

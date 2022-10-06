@@ -1,5 +1,5 @@
 <div class="row align-items-center form-container">
-    <div class="col-md-6 col-12">
+    <div class="col-md-6 col-12" id="form_bpd">
         <div class="form-group">
             <label for="bpd">BPD</label>
             <select name="bpd" class="form-control required select-field" style="width: 100%">
@@ -16,17 +16,17 @@
             <label>Tanggal Transaksi</label>
             <div class="row">
                 <div class="col-md-4 col-12 form-group">
-                    <select name="operator_tanggal" id="" class="form-control required" onchange="changeOperatorTgl(this)">
+                    <select name="operator_tanggal" class="form-control required" onchange="changeOperatorTgl(this)">
                         <option value="0">All</option>
                         <option value="=">=</option>
-                        <option value=">"> > <option>
-                        <option value="<"> < <option>
+                        <option value=">">><option>
+                        <option value="<"><<option>
                         <option value=">=">>=</option>
                         <option value="<="><=</option>
                     </select>
                 </div>
                 <div class="col-md-8 col-12">
-                    <input type="date" name="tgl" class="form-control">
+                    <input type="date" name="tgl" class="form-control" disabled>
                 </div>
             </div>
         {{-- </div> --}}
