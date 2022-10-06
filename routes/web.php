@@ -236,7 +236,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::prefix('log-transaction')->group(function () {
         Route::prefix('bank')->group(function () {
             Route::get('/', "TrxLog\LogBank\MainController@index")->name('trxLog.bank')->middleware('auth');
-            Route::get('/getData/{rst_id}/{perPage?}', "TrxLog\LogBank\MainController@getData");
+            Route::get('/getData/{rst_id}/{perPage}/{filter?}', "TrxLog\LogBank\MainController@getData");
+            Route::get('/render-filter', 'TrxLog\LogBank\MainController@renderFilter');
         });
 
         Route::prefix('sipd')->group(function () {
@@ -302,6 +303,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/form', 'ApiUser\ApiUserController@form');
     Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
     Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');
+    Route::post('user-service/edit/save', 'ApiUser\ApiUserController@saveEdit');
 
     Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');

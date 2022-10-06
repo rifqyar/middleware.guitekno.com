@@ -11,9 +11,9 @@ function collapse(id){
 
 }
 
-function getData(id){
+function getData(id, filter = null){
     let perPage = $('select[name="perPage"] option:selected').val()
-    let url = 'log-transaction/bank/getData/'+id+'/'+perPage
+    let url = filter != null ? 'log-transaction/bank/getData/'+id+'/'+perPage+'/'+filter : 'log-transaction/bank/getData/'+id+'/'+perPage
     apiCall(url, 'GET', null, () => {
         $(`#data-${id}`).html(`
             <div class="row justify-content-center">   
@@ -26,6 +26,11 @@ function getData(id){
         $(`#data-${id}`).html(res.blade)
         $(`#data-${id}`).find('th').css('white-space', 'nowrap')
         $(`#data-${id}`).find('td').css('white-space', 'nowrap')
+
+        $(`#data-${id}`).find('#filter').fadeIn()
+        $(`#data-${id}`).find('.btn-filter').attr(`onclick`, `addFilter('${id}')`)
+        $(`#data-${id}`).find('.btn-showAllData').attr(`onclick`, `getData('${id}')`)
+        $(`#data-${id}`).find('#setFilter').attr(`onclick`, `setFilter('${id}')`)
     }, true)
 }
 
@@ -42,11 +47,43 @@ function showDetail(res, req, status){
 
     let resData = res != '' ? JSON.parse(JSON.parse(window.atob(res))) : null
     let reqData = req != '' ? JSON.parse(JSON.parse(window.atob(req))) : null
+    
+    $('#request-raw').find('.prettyprint').html(JSON.stringify(reqData, undefined, 4))
+    $('#response-raw').find('.prettyprint').html(JSON.stringify(resData, undefined, 4))
+
     reqData = Array.isArray(reqData) == false ? [reqData] : reqData
     resData = Array.isArray(resData) == false ? [resData] : resData
 
     renderTable(reqData, '#table-request')
     renderTable(resData, '#table-response')
+
+}
+
+function copyClipboard(el){
+    var text = $(el).parent().children()[1]
+    text = $(text).html()
+    navigator.clipboard.writeText(text).then(
+        function() {
+            $.toast({
+                heading: 'Coppied!',
+                text: `Content Coppied to clipboard`,
+                icon: 'info',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }, 
+        function() {
+            $.toast({
+                heading: 'Error',
+                text: `Your browser doesn't support`,
+                icon: 'error',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }
+      )
 }
 
 function renderTable(data, containerID, detail = false, detailTitle = ''){
@@ -121,4 +158,83 @@ function closeDetailData(el){
     $(el).parent().find('.detail-data').html('')
     $(el).parentsUntil('#detail-log-bank').find('.title-detail').html('')
     $(el).fadeOut()
+}
+
+function addFilter(rst_id){
+    let filterContainer = $(`#data-${rst_id}`).find('#filter').find('#form-filter')
+
+    if(filterContainer.children().length == 0){
+        apiCall('log-transaction/bank/render-filter', '', 'GET', () => {
+            swal({
+                title: 'Render Filter...',
+                content: {
+                    element: "i",
+                    attributes: {
+                    className: "fas fa-spinner fa-spin text-large",
+                    },
+                },
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        }, null, null, (res) => {
+            filterContainer.html(res.blade)
+            $(`#data-${rst_id}`).find('#filter').find('#setFilter').fadeIn()
+            
+            let arrRst = ['012', '022']
+            if (!arrRst.includes(rst_id)){
+                $(`#data-${rst_id}`).find('#form_bpd').fadeOut(100)
+                $(`#data-${rst_id}`).find('#form_bpd').find('.required').each((k, v) => {
+                    $(v).removeClass('required')
+                })
+            }
+
+            filterContainer.slideDown()
+            swal.close()
+        })
+    }
+}
+
+function changeOperatorTgl(e){
+    if ($(e).val() != '0'){
+        $('input[name="tgl"]').addClass('required')
+        $('input[name="tgl"]').removeAttr('disabled')
+    } else {
+        $('input[name="tgl"]').removeClass('required')
+        $('input[name="tgl"]').prop('disabled', 'disabled')
+    }
+}
+
+function setFilter(id){
+    const formContainer = $(`#data-${id}`).find('#filter').find('#form-filter').find('.form-container')
+    let required = formContainer.find('.required')
+    var canInput = true
+
+    required.removeClass('is-invalid')
+    
+    for(var i = 0; i < required.length; i++){
+        if (required[i].value == ''){
+            canInput = false
+            mainComponent.find(formContainer).find(`input[name="${required[i].name}"]`).addClass('is-invalid')
+            var form_name = required[i].name.replace('_', ' ').toUpperCase()
+            $.toast({
+                heading: 'Warning',
+                text: `Form ${form_name} is Required`,
+                icon: 'warning',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }
+    }
+
+    if (canInput){
+        var bpd = typeof $('select[name="bpd"] option:selected').val() == 'undefined' ? null : $('select[name="bpd"] option:selected').val();
+        var tgl = typeof $('input[name="tgl"]').val() == "undefined" ? null : $('input[name="tgl"]').val();
+        var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
+
+        var filter = window.btoa(`{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}"}`)
+        
+        getData(id, filter)
+    }
 }

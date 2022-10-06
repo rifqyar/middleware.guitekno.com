@@ -4,6 +4,25 @@
     }
 </style>
 <div class="container-fluid">
+    <div id="filter" style="display: none">
+        <div class="d-flex mb-3">
+            <button class="btn btn-sm btn-outline-success btn-filter" {{--onclick="addFilter()"--}}> <i class="fas fa-filter"></i> Filter</button>
+            <button class="btn btn-sm btn-success ml-4 btn-showAllData" {{--onclick="showData()"--}}> <i class="fas fa-database"></i> Show All Data</button>
+        </div>
+
+        <div class="container-fluid" id="form-filter" style="display: none">
+        </div>
+
+        <button class="btn btn-outline-primary btn-sm mb-2 float-right" id="setFilter" style="display: none" {{--onclick="setFilter()"--}}>
+            Show Filtered Data
+        </button>
+    </div>
+    {{-- <form action="javascript:void(0)">
+        <div class="form-group">
+            <label for="bpd">BPD</label>
+            <input type="text" class="form-control" name="bpd" >
+        </div>
+    </form> --}}
     <div class="table-responsive">
         <table class="table t-logBank" style="width: 100%">
             <thead>
@@ -12,11 +31,8 @@
                     <th>Created</th>
                     <th>Created By</th>
                     <th>Last Update</th>
-                    <th>Last Update By</th>
                     {{-- <th>Request Data</th> --}}
                     {{-- <th>Response Data</th> --}}
-                    <th>User ID</th>
-                    <th>Account Number</th>
                     <th>Service Type ID</th>
                     <th>Service Name</th>
                     <th>Status</th>
@@ -58,15 +74,9 @@
                         @endphp
                     @endif
                 <tr>
-                    {{-- <td class="text-center align-middle">{{$dt->lbt_id}}</td> --}}
                     <td class="text-center align-middle tgl">{{$dt->lbt_created}}</td>
                     <td class="text-center align-middle">{{$dt->lbt_create_by}}</td>
                     <td class="text-center align-middle tgl">{{$dt->lbt_last_updated}}</td>
-                    <td class="text-center align-middle">{{$dt->lbt_last_update_by}}</td>
-                    {{-- <td>{{$dt->lbt_request}}</td> --}}
-                    {{-- <td>{{$dt->lbt_response}}</td> --}}
-                    <td class="text-center align-middle">{{$dt->lbt_acc_number}}</td>
-                    <td class="text-center align-middle">{{$dt->lbt_userid}}</td>
                     <td class="text-center align-middle">{{$dt->rst_id}}</td>
                     <td class="text-center align-middle">{{$dt->rst_name}}</td>
                     <td class="text-center align-middle">{!! $badge !!} </td>
@@ -111,6 +121,11 @@
                 $(`#data-${rst_id}`).html(res.blade)
                 $(`#data-${rst_id}`).find('th').css('white-space', 'nowrap')
                 $(`#data-${rst_id}`).find('td').css('white-space', 'nowrap')
+
+                $(`#data-${rst_id}`).find('#filter').fadeIn()
+                $(`#data-${rst_id}`).find('.btn-filter').attr(`onclick`, `addFilter('${rst_id}')`)
+                $(`#data-${rst_id}`).find('.btn-showAllData').attr(`onclick`, `getData('${rst_id}')`)
+                $(`#data-${rst_id}`).find('#setFilter').attr(`onclick`, `setFilter('${rst_id}')`)
             }
         })
     });

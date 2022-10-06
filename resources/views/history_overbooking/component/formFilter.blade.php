@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center form-container">
+<div class="row align-items-center form-container">
     <div class="col-md-2 col-12 separator" style="display: none">
         <div class="form-group">
             <label for="separator">&nbsp;</label>
@@ -12,7 +12,7 @@
     <div class="col-md-3 col-12">
         <div class="form-group">
             <label for="field">Filter by</label>
-            <select name="field_name" id="" class="form-control required select-field" onchange="getValueColumn(this)">
+            <select name="field_name" id="" class="form-control required select-field" onchange="getValueColumn(this)" style="width: 100%">
                 <option></option>
                 @foreach ($column as $c)
                     <option value="{{$c->column_name}}">
@@ -46,7 +46,7 @@
     <div class="col-md-3 col-12">
         <div class="form-group">
             <label for="value">Value</label>
-            <select name="value" id="" class="form-control required select-value">
+            <select name="value" id="" class="form-control required select-value" style="width: 100%">
             </select>
         </div>
     </div>
