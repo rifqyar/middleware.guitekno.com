@@ -104,6 +104,42 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-edit-user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">BPD</label>
+                            <input type="text" class="form-control" id="bank_name_edit" readonly>
+                            <input type="text" class="form-control" id="bank_id_edit" hidden>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Username</label>
+                            <input type="text" class="form-control" id="username_edit">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Password</label>
+                            <input type="password" class="form-control" id="password_edit">
+                            <small id="emailHelp" class="form-text text-muted">Kosongkan Password jika tidak di
+                                update</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditUser()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 @section('scripts')
@@ -161,6 +197,16 @@
                 })
         }
 
+        function editShowModal(row, name) {
+            row = JSON.parse(row);
+            console.log(row.bank_id)
+            $('#bank_id_edit').val(row.bank_id)
+            $('#bank_name_edit').val(name)
+            $('#username_edit').val(row.dau_username)
+
+            $('#modal-edit-user').modal('show')
+        }
+
         function deleteIp(id, bank_code) {
             $('#modal-listIp').modal('hide')
             $.ajax({
@@ -177,6 +223,22 @@
             $('#id_bank_form').val(id)
             $('#modal-listIp').modal('hide')
             $('#modal-add-ip').modal('show')
+        }
+
+        function saveEditUser() {
+            $.ajax({
+                    method: "post",
+                    url: `/user-service/edit/save`,
+                    data: {
+                        bank_id: $('#bank_id_edit').val(),
+                        username: $('#username_edit').val(),
+                        password: $('#password_edit').val()
+                    }
+                })
+                .done(function(res) {
+                    $('#modal-edit-user').modal('hide')
+                    console.log(res)
+                })
         }
 
         function saveIpAdd() {
