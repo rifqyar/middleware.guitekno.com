@@ -23,7 +23,11 @@ class ApiUserController extends Controller
                 return $row->bank->bank_name;
             })
             ->addColumn('action', function ($row) {
-                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View Ip List</a>";
+                $dat = json_encode($row);
+                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View Ip List</a> |
+                <a href='javascript:editShowModal(`{$dat}`, `{$row->bank->bank_name}`)' class='btn btn-warning btn-sm'>Edit</a> |
+                <a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-danger btn-sm'>Delete</a>
+                ";
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -45,5 +49,14 @@ class ApiUserController extends Controller
             'dau_password' => bcrypt($request->password)
         ]);
         return view('api_user.index');
+    }
+
+    public function saveEdit(Request $request)
+    {
+        $user = DatApiUser::where('bank_id', $request->bank_id)->first();
+        $user->dau_username = $request->username;
+        if ($request->password) $user->dau_password = $request->password;
+        $user->save();
+        return response()->json($user);
     }
 }

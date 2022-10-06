@@ -9,6 +9,7 @@ class DatApiUser extends Model
 {
     use HasFactory;
     protected $table = "dat_apiuser";
+    protected $primaryKey = 'bank_id';
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [

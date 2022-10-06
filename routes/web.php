@@ -279,6 +279,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/form', 'ApiUser\ApiUserController@form');
     Route::post('user-service/post', 'ApiUser\ApiUserController@post')->name('user-service-post');
     Route::post('user-service/add/save', 'ApiUser\ApiUserController@saveAdd');
+    Route::post('user-service/edit/save', 'ApiUser\ApiUserController@saveEdit');
 
     Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
