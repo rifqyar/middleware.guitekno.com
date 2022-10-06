@@ -19,8 +19,8 @@
                     <select name="operator_tanggal" class="form-control required" onchange="changeOperatorTgl(this)">
                         <option value="0">All</option>
                         <option value="=">=</option>
-                        <option value=">">><option>
-                        <option value="<"><<option>
+                        <option value=">">></option>
+                        <option value="<"><</option>
                         <option value=">=">>=</option>
                         <option value="<="><=</option>
                     </select>
