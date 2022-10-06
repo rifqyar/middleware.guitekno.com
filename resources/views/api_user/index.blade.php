@@ -134,8 +134,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEditUser()">Save changes</button>
+                    <button type="button" class="btn btn-primary loading" onclick="saveEditUser()">Save changes</button>
                 </div>
+                <p class="loading"></p>
             </div>
         </div>
     </div>
@@ -233,10 +234,14 @@
                         bank_id: $('#bank_id_edit').val(),
                         username: $('#username_edit').val(),
                         password: $('#password_edit').val()
+                    },
+                    beforeSend: function() {
+                        $('.loading').html('loading')
                     }
                 })
                 .done(function(res) {
-                    $('#modal-edit-user').modal('hide')
+                    // $('#modal-edit-user').modal('hide')
+                    $('.loading').html('done')
                     console.log(res)
                 })
         }
