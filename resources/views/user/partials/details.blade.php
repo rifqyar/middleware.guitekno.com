@@ -107,7 +107,7 @@
             // console.log(tipeID)
 
             if (tipeID === '4' || tipeID === '5') {
-                $.get("{{ route('users.province') }}?tipeID=" + tipeID, function(data) {
+                $.get("{{ route('users.province') }}", function(data) {
                     $('#province_div').removeAttr("style");
                     $('#province').html(data);
                     $('#regency_div').hide();
