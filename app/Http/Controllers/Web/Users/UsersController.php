@@ -109,7 +109,7 @@ class UsersController extends Controller
     public function getRegency(Request $request)
     {
         $id = $request->provID;
-        $regencies = Dati2::all()->where('prop_id', $id);
+        $regencies = Dati2::where('prop_id', $id)->get();
         // return response()->json($regency);
 
         $option = "<option value='0'>Select a Regency</option>";
