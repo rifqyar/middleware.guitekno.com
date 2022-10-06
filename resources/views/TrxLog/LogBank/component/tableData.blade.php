@@ -31,11 +31,8 @@
                     <th>Created</th>
                     <th>Created By</th>
                     <th>Last Update</th>
-                    <th>Last Update By</th>
                     {{-- <th>Request Data</th> --}}
                     {{-- <th>Response Data</th> --}}
-                    <th>User ID</th>
-                    <th>Account Number</th>
                     <th>Service Type ID</th>
                     <th>Service Name</th>
                     <th>Status</th>
@@ -77,15 +74,9 @@
                         @endphp
                     @endif
                 <tr>
-                    {{-- <td class="text-center align-middle">{{$dt->lbt_id}}</td> --}}
                     <td class="text-center align-middle tgl">{{$dt->lbt_created}}</td>
                     <td class="text-center align-middle">{{$dt->lbt_create_by}}</td>
                     <td class="text-center align-middle tgl">{{$dt->lbt_last_updated}}</td>
-                    <td class="text-center align-middle">{{$dt->lbt_last_update_by}}</td>
-                    {{-- <td>{{$dt->lbt_request}}</td> --}}
-                    {{-- <td>{{$dt->lbt_response}}</td> --}}
-                    <td class="text-center align-middle">{{$dt->lbt_acc_number}}</td>
-                    <td class="text-center align-middle">{{$dt->lbt_userid}}</td>
                     <td class="text-center align-middle">{{$dt->rst_id}}</td>
                     <td class="text-center align-middle">{{$dt->rst_name}}</td>
                     <td class="text-center align-middle">{!! $badge !!} </td>

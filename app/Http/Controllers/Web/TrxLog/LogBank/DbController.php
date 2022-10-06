@@ -64,7 +64,7 @@ class DbController
     }
 
     public static function getBpd(){
-        $data = DB::select("SELECT * from vw_RefBank order by bank_id");
+        $data = DB::select("SELECT * from vw_banksecret order by code_bank");
 
         return $data;
     }

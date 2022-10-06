@@ -5,7 +5,7 @@
             <select name="bpd" class="form-control required select-field" style="width: 100%">
                 <option></option>
                 @foreach ($bpd as $d)
-                    <option value="{{$d->bank_id}}">{{$d->bank_name}}</option>    
+                    <option value="{{$d->code_bank}}">{{$d->bank_name}}</option>    
                 @endforeach
             </select>
         </div>
