@@ -79,14 +79,14 @@ class UsersController extends Controller
 
     public function getProvince(Request $request)
     {
-        $id = $request->tipeID;
-
         $option = "<option value='0'>Select a Province</option>";
+<<<<<<< HEAD
 
+=======
+>>>>>>> f44192a905b3bacaef5dd7957dbc2bd4e340d903
         $provinces = Province::all();
-        foreach ($provinces as $province)
-        {
-            $option .= '<option value="'.$province->prop_id.'">'.$province->prop_nama.'</option>';
+        foreach ($provinces as $province) {
+            $option .= '<option value="' . $province->prop_id . '">' . $province->prop_nama . '</option>';
         }
         return $option;
     }
@@ -95,12 +95,10 @@ class UsersController extends Controller
     {
         $id = $request->provID;
         $regencies = Dati2::where('prop_id', $id)->get();
-        // return response()->json($regency);
 
         $option = "<option value='0'>Select a Regency</option>";
-        foreach ($regencies as $regency)
-        {
-            $option .= '<option value="'.$regency->dati2_id.'">'.$regency->dati2_nama.'</option>';
+        foreach ($regencies as $regency) {
+            $option .= '<option value="' . $regency->dati2_id . '">' . $regency->dati2_nama . '</option>';
         }
         return $option;
     }
@@ -128,18 +126,18 @@ class UsersController extends Controller
     {
         // When user is created by administrator, we will set his
         // status to Active by default.
-
+        // if ($request->role_id !== '8') $request->dati2_id
         $data = $request->all() + [
             'status' => UserStatus::ACTIVE,
             'email_verified_at' => now()
         ];
 
-        if (! data_get($data, 'country_id')) {
+        if (!data_get($data, 'country_id')) {
             $data['country_id'] = null;
         }
 
         // Username should be updated only if it is provided.
-        if (! data_get($data, 'username')) {
+        if (!data_get($data, 'username')) {
             $data['username'] = null;
         }
 
@@ -157,7 +155,7 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function edit(User $user, CountryRepository $countryRepository, Province $province, Dati2 $regency,RoleRepository $roleRepository)
+    public function edit(User $user, CountryRepository $countryRepository, Province $province, Dati2 $regency, RoleRepository $roleRepository)
     {
         // $test = $user->province_id;
         // echo json_encode($test);

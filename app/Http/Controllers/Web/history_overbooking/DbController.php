@@ -9,8 +9,30 @@ class DbController
 {
     /** GET DATA */
     public static function getAll($filter = ''){
+        //Filter by role
+        $role = auth()->user()->present()->role_id;
+        $prop = auth()->user()->present()->province_id;
+        $kabupaten = auth()->user()->present()->dati_id;
         $filter = rtrim(base64_decode($filter));
-        $where = $filter != '' ? "WHERE $filter" : '';
+        $where = '';
+        
+        switch ($role) {
+            case 1:
+            case 6:
+                $where = $filter != '' ? "WHERE $filter" : '';
+                break;
+            case 7:
+                $where = $filter != '' ? "WHERE prop_id = '$prop' AND ($filter)" : "WHERE prop_id = '$prop'" ;
+                break;
+
+            case 8:
+                $where = $filter != '' ? "WHERE prop_id = '$prop' AND dati2_id = '$kabupaten' AND ($filter)" : "WHERE prop_id = '$prop' AND dati2_id = '$kabupaten'";
+                break;
+            default:
+                $where = '';
+                break;
+        }
+
         $data = DB::SELECT("SELECT * FROM vw_Overbooking_H $where");
 
         return $data;
