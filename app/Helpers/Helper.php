@@ -61,4 +61,15 @@ class Helper
         $response['file_name']  = $fileName;
         return $response;
     }
+
+    public static function getPermission($user)
+    {
+        $role = [
+            '1' => ['1', '2', '6', '7', '8'],
+            '6' => ['7', '8'],
+            '7' => ['8']
+        ];
+
+        return $role[$user->role_id];
+    }
 }
