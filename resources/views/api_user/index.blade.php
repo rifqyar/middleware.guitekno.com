@@ -136,7 +136,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary loading" onclick="saveEditUser()">Save changes</button>
                 </div>
-                <p class="loading"></p>
             </div>
         </div>
     </div>
@@ -236,12 +235,25 @@
                         password: $('#password_edit').val()
                     },
                     beforeSend: function() {
-                        $('.loading').html('loading')
+                        Swal.fire({
+                            title: 'Please Wait !',
+                            html: 'Loading...', // add html attribute if you want or remove
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            },
+                        });
                     }
                 })
                 .done(function(res) {
-                    // $('#modal-edit-user').modal('hide')
-                    $('.loading').html('done')
+                    $('#modal-edit-user').modal('hide')
+                    Swal.fire({
+                        title: 'Update User Success',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
                     console.log(res)
                 })
         }
