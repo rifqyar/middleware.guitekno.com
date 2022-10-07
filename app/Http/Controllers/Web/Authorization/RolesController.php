@@ -99,7 +99,7 @@ class RolesController extends Controller
             throw new NotFoundHttpException;
         }
 
-        $userRole = $this->roles->findByName('user');
+        $userRole = $this->roles->findByName('User');
 
         $userRepository->switchRolesForUsers($role->id, $userRole->id);
 

@@ -52,6 +52,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        // dd($user);
         return view('user.view', compact('user'));
     }
 
@@ -186,6 +187,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        // dd($user);
         if ($user->is(auth()->user())) {
             return redirect()->route('users.index')
                 ->withErrors(__('You cannot delete yourself.'));

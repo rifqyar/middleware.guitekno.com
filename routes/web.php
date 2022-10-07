@@ -118,6 +118,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
      */
     Route::resource('users', 'Users\UsersController')
         ->except('update')->middleware('permission:users.manage');
+
     Route::get('province', 'Users\UsersController@getProvince')->name('users.province')->middleware('permission:users.manage');
     Route::get('regency', 'Users\UsersController@getRegency')->name('users.regency')->middleware('permission:users.manage');
 
