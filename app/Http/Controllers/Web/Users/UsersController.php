@@ -2,6 +2,7 @@
 
 namespace Vanguard\Http\Controllers\Web\Users;
 
+use App\Helpers\Helper;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -37,8 +38,11 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->users->paginate($perPage = 20, $request->search, $request->status);
-
+        $permission = Helper::getPermission(auth()->user());
+        $users = User::whereIn('role_id', $permission)->paginate($perPage = 20);
+        // ->paginate($perPage = 20, $request->search, $request->status);
+        // $users = $this->users->;
+        // dd($users);
         $statuses = ['' => __('All')] + UserStatus::lists();
 
         return view('user.list', compact('users', 'statuses'));
