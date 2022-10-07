@@ -105,7 +105,9 @@
             // '?rst_id=&partner_id=&parameter=&last_updated='
             let param = '?'
             $('.filter').each((k, v) => {
-                param += $(v).attr('name')+'='+$(v).val()+'&'
+                if($(v).val() != ''){
+                    param += $(v).attr('name')+'='+$(v).val()+'&'
+                }
             })
             param = param.slice(0, -1)
             renderTable(param) 
@@ -124,6 +126,9 @@
                     { data: 'service', name: 'service' },
                 ],
                 lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+                columnDefs: [
+                    { orderable: false, targets: 0 }
+                ],
             });
         }
     </script>

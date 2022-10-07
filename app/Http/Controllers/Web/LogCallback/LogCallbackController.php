@@ -4,6 +4,7 @@ namespace Vanguard\Http\Controllers\Web\LogCallback;
 
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Models\LogCallback;
 use Yajra\DataTables\DataTables;
@@ -13,7 +14,7 @@ class LogCallbackController extends Controller
     public function index(Request $request)
     {
         if($request->ajax() == true){
-            $query = LogCallback::orderBy('lcb_last_updated', 'desc');
+            $query = LogCallback::with('rst')->orderBy('lcb_last_updated', 'desc');
             if ($request->all()) {
                 $data['param'] = $request->all();
             }
@@ -24,13 +25,10 @@ class LogCallbackController extends Controller
                 $query->where('lcb_partnerid', $request->partner_id);
             }
             if ($request->last_updated && $request->parameter != null) {
-                // dd($request->between, $request->last_updated);
                 $query->whereDate('lcb_last_updated', $request->parameter, $request->last_updated);
             }
-
-            // dd($request->all());
-
             $data = $query->get();
+
             return DataTables::of($data)
             ->addColumn('created', function($data) {
                 return Helper::getFormatWib($data->lcb_created);
