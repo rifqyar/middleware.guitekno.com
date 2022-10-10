@@ -65,9 +65,9 @@ class Helper
     public static function getPermission($user)
     {
         $role = [
-            '1' => ['1', '2', '6', '7', '8'],
-            '6' => ['7', '8'],
-            '7' => ['8']
+            '1' => ['1', '2', '3', '4', '5'],
+            '3' => ['4', '5'],
+            '4' => ['5']
         ];
 
         return $role[$user->role_id];

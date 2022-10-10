@@ -51,7 +51,22 @@ class MainController extends Controller
     }
 
     public function renderFilterForm(){
-        $column = Model::getColumnName([1, 26]);
+        $role = auth()->user()->present()->role_id;
+        switch ($role) {
+            case '1':
+            case '3':
+                $excludedColumn = [1, 26];
+                break;
+            
+            case '4':
+            case '5':
+                $excludedColumn = [1, 26, 11, 14, 27, 28, 30, 31];
+                break;
+            default:
+                $excludedColumn = [1, 26];
+                break;
+        }
+        $column = Model::getColumnName($excludedColumn);
         $blade = view('history_overbooking.component.formFilter', compact('column'))->render();
         return response()->json([
             'status' => [

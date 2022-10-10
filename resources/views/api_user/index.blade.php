@@ -235,26 +235,32 @@
                         password: $('#password_edit').val()
                     },
                     beforeSend: function() {
-                        Swal.fire({
+                        swal({
                             title: 'Please Wait !',
-                            html: 'Loading...', // add html attribute if you want or remove
-                            allowOutsideClick: false,
-                            showConfirmButton: false,
-                            onBeforeOpen: () => {
-                                Swal.showLoading()
+                            content: {
+                                element: "i",
+                                attributes: {
+                                className: "fas fa-spinner fa-spin text-large",
+                                },
                             },
+                            buttons: false,
+                            closeOnClickOutside: false,
+                            closeOnEsc: false
                         });
                     }
                 })
                 .done(function(res) {
                     $('#modal-edit-user').modal('hide')
-                    Swal.fire({
-                        title: 'Update User Success',
+                    swal({
+                        title: 'Success!',                    
+                        text: 'Update User Success',
                         icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1000
+                        buttons: false,
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        timer: 1000,
                     })
-                    console.log(res)
+                    $('#list-user').DataTable().ajax.reload()
                 })
         }
 

@@ -105,9 +105,9 @@
             // $('#province').empty();
             var tipeID = $(this).val();
             // console.log(tipeID)
-            ['7', '8'].includes(tipeID)
+            ['4', '5'].includes(tipeID)
             // if (tipeID === '7' || tipeID === '8') {
-            if (['7', '8'].includes(tipeID)) {
+            if (['4', '5'].includes(tipeID)) {
                 $.get("{{ route('users.province') }}", function(data) {
                     $('#regency_div').hide();
                     $('#province_div').removeAttr("style");
@@ -115,6 +115,7 @@
                     // console.log(data)
                 })
             } else {
+                $('#regency_div').hide();
                 $('#province').val("0").change()
                 $('#province_div').hide()
             }
@@ -129,7 +130,7 @@
 
             if (provID === '0') {
                 $('#regency').empty();
-            } else if (roleID === '8') {
+            } else if (roleID === '5') {
                 $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
                     $('#regency_div').removeAttr("style");
                     $('#regency').html(data)

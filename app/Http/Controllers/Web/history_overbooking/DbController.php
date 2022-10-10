@@ -18,21 +18,20 @@ class DbController
         
         switch ($role) {
             case 1:
-            case 6:
+            case 3:
                 $where = $filter != '' ? "WHERE $filter" : '';
                 break;
-            case 7:
+            case 4:
                 $where = $filter != '' ? "WHERE prop_id = '$prop' AND ($filter)" : "WHERE prop_id = '$prop'" ;
                 break;
 
-            case 8:
+            case 5:
                 $where = $filter != '' ? "WHERE prop_id = '$prop' AND dati2_id = '$kabupaten' AND ($filter)" : "WHERE prop_id = '$prop' AND dati2_id = '$kabupaten'";
                 break;
             default:
                 $where = '';
                 break;
         }
-
         $data = DB::SELECT("SELECT * FROM vw_Overbooking_H $where");
 
         return $data;
