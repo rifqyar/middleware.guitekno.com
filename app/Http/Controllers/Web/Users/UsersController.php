@@ -19,6 +19,7 @@ use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
 use Vanguard\Province;
 use Vanguard\Dati2;
+use Vanguard\Role;
 
 /**
  * Class UsersController
@@ -68,13 +69,10 @@ class UsersController extends Controller
      */
     public function create(CountryRepository $countryRepository, Province $province, TypeRepository $type, RoleRepository $roleRepository)
     {
-        // $data = Type::all();
-        // $test = Province::all()->where('ut_id', '2');
-        // echo json_encode($test);
-        // die();
+        $permission = Helper::getPermission(auth()->user());
         return view('user.add', [
             'countries' => $this->parseCountries($countryRepository),
-            'roles' => $roleRepository->lists(),
+            'roles' => $roleRepository->lists(null,null,$permission),
             'statuses' => UserStatus::lists(),
             'province' => Province::pluck('prop_nama', 'prop_id'),
             'regency' => Dati2::pluck('dati2_nama', 'dati2_id')
@@ -157,14 +155,12 @@ class UsersController extends Controller
      */
     public function edit(User $user, CountryRepository $countryRepository, Province $province, Dati2 $regency, RoleRepository $roleRepository)
     {
-        // $test = $user->province_id;
-        // echo json_encode($test);
-        // die();
+        $permission = Helper::getPermission(auth()->user());
         return view('user.edit', [
             'edit' => true,
             'user' => $user,
             'countries' => $this->parseCountries($countryRepository),
-            'roles' => $roleRepository->lists(),
+            'roles' => $roleRepository->lists(null,null,$permission),
             'statuses' => UserStatus::lists(),
             'province' => $this->parseProvince(),
             'regency' => $this->parseRegency($user->province_id),

@@ -36,6 +36,14 @@ class DetailsController extends Controller
             $data['country_id'] = null;
         }
 
+        if (!data_get($data, 'dati_id')){
+            $data['dati_id'] = null;
+        }
+
+        if (!data_get($data, 'province_id')){
+            $data['province_id'] = null;
+        }
+
         $this->users->update($user->id, $data);
         $this->users->setRole($user->id, $request->role_id);
 

@@ -55,7 +55,10 @@
         </div>
 
         @if ($edit)
-            <div class="form-group" id="province_div">
+            <div class="form-group" id="province_div" 
+            @if ($user->province_id == null && !in_array($user->role_id, [4, 5]))
+                style="display: none"
+            @endif>
                 <label for="address">@lang('Province')</label>
                 {!! Form::select('province_id', $province, $edit ? $user->province_id : '', [
                     'class' => 'form-control input-solid',
@@ -63,7 +66,10 @@
                     $profile ? 'disabled' : '',
                 ]) !!}
             </div>
-            <div class="form-group" id="regency_div">
+            <div class="form-group" id="regency_div" 
+            @if (($user->province_id == null || $user->dati_id == null) && $user->role_id != 5)
+                style="display: none"
+            @endif>
                 <label for="address">@lang('Regency')</label>
                 {!! Form::select('dati_id', $regency, $edit ? $user->dati_id : '', [
                     'class' => 'form-control input-solid',
@@ -109,12 +115,13 @@
             // if (tipeID === '7' || tipeID === '8') {
             if (['4', '5'].includes(tipeID)) {
                 $.get("{{ route('users.province') }}", function(data) {
+                    $('#regency').val("0").change()
                     $('#regency_div').hide();
                     $('#province_div').removeAttr("style");
                     $('#province').html(data);
-                    // console.log(data)
                 })
             } else {
+                $('#regency').val("0").change()
                 $('#regency_div').hide();
                 $('#province').val("0").change()
                 $('#province_div').hide()
@@ -125,11 +132,9 @@
             var provID = $(this).val();
             var roleID = $('#role').val();
 
-            console.log(roleID)
-            console.log(provID)
-
             if (provID === '0') {
                 $('#regency').empty();
+                $('#regency_div').hide();
             } else if (roleID === '5') {
                 $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
                     $('#regency_div').removeAttr("style");
