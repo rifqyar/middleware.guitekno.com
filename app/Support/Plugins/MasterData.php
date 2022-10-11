@@ -25,13 +25,18 @@ class MasterData extends Plugin
             ->route('masterdata.bankEndpoint')
             ->active("master-data/bank-endpoint*");
 
+        $refApiStatus = Item::create(__('Ref Api Stauts'))
+            ->route('masterdata.refApiStatus')
+            ->active('master-data/api-status');
+
         return Item::create(__('Master Data'))
             ->href('#masterData-dropdown')
             ->icon('fas fa-database')
             ->addChildren([
                 $refBank,
                 $bankSecret,
-                $bankEndpoint
+                $bankEndpoint,
+                $refApiStatus,
             ])
             ->permissions('master.data');
     }

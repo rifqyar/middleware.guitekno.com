@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Request;
+use Vanguard\Models\RefApiStatus;
 
 class MasterDataController extends Controller
 {
@@ -21,8 +22,9 @@ class MasterDataController extends Controller
     }
 
     public function getRefBank(HttpRequest $req){
-        $data = DB::SELECT("SELECT * FROM vw_RefBank");
         if($req->ajax()){
+            $data = DB::SELECT("SELECT * FROM vw_RefBank");
+
             return Datatables::of($data)
             ->addColumn('action', function($data) {
                 $JSON_Sting = json_encode($data);
@@ -52,12 +54,13 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('MasterData.bank.index', compact('data'));
+        return view('MasterData.bank.index');
     }
 
     public function getBankSecret(HttpRequest $req){
-        $data = DB::SELECT("SELECT * FROM vw_BankSecret");
         if($req->ajax()){
+            $data = DB::SELECT("SELECT * FROM vw_BankSecret");
+
             return Datatables::of($data)
             ->addColumn('action', function($data) {
                 $JSON_Sting = json_encode($data);
@@ -91,13 +94,14 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('MasterData.BankSecret.index', compact('data'));
+        return view('MasterData.BankSecret.index');
     }
 
     public function getBankEndpoint(HttpRequest $req){
-        $data = DB::SELECT("SELECT * FROM vw_BankEndpoint");
 
         if($req->ajax()){
+            $data = DB::SELECT("SELECT * FROM vw_BankEndpoint");
+
             return Datatables::of($data)
             ->addColumn('action', function($data) {
                 $JSON_Sting = json_encode($data);
@@ -127,6 +131,37 @@ class MasterDataController extends Controller
             ->make(true);
         }
 
-        return view('MasterData.BankEndpoint.index', compact('data'));
+        return view('MasterData.BankEndpoint.index');
+    }
+
+    public function getApiStatus(HttpRequest $req){
+        if ($req->ajax()){
+            $data = RefApiStatus::all();
+            
+            return Datatables::of($data)
+            ->addColumn('action', function($data) {
+                $JSON_Sting = json_encode($data);
+                return '
+                    <button
+                        class="btn btn-icon"
+                        onclick="editApiStatus(`'.base64_encode($JSON_Sting).'`)"
+                        title="Edit Bank"
+                        data-toggle="tooltip" data-placement="top">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button
+                        class="btn btn-icon"
+                        onclick="deleteApiStatus(`'.base64_encode($JSON_Sting).'`)"
+                        title="Delete Bank"
+                        data-toggle="tooltip" data-placement="top">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+
+        return view('MasterData.ApiStatus.index');
     }
 }

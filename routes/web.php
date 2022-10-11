@@ -6,6 +6,7 @@
 
 use Illuminate\Support\Facades\Http;
 use Vanguard\Models\LogCallback;
+use Vanguard\Models\RefApiStatus;
 
 Route::get('login', 'Auth\LoginController@show');
 Route::post('login', 'Auth\LoginController@login');
@@ -290,6 +291,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::post('/', 'MasterData\BankEndpoint\MainController@post');
                 Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
+            });
+        });
+
+        Route::middleware(['permission:master.data_refApiStatus'])->group(function() {
+            Route::prefix('api-status')->group(function() {
+                Route::get('/', 'MasterData\MasterDataController@getApiStatus')->name('masterdata.refApiStatus');
+                Route::get('get/{id}', 'MasterData\ApiStatus\MainController@getApiStatus');
+                Route::post('/', 'MasterData\ApiStatus\MainController@post');
+                Route::put('/', 'MasterData\ApiStatus\MainController@put');
+                Route::get('{id}/delete', 'MasterData\ApiStatus\MainController@delete');
             });
         });
     });
