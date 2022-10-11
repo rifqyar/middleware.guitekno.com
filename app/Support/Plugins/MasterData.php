@@ -25,7 +25,7 @@ class MasterData extends Plugin
             ->route('masterdata.bankEndpoint')
             ->active("master-data/bank-endpoint*");
 
-        $refApiStatus = Item::create(__('Ref Api Stauts'))
+        $refApiStatus = Item::create(__('Ref Api Status'))
             ->route('masterdata.refApiStatus')
             ->active('master-data/api-status');
 
