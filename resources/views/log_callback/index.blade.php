@@ -65,8 +65,6 @@
                                     </div>
                                 </div>
 
-
-
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -86,6 +84,7 @@
                                 <th>Callback Pertama</th>
                                 <th>Callback Terakhir</th>
                                 <th>Sevice Type</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="data">
@@ -97,38 +96,54 @@
     </div>
 
     <script>
-        $(function (){
+        $(function() {
             renderTable()
         })
 
-        function test(){
+        function test() {
             // '?rst_id=&partner_id=&parameter=&last_updated='
             let param = '?'
             $('.filter').each((k, v) => {
-                if($(v).val() != ''){
-                    param += $(v).attr('name')+'='+$(v).val()+'&'
+                if ($(v).val() != '') {
+                    param += $(v).attr('name') + '=' + $(v).val() + '&'
                 }
             })
             param = param.slice(0, -1)
-            renderTable(param) 
+            renderTable(param)
         }
 
-        function renderTable(param = ''){
+        function renderTable(param = '') {
             $('.t-log_callback').DataTable().destroy();
             $('.t-log_callback').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: `${$('meta[name="baseurl"]').attr('content')}log-callback${param}`,
-                columns: [
-                    { data: 'lcb_partnerid', name: 'lcb_partnerid' },
-                    { data: 'created', name: 'created' },
-                    { data: 'last_update', name: 'last_update' },
-                    { data: 'service', name: 'service' },
+                columns: [{
+                        data: 'lcb_partnerid',
+                        name: 'lcb_partnerid'
+                    },
+                    {
+                        data: 'created',
+                        name: 'created'
+                    },
+                    {
+                        data: 'last_update',
+                        name: 'last_update'
+                    },
+                    {
+                        data: 'service',
+                        name: 'service'
+                    },
+                    {
+                        data: 'status_message',
+                        name: 'status_message'
+                    }
                 ],
                 lengthMenu: [5, 10, 20, 50, 100, 200, 500],
-                columnDefs: [
-                    { orderable: false, targets: 0 }
-                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: 0
+                }],
             });
         }
     </script>

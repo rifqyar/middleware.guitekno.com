@@ -39,7 +39,11 @@ class LogCallbackController extends Controller
             ->addColumn('service', function($data){
                 return $data->rst->rst_name;
             })
-            ->rawColumns(['created', 'last_update', 'service'])
+            ->addColumn('status_message', function($data){
+                $status = json_decode($data->lcb_response);
+                return $status->message ?? '';
+            })
+            ->rawColumns(['created', 'last_update', 'service', 'status_message'])
             ->make(true);
         }
         return view('log_callback.index');
