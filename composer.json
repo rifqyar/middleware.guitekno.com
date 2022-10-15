@@ -46,9 +46,7 @@
         "vanguardapp/activity-log": "^4.0",
         "vanguardapp/announcements": "^4.0",
         "vanguardapp/plugins": "^4.0",
-        "webpatser/laravel-countries": "dev-master",
-        "yajra/laravel-datatables": "9.0",
-        "yajra/laravel-oci8": "^9"
+        "webpatser/laravel-countries": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

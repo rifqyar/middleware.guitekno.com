@@ -123,7 +123,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card" style="height: 400px">
-                    <h6 class="card-header"><b>Transaksi</b></h6>
+                    <h6 class="card-header"><b>Transaksi Harian(</b></h6>
                     <div class="card-body p-0">
                         <div id="divTxDaily" style="height: 100%"></div>
                     </div>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card text-center" style="height: 190px">
-                            {{-- <h6 class="card-header">Status Transaksi</h6> --}}
+                            <h6 class="card-header">Status Transaksi</h6>
                             <div class="card-body p-0">
                                 @if ($data['jenis'])
                                     <div id="divTxStatus" style="height: 100%"></div>
