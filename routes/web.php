@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
      */
     Route::resource('users', 'Users\UsersController')
         ->except('update')->middleware('permission:users.manage');
+
     Route::get('province', 'Users\UsersController@getProvince')->name('users.province')->middleware('permission:users.manage');
     Route::get('regency', 'Users\UsersController@getRegency')->name('users.regency')->middleware('permission:users.manage');
 
@@ -154,28 +155,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('permissions', 'PermissionsController')->middleware('permission:permissions.manage');
 
     });
-
-    /**
-     * User Types
-     */
-
-    // Route::group(['namespace' => 'UserTypes\TypesUser'], function () {
-    //     Route::resource('types', 'MainController')->middleware('permission:types.manage');
-
-    //     // Route::get('/', "UserTypes\TypesUser\MainController@index")->name('types.index')->middleware('auth');
-    //     // Route::get('/create', "UserTypes\TypesUser\MainController@create")->name('types.create')->middleware('auth');
-    //     // Route::post('/create', "UserTypes\TypesUser\MainController@post")->name('types.post')->middleware('auth');
-    // });
-
-    Route::prefix('user-types')->group(function () {
-        Route::get('/', "UserTypes\TypesUser\MainController@index")->name('types.index')->middleware('auth');
-        Route::get('/create', "UserTypes\TypesUser\MainController@create")->name('types.create')->middleware('auth');
-        Route::post('/create', "UserTypes\TypesUser\MainController@post")->name('types.post')->middleware('auth');
-        Route::get('/{id}/edit', "UserTypes\TypesUser\MainController@edit")->name('types.edit')->middleware('auth');
-        Route::put('/update/{id}', "UserTypes\TypesUser\MainController@update")->name('types.update')->middleware('auth');
-        Route::delete('users/{id}', "UserTypes\TypesUser\MainController@destroy")->name('types.destroy')->middleware('auth');
-    });
-
 
     /**
      * Settings

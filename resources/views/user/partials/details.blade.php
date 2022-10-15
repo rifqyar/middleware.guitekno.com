@@ -111,19 +111,17 @@
             // $('#province').empty();
             var tipeID = $(this).val();
             // console.log(tipeID)
-            ['4', '5'].includes(tipeID)
-            // if (tipeID === '7' || tipeID === '8') {
             if (['4', '5'].includes(tipeID)) {
+                // if (['7', '8'].includes(tipeID)) {
                 $.get("{{ route('users.province') }}", function(data) {
                     $('#regency').val("0").change()
                     $('#regency_div').hide();
+                    $('#regency').val(null)
                     $('#province_div').removeAttr("style");
                     $('#province').html(data);
                 })
             } else {
-                $('#regency').val("0").change()
-                $('#regency_div').hide();
-                $('#province').val("0").change()
+                $('#province').val(null)
                 $('#province_div').hide()
             }
         });
@@ -134,8 +132,8 @@
 
             if (provID === '0') {
                 $('#regency').empty();
-                $('#regency_div').hide();
-            } else if (roleID === '5') {
+            } else if (['5'].includes(roleID)) {
+                // } else if (roleID === '8') {
                 $.get("{{ route('users.regency') }}?provID=" + provID, function(data) {
                     $('#regency_div').removeAttr("style");
                     $('#regency').html(data)
