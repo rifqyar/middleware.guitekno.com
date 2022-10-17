@@ -5,13 +5,12 @@ namespace Vanguard\Http\Controllers\Web\PDF;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Vanguard\Http\Controllers\Controller;
-// use Vanguard\Models\TrxOverBooking;
 use Vanguard\Http\Controllers\Web\history_overbooking\DbController as TrxOverBooking;
 use PDF;
 
 class PdfOverbookingController extends Controller
 {
-    public function generatePDF()
+    public function generatePDF(Request $req)
     {
         $overbooking = TrxOverBooking::getAll();
 
