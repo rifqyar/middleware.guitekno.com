@@ -4,12 +4,12 @@
 @section('page-heading', __('Transaction - Overbooking'))
 
 @section('breadcrumbs')
-    <li class="breadcrumb-item">
+    {{-- <li class="breadcrumb-item">
         @lang('Log Transaction')
     </li>
     <li class="breadcrumb-item active">
         @lang('SIPD')
-    </li>
+    </li> --}}
 @stop
 @section('content')
     <script type='text/javascript'
@@ -67,6 +67,32 @@
                                         <option value="{{ $list->ras_id }}">{{ $list->ras->ras_description }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-8 mt-2">
+                                <p>Tanggal Pengiriman</p>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select class="form-control filter" name="parameter" onchange="formDate()"
+                                            id="parameter">
+                                            <option value="">All</option>
+                                            <option value="<=">
+                                                <= </option>
+                                            <option value=">="> >= </option>
+                                            <option value="between">Between</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control filter" name="start_date" id="start_date"
+                                            readonly>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control filter" name="end_date" id="end_date"
+                                            readonly>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -161,6 +187,9 @@
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
                         data.ras_id = $('#ras_id').val()
+                        data.parameter = $('#parameter').val()
+                        data.start_date = $('#start_date').val()
+                        data.end_date = $('#end_date').val()
 
                     }
                 },
@@ -261,6 +290,20 @@
 
                     console.log(data.data)
                 });
+        }
+
+        function formDate() {
+            var value = $('#parameter').val()
+            if (value == 'between') {
+                $('#end_date').attr("readonly", false);
+                $('#start_date').attr("readonly", false);
+            } else if (value == '<=' ||
+                value == '>=') {
+                $('#start_date').attr("readonly", false);
+            } else {
+                $('#end_date').attr("readonly", true);
+                $('#start_date').attr("readonly", true);
+            }
         }
     </script>
 

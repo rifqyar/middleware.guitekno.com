@@ -74,7 +74,7 @@ class OverbookingController extends Controller
                 if ($data->logCallback && $data->logCallback->lcb_request) {
                     return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Detail</button>';
                 } else {
-                    return 'test';
+                    return '-';
                 }
             })
             ->rawColumns(['callback'])
@@ -83,11 +83,21 @@ class OverbookingController extends Controller
 
     public function exportToExcel(Request $request)
     {
+        if ($request->parameter) {
+            if ($request->parameter == 'between') {
+                $tanggal = "$request->start_date - $request->end_date";
+            } else {
+                $tanggal = "$request->start_date";
+            }
+        } else {
+            $tanggal = '';
+        }
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A1', 'Transaksi Overbooking');
-        $sheet->setCellValue('A2', 'Tanggal');
+        $sheet->setCellValue('A2', 'Tanggal ' . $tanggal);
         $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
         $spreadsheet->getActiveSheet()->mergeCells('A2:I2');
 
@@ -145,7 +155,7 @@ class OverbookingController extends Controller
             ->applyFromArray($this->fontStyle);
 
         $writer = new Xlsx($spreadsheet);
-        $path = storage_path("transaksi_overbooking.xlsx");
+        $path = storage_path("/app/transaksi_overbooking.xlsx");
         $writer->save($path);
         return response()->download($path, 'transaksi_overbooking' . time() . '.xlsx');
     }
@@ -172,6 +182,14 @@ class OverbookingController extends Controller
         if ($request->type) $overBooking->where('tbk_type', $request->type);
 
         if ($request->ras_id) $overBooking->where('ras_id', $request->ras_id);
+
+        if ($request->parameter) {
+            if ($request->parameter == 'between') {
+                $overBooking->whereBetween('tbk_execution_time', [$request->start_date, $request->end_date]);
+            } else {
+                $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
+            }
+        }
 
         return $overBooking;
     }
