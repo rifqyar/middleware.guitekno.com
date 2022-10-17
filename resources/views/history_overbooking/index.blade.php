@@ -26,8 +26,7 @@
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
                     <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4" onclick="showData()"> <i
-                                class="fas fa-download"></i> Show All
-                            Data</button></a>
+                                class="fas fa-download"></i> Export to PDF</button></a>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
@@ -49,7 +48,7 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script>
-    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script> --}}
+    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script> --}}
+    <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script>
 
 @stop
