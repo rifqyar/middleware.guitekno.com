@@ -2,12 +2,10 @@
 
 namespace Vanguard\Http\Controllers\Web\LogCallback;
 
-use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
-use Vanguard\Models\LogCallback;
-use Yajra\DataTables\DataTables;
+
 
 class LogCallbackController extends Controller
 {
