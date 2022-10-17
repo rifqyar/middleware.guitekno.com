@@ -198,16 +198,17 @@ function addFilter(rst_id){
 function changeOperatorTgl(e){
     if ($(e).val() != '0'){
         $('input[name="tgl"]').addClass('required')
-        $('input[name="tgl"]').removeAttr('disabled')
+        $('input[name="tgl"]').removeAttr('readonly')
     } else {
         $('input[name="tgl"]').removeClass('required')
-        $('input[name="tgl"]').prop('disabled', 'disabled')
+        $('input[name="tgl"]').prop('readonly', 'readonly')
     }
 }
 
 function setFilter(id){
     const formContainer = $(`#data-${id}`).find('#filter').find('#form-filter').find('.form-container')
     let required = formContainer.find('.required')
+    let form = formContainer.find('.form-control')
     var canInput = true
 
     required.removeClass('is-invalid')
@@ -230,7 +231,7 @@ function setFilter(id){
 
     if (canInput){
         var bpd = typeof $('select[name="bpd"] option:selected').val() == 'undefined' ? null : $('select[name="bpd"] option:selected').val();
-        var tgl = typeof $('input[name="tgl"]').val() == "undefined" ? null : $('input[name="tgl"]').val();
+        var tgl = $('input[name="tgl"]').val() == '' ? null : $('input[name="tgl"]').val();
         var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
 
         var filter = window.btoa(`{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}"}`)
