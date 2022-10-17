@@ -2,12 +2,10 @@
 
 namespace Vanguard\Http\Controllers\Web\LogCallback;
 
-use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
-use Vanguard\Models\LogCallback;
-use Yajra\DataTables\DataTables;
+
 
 class LogCallbackController extends Controller
 {
@@ -39,7 +37,11 @@ class LogCallbackController extends Controller
             ->addColumn('service', function($data){
                 return $data->rst->rst_name;
             })
-            ->rawColumns(['created', 'last_update', 'service'])
+            ->addColumn('status_message', function($data){
+                $status = json_decode($data->lcb_response);
+                return $status->message ?? '';
+            })
+            ->rawColumns(['created', 'last_update', 'service', 'status_message'])
             ->make(true);
         }
         return view('log_callback.index');

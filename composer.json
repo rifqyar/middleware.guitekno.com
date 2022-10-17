@@ -30,6 +30,7 @@
         "ext-json": "*",
         "akaunting/laravel-setting": "^1.2",
         "anhskohbo/no-captcha": "3.*",
+        "barryvdh/laravel-dompdf": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.3",
@@ -48,8 +49,7 @@
         "vanguardapp/announcements": "^4.0",
         "vanguardapp/plugins": "^4.0",
         "webpatser/laravel-countries": "dev-master",
-        "yajra/laravel-datatables": "9.0",
-        "yajra/laravel-oci8": "^9"
+        "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

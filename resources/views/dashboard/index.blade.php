@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -123,7 +123,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card" style="height: 400px">
-                    <h6 class="card-header"><b>Transaksi</b></h6>
+                    <h6 class="card-header"><b>Transaksi Harian</b></h6>
                     <div class="card-body p-0">
                         <div id="divTxDaily" style="height: 100%"></div>
                     </div>
@@ -132,10 +132,9 @@
             <div class="col-md-4">
                 <div class="row" style="height:400px;">
                     <div class="col-md-12">
-                        <div class="card text-center" style="height: 192px">
-                            {{-- <h6 class="card-header">Jenis Transaksi</h6> --}}
+                        <div class="card" style="height: 192px">
+                            <h6 class="card-header"><b>Jenis Transaksi</b></h6>
                             <div class="card-body p-0">
-                                {{-- <p>Jenis Transaksi</p> --}}
                                 @if ($data['jenis'])
                                     <div id="divTxType"style="height: 100%"></div>
                                 @else
@@ -145,8 +144,8 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card text-center" style="height: 190px">
-                            {{-- <h6 class="card-header">Status Transaksi</h6> --}}
+                        <div class="card" style="height: 190px">
+                            <h6 class="card-header"><b>Status Transaksi</b></h6>
                             <div class="card-body p-0">
                                 @if ($data['jenis'])
                                     <div id="divTxStatus" style="height: 100%"></div>
@@ -483,7 +482,7 @@
             am4core.useTheme(am4themes_animated);
             // Themes end
             var data = <?= json_encode($data['status'], true) ?>;
-            console.log(data, "stack");
+            // console.log(data)
             // Create chart instance
             var chart = am4core.create("divTxStatus", am4charts.XYChart);
             let obj = {
@@ -521,12 +520,29 @@
 
             // Create series
             function createSeries(field, name) {
+                console.log(name, "name")
                 var series = chart.series.push(new am4charts.ColumnSeries());
                 series.dataFields.valueX = field;
                 series.dataFields.categoryY = "year";
                 series.columns.template.height = 50
                 series.stacked = true;
                 series.name = name;
+
+                series.columns.template.tooltipText = "{name}: [bold]{valueX}[/]";
+
+                console.log(field, "field")
+
+                if (field === 'Failed') {
+                    series.stroke = am4core.color("#fc031c")
+                    series.fill = am4core.color("#fc031c")
+                }
+                // else if (field === 'Process') {
+                //     series.stroke = am4core.color("#ffff00")
+                //     series.fill = am4core.color("#ffff00")
+                // } else if (field === 'Success') {
+                //     series.stroke = am4core.color("#02d91b")
+                //     series.fill = am4core.color("#02d91b")
+                // }
 
                 var labelBullet = series.bullets.push(new am4charts.LabelBullet());
                 labelBullet.locationX = 0.5;
@@ -536,8 +552,6 @@
             for (const property in obj) {
                 if (property != "year") createSeries(property, property)
             }
-            // obj(e => {
-            // })
 
         }
         // function createTxStatus(data) {

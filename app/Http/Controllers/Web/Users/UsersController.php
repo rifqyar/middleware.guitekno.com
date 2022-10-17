@@ -57,6 +57,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        // dd($user);
         return view('user.view', compact('user'));
     }
 
@@ -81,7 +82,7 @@ class UsersController extends Controller
 
     public function getProvince(Request $request)
     {
-        $option = "<option value='0'>Select a Province</option>";
+        $option = "<option>Select a Province</option>";
         $provinces = Province::all();
         foreach ($provinces as $province) {
             $option .= '<option value="' . $province->prop_id . '">' . $province->prop_nama . '</option>';
@@ -94,7 +95,7 @@ class UsersController extends Controller
         $id = $request->provID;
         $regencies = Dati2::where('prop_id', $id)->get();
 
-        $option = "<option value='0'>Select a Regency</option>";
+        $option = "<option>Select a Regency</option>";
         foreach ($regencies as $regency) {
             $option .= '<option value="' . $regency->dati2_id . '">' . $regency->dati2_nama . '</option>';
         }
@@ -186,6 +187,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        // dd($user);
         if ($user->is(auth()->user())) {
             return redirect()->route('users.index')
                 ->withErrors(__('You cannot delete yourself.'));
