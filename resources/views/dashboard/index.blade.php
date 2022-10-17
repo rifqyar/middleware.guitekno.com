@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -93,22 +93,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body" style="height: 500px">
-                        <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div>
-                        {{-- <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-4">
                 <div class="card" style="height: 400px">
                     <h6 class="card-header"><b>Transaksi(Bank)</b></h6>
@@ -123,7 +107,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card" style="height: 400px">
-                    <h6 class="card-header"><b>Transaksi</b></h6>
+                    <h6 class="card-header"><b>Transaksi Harian</b></h6>
                     <div class="card-body p-0">
                         <div id="divTxDaily" style="height: 100%"></div>
                     </div>
@@ -132,10 +116,9 @@
             <div class="col-md-4">
                 <div class="row" style="height:400px;">
                     <div class="col-md-12">
-                        <div class="card text-center" style="height: 192px">
-                            {{-- <h6 class="card-header">Jenis Transaksi</h6> --}}
+                        <div class="card" style="height: 192px">
+                            <h6 class="card-header"><b>Jenis Transaksi</b></h6>
                             <div class="card-body p-0">
-                                {{-- <p>Jenis Transaksi</p> --}}
                                 @if ($data['jenis'])
                                     <div id="divTxType"style="height: 100%"></div>
                                 @else
@@ -145,8 +128,8 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card text-center" style="height: 190px">
-                            {{-- <h6 class="card-header">Status Transaksi</h6> --}}
+                        <div class="card" style="height: 190px">
+                            <h6 class="card-header"><b>Status Transaksi</b></h6>
                             <div class="card-body p-0">
                                 @if ($data['jenis'])
                                     <div id="divTxStatus" style="height: 100%"></div>
@@ -266,6 +249,22 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" style="height: 500px">
+                        <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div>
+                        {{-- <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- <?php //echo phpinfo();
@@ -357,20 +356,26 @@
             pieSeries.ticks.template.disabled = true;
             pieSeries.labels.template.disabled = true;
 
+            
             var rgm = new am4core.RadialGradientModifier();
             rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
             pieSeries.slices.template.fillModifier = rgm;
             pieSeries.slices.template.strokeModifier = rgm;
             pieSeries.slices.template.strokeOpacity = 0.4;
             pieSeries.slices.template.strokeWidth = 0;
-
+            
+            pieSeries.slices.template.events.on("hit", function(ev) {
+  console.log("clicked on ", ev.target);
+}, this)
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
             var markerTemplate = chart.legend.markers.template;
             markerTemplate.width = 12;
             markerTemplate.height = 12;
         }
-
+        // $('[role="menuitem"]').on('click',function(){
+        //     console.log('ooo')
+        // })
         function createTxBank(data) {
 
             // Apply chart themes
@@ -483,7 +488,7 @@
             am4core.useTheme(am4themes_animated);
             // Themes end
             var data = <?= json_encode($data['status'], true) ?>;
-            console.log(data, "stack");
+            // console.log(data)
             // Create chart instance
             var chart = am4core.create("divTxStatus", am4charts.XYChart);
             let obj = {
@@ -521,12 +526,29 @@
 
             // Create series
             function createSeries(field, name) {
+                console.log(name, "name")
                 var series = chart.series.push(new am4charts.ColumnSeries());
                 series.dataFields.valueX = field;
                 series.dataFields.categoryY = "year";
                 series.columns.template.height = 50
                 series.stacked = true;
                 series.name = name;
+
+                series.columns.template.tooltipText = "{name}: [bold]{valueX}[/]";
+
+                console.log(field, "field")
+
+                if (field === 'Failed') {
+                    series.stroke = am4core.color("#fc031c")
+                    series.fill = am4core.color("#fc031c")
+                }
+                // else if (field === 'Process') {
+                //     series.stroke = am4core.color("#ffff00")
+                //     series.fill = am4core.color("#ffff00")
+                // } else if (field === 'Success') {
+                //     series.stroke = am4core.color("#02d91b")
+                //     series.fill = am4core.color("#02d91b")
+                // }
 
                 var labelBullet = series.bullets.push(new am4charts.LabelBullet());
                 labelBullet.locationX = 0.5;
@@ -536,8 +558,6 @@
             for (const property in obj) {
                 if (property != "year") createSeries(property, property)
             }
-            // obj(e => {
-            // })
 
         }
         // function createTxStatus(data) {

@@ -2,7 +2,7 @@
     <div class="table-responsive">
         <table class="table t-overbooking" style="width: 100%">
             <thead>
-                <tr>    
+                <tr>
                     {{-- <th>Action</th> --}}
                     <th>Status</th>
                     <th>Partner ID</th>

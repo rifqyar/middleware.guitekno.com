@@ -84,7 +84,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/jquery-bootstrap-wizard@1.4.2/jquery.bootstrap.wizard.min.js"></script>
     @yield('scripts')
-
     @hook('app:scripts')
 </body>
 

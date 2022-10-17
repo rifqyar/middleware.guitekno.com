@@ -30,6 +30,8 @@
         "ext-json": "*",
         "akaunting/laravel-setting": "^1.2",
         "anhskohbo/no-captcha": "3.*",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "mpdf/mpdf": "8.0.13",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.3",
@@ -41,14 +43,14 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.3",
+        "phpoffice/phpspreadsheet": "^1.25",
         "proengsoft/laravel-jsvalidation": "^4.0.0",
         "spatie/laravel-query-builder": "^5.0",
         "vanguardapp/activity-log": "^4.0",
         "vanguardapp/announcements": "^4.0",
         "vanguardapp/plugins": "^4.0",
         "webpatser/laravel-countries": "dev-master",
-        "yajra/laravel-datatables": "9.0",
-        "yajra/laravel-oci8": "^9"
+        "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

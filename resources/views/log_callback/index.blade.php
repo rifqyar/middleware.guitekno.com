@@ -65,8 +65,6 @@
                                     </div>
                                 </div>
 
-
-
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -86,6 +84,7 @@
                                 <th>Callback Pertama</th>
                                 <th>Callback Terakhir</th>
                                 <th>Sevice Type</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="data">
@@ -99,7 +98,7 @@
 
 @stop
 
-@section('script')
+@section('scripts')
     <script>
         $(function() {
             renderTable()
@@ -139,8 +138,12 @@
                         data: 'service',
                         name: 'service'
                     },
+                    {
+                        data: 'status_message',
+                        name: 'status_message'
+                    }
                 ],
-                lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+                lengthMenu: [10, 20, 50, 100, 200, 500],
                 columnDefs: [{
                     orderable: false,
                     targets: 0

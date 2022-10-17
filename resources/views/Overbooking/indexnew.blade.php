@@ -4,12 +4,12 @@
 @section('page-heading', __('Transaction - Overbooking'))
 
 @section('breadcrumbs')
-    <li class="breadcrumb-item">
+    {{-- <li class="breadcrumb-item">
         @lang('Log Transaction')
     </li>
     <li class="breadcrumb-item active">
         @lang('SIPD')
-    </li>
+    </li> --}}
 @stop
 @section('content')
     <script type='text/javascript'
@@ -20,7 +20,8 @@
                 <h4>Transaksi</h4>
                 <div>
                     <h6>Filter</h6>
-                    <form class="form-group" method="GET" action="javascript:void(0)">
+                    <form class="form-group" method="post" action="/transaksi/export/file">
+                        @csrf
                         <div class="row">
                             <div class="col-md-4">
                                 <p>Bank Pengirim</p>
@@ -67,18 +68,54 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-8 mt-2">
+                                <p>Tanggal Pengiriman</p>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select class="form-control filter" name="parameter" onchange="formDate()"
+                                            id="parameter">
+                                            <option value="">All</option>
+                                            <option value="<=">
+                                                <= </option>
+                                            <option value=">="> >= </option>
+                                            <option value="between">Between</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control filter" name="start_date" id="start_date"
+                                            readonly>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control filter" name="end_date" id="end_date"
+                                            readonly>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
-                                <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button> <button
-                                    type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
+                                <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
+                                <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
+                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Export
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                        name="button" value="excel">Excel</button>
+                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                        name="button" value="pdf">Pdf</button>
+                                </div>
                             </div>
                         </div>
 
                     </form>
                 </div>
                 <div class="table-responsive">
-                    <table class="table t-overbooking" style="width: 100%">
+                    <table class="table t-overbooking" style="width: 100%;font-size:12px">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -92,12 +129,28 @@
                                 <th>Tanggal Pengiriman</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
+                                <th>Callback</th>
                             </tr>
                         </thead>
                         <tbody>
 
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalCallback">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Callback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
                 </div>
             </div>
         </div>
@@ -110,6 +163,12 @@
         $(document).ready(function() {
             console.log("ready!");
             render()
+            $('#exportExcel').on('click', function(e) {
+                // window.location.replace('/transaksi/export/excel')
+
+                // $(location).href('/transaksi/export/excel')
+
+            })
         });
 
         function render() {
@@ -137,14 +196,16 @@
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
                         data.ras_id = $('#ras_id').val()
+                        data.parameter = $('#parameter').val()
+                        data.start_date = $('#start_date').val()
+                        data.end_date = $('#end_date').val()
 
                     }
                 },
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
+                        orderable: false
                     },
                     // {
                     //     data: 'tbk_partnerid'
@@ -182,6 +243,9 @@
                             sort: 'ras_id'
                         }
                         // orderable: false,
+                    },
+                    {
+                        data: 'callback'
                     }
                     // {
                     //     data: 'Actions',
@@ -219,6 +283,36 @@
                 });
                 table.table().draw();
             });
+        }
+
+        function openDetailCallback(id) {
+            $.ajax({
+                    url: "/transaksi/callback/" + id,
+                })
+                .done(function(data) {
+                    res = data.data.lcb_request;
+                    var res = JSON.parse(res);
+                    var html = `<pre>${JSON.stringify(res, undefined, 4)}</pre>`
+                    $('.modal-body').html(html)
+                    $('#modalCallback').modal('show')
+                    // swal("Data dari bank!", html);
+
+                    console.log(data.data)
+                });
+        }
+
+        function formDate() {
+            var value = $('#parameter').val()
+            if (value == 'between') {
+                $('#end_date').attr("readonly", false);
+                $('#start_date').attr("readonly", false);
+            } else if (value == '<=' ||
+                value == '>=') {
+                $('#start_date').attr("readonly", false);
+            } else {
+                $('#end_date').attr("readonly", true);
+                $('#start_date').attr("readonly", true);
+            }
         }
     </script>
 
