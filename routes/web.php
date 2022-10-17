@@ -152,7 +152,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             ->middleware('permission:permissions.manage');
 
         Route::resource('permissions', 'PermissionsController')->middleware('permission:permissions.manage');
-
     });
 
     /**
@@ -294,8 +293,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             });
         });
 
-        Route::middleware(['permission:master.data_refApiStatus'])->group(function() {
-            Route::prefix('api-status')->group(function() {
+        Route::middleware(['permission:master.data_refApiStatus'])->group(function () {
+            Route::prefix('api-status')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getApiStatus')->name('masterdata.refApiStatus');
                 Route::get('get/{id}', 'MasterData\ApiStatus\MainController@getApiStatus');
                 Route::post('/', 'MasterData\ApiStatus\MainController@post');
@@ -319,6 +318,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
     Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
+
+
+
+    // Overbooking New
+    Route::get('transaksi', 'Overbooking\OverbookingController@index');
+    Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
 });
 
 
