@@ -31,6 +31,7 @@
         "akaunting/laravel-setting": "^1.2",
         "anhskohbo/no-captcha": "3.*",
         "barryvdh/laravel-dompdf": "^2.0",
+        "mpdf/mpdf": "8.0.13",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.3",

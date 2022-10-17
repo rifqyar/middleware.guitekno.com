@@ -81,7 +81,7 @@ class OverbookingController extends Controller
             ->make(true);
     }
 
-    public function exportToExcel(Request $request)
+    public function exportToFile(Request $request)
     {
         if ($request->parameter) {
             if ($request->parameter == 'between') {
@@ -95,7 +95,7 @@ class OverbookingController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         $sheet->setCellValue('A1', 'Transaksi Overbooking');
         $sheet->setCellValue('A2', 'Tanggal ' . $tanggal);
         $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
@@ -149,11 +149,17 @@ class OverbookingController extends Controller
         $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         // $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         // $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-
+        $startRow--;
         $spreadsheet->getActiveSheet()
             ->getStyle("A1:I{$startRow}")
             ->applyFromArray($this->fontStyle);
 
+        if ($request->button == 'pdf') {
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
+            $path = storage_path("/app/transaksi_overbooking.pdf");
+            $writer->save($path);
+            return response()->download($path, 'transaksi_overbooking' . time() . '.pdf');
+        }
         $writer = new Xlsx($spreadsheet);
         $path = storage_path("/app/transaksi_overbooking.xlsx");
         $writer->save($path);

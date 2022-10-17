@@ -20,7 +20,7 @@
                 <h4>Transaksi</h4>
                 <div>
                     <h6>Filter</h6>
-                    <form class="form-group" method="post" action="/transaksi/export/excel">
+                    <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
                             <div class="col-md-4">
@@ -99,7 +99,16 @@
                             <div class="col">
                                 <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
                                 <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
-                                <button type="submit" class="btn btn-warning mb-2" id="exportExcel">Export</button>
+                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Export
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                        name="button" value="excel">Excel</button>
+                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                        name="button" value="pdf">Pdf</button>
+                                </div>
                             </div>
                         </div>
 

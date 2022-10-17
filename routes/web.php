@@ -305,7 +305,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('transaksi', 'Overbooking\OverbookingController@index');
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
-    Route::post('transaksi/export/excel', 'Overbooking\OverbookingController@exportToExcel');
+    Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
 });
 
 
