@@ -44,7 +44,7 @@
     .nav-pills > li.active > a > .icon-circle {
         background-color: #179970;
     }
-    .nav-pills > li.active > a.active {
+    .nav-pills > li.active > a {
         color: #179970;
     }
     .icon-circle.checked {
@@ -151,19 +151,19 @@
 
             {{-- <div class="wizard-footer p-4">
                 <div class="pull-right">
-                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-next"> 
+                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-next">
                         @lang('Next')
                         <i class="fas fa-chevron-right mr-2"></i>
                     </button>
 
-                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-finish"> 
+                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-finish">
                         @lang('Finish')
                         <i class="fas fa-checklist mr-2"></i>
                     </button>
                 </div>
 
                 <div class="pull-left">
-                    <button class="btn btn-warning btn-rounded float-right btn-previous"> 
+                    <button class="btn btn-warning btn-rounded float-right btn-previous">
                         <i class="fas fa-chevron-left mr-2"></i>
                         @lang('Back')
                     </button>

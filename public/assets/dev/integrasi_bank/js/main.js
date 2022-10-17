@@ -3,7 +3,7 @@ $(document).ready(function(){
         'tabClass': 'nav nav-pills',
         'nextSelector': '.btn-next',
         'previousSelector': '.btn-previous',
-    
+
         onNext: function(tab, navigation, index) {
             var formID = $(tab).children().attr('href')
             var valid = validation(formID)
@@ -27,7 +27,24 @@ $(document).ready(function(){
                 if(formID == '#data-bank'){
                     $('#endpoint-bank').find('form').find('input[name="bank_secret_show"]').val(bank_name)
                 }
-                
+
+                if (formID == '#endpoint-bank'){
+                    $('#konfirm').find('#bank_id').html($('#bEndpoint_res_data').find('input[name="bank_secret_show"]').val())
+                    $('#konfirm').find('#client_id').html($('#bank_res_data').find('input[name="client_id"]').val())
+                    $('#konfirm').find('#client_secret').html($('#bank_res_data').find('input[name="client_secret"]').val())
+                    $('#konfirm').find('#username').html($('#bank_res_data').find('input[name="username"]').val())
+                    $('#konfirm').find('#password').html($('#bank_res_data').find('input[name="password"]').val())
+
+                    $('#konfirm').find('#status').html($('#bEndpoint_res_data').find('input[name="status"]').val() == '00' ? 'staging' : 'production')
+
+                    $('#konfirm').find('#endpoint_getToken').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[0].value)
+                    $('#konfirm').find('#endpoint_inquiry').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[1].value)
+                    $('#konfirm').find('#endpoint_overbooking').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[2].value)
+                    $('#konfirm').find('#endpoint_checkstatus').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[3].value)
+                    $('#konfirm').find('#endpoint_getHistory').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[4].value)
+                    $('#konfirm').find('#endpoint_callbackSIPD').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[5].value)
+                }
+
                 return true;
 
 
@@ -72,21 +89,21 @@ $(document).ready(function(){
             //check number of tabs and fill the entire row
             var $total = navigation.find('li').length;
             $width = 100/$total;
-    
+
             navigation.find('li').css('width',$width + '%');
-    
+
         },
-    
+
         onTabClick : function(tab, navigation, index){
             return false
         },
-    
+
         onTabShow: function(tab, navigation, index) {
             var $total = navigation.find('li').length;
             var $current = index+1;
-    
+
             var $wizard = navigation.closest('.wizard-card');
-    
+
             // If it's the last tab then hide the last button and show the finish instead
             if($current >= $total) {
                 $($wizard).find('.btn-next').hide();
@@ -95,11 +112,11 @@ $(document).ready(function(){
                 $($wizard).find('.btn-next').show();
                 $($wizard).find('.btn-finish').hide();
             }
-    
+
             //update progress
             var move_distance = 100 / $total;
             move_distance = move_distance * (index) + move_distance / 2;
-    
+
             $wizard.find($('.progress-bar')).css({width: move_distance + '%'});
             //e.relatedTarget // previous tab
             var id = $(tab).attr('id')
@@ -116,9 +133,9 @@ function getAvailBank(formID){
     apiCall('master-data/bank-secret/get-avail', 'GET', '', () => {}, () => {}, null, (res) => {
         var option = '<option></option>'
         selectComponent.append(option)
-        
+
         res.data.map((val) => {
-            option += `<option value="${val.bank_id}">${val.bank_id} - ${val.bank_name}<option/>` 
+            option += `<option value="${val.bank_id}">${val.bank_id} - ${val.bank_name}<option/>`
             // selectComponent.append(option)
         })
 
@@ -159,6 +176,8 @@ function validation(formID){
 // })
 
 function saveData(){
+    $('#endpointData').html('')
+
     postData('master-data/bank-secret', 'bank_res_data', 'POST', (res) => {
         var dbs_id = res
 
@@ -166,15 +185,66 @@ function saveData(){
         var html = $('#bEndpoint_res_data').html()
         $('#endpointData').append(html)
 
-        postData('master-data/bank-endpoint/add-wizard', 'endpointData', 'POST', (res) => {
-            console.log(res)
+        var formData  = new FormData()
+        let endpoint = $('#endpointData').find('input[name="endpoint"]')
+        let endpointType = $('#endpointData').find('input[name="endpoint_type"]')
+
+        for (let i = 0; i < endpoint.length; i++) {
+            formData.append(`endpoint[${i}]`, $(endpoint[i]).val())
+        }
+
+        for (let i = 0; i < endpointType.length; i++) {
+            formData.append(`endpoint_type[${i}]`, $(endpointType[i]).val())
+        }
+
+        formData.append('status', $('input[name="status"]').val())
+        formData.append('bank_secret', $('input[name="bank_secret"]').val())
+
+        $.ajax({
+            url: `${$('meta[name=baseurl]').attr('content')}master-data/bank-endpoint/add-wizard`,
+            method: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: () => {
+                swal({
+                    title: 'Loading...',
+                    content: {
+                      element: "i",
+                      attributes: {
+                        className: "fas fa-spinner fa-spin text-large",
+                      },
+                    },
+                    buttons: false,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                });
+            }, success: (res) => {
+                swal.close()
+                console.log(res)
+                if (res.status.code == 200){
+                    swal(
+                        "Sukses menambahkan integrasi bank!",
+                        "Berhasil menambahkan integrasi bank, halaman akan di reload",
+                        "success"
+                    );
+
+                    window.location.reload()
+                }
+            }
         })
+        // postData('master-data/bank-endpoint/add-wizard', 'endpointData', 'POST', (res) => {
+        //     console.log(res)
+        // })
     })
 }
 
 function postData(url, form_name, method, callback){
 
-    apiCall(url, method,form_name, 
+    apiCall(url, method,form_name,
     () => {
         swal({
             title: 'Saving Data...',
@@ -198,7 +268,7 @@ function postData(url, form_name, method, callback){
                 position: 'top-right'
             })
             swal.close()
-            
+
             callback(res.id)
         }
     }, true)
@@ -210,7 +280,7 @@ function getBankSecret(){
     apiCall('master-data/bank-endpoint/get-banksecret', 'GET', '', () => {}, () => {}, null, (res) => {
         var option = '<option></option>'
         res.data.map((val) => {
-            option += `<option value="${val.id}">${val.bank_name}<option/>` 
+            option += `<option value="${val.id}">${val.bank_name}<option/>`
         })
         selectComponent.append(option)
     }, true);

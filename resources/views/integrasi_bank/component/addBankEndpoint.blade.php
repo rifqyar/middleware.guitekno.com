@@ -89,7 +89,7 @@
                     <div class="form-group">
                         <label for="endpoint_type">Endpoint Type</label>
                         <strong>Check Status</strong>
-                        <input name="endpoint_type" class="form-control required" readonly value="checkStatus" style="display: none"/>
+                        <input name="endpoint_type" class="form-control required" readonly value="oYOJnbuLbSgt3Mv" style="display: none"/>
                     </div>
                 </div>
                 <div class="col-12 col-md-12 col-sm-12">
@@ -143,11 +143,11 @@
 
         <div class="row">
             <div class="col-12 col-md-12">
-                <button class="btn btn-primary btn-rounded float-right ml-3 btn-next"> 
+                <button class="btn btn-primary btn-rounded float-right ml-3 btn-next">
                     @lang('Next')
                     <i class="fas fa-chevron-right mr-2"></i>
                 </button>
-                <button class="btn btn-warning btn-rounded float-right btn-previous"> 
+                <button class="btn btn-warning btn-rounded float-right btn-previous">
                     <i class="fas fa-chevron-left mr-2"></i>
                     @lang('Back')
                 </button>

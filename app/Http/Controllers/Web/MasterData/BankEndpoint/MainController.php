@@ -16,7 +16,7 @@ class MainController extends Controller
      */
     public function getBankSecret(){
         $data = Model::getDBS();
-        
+
         return response()->json([
             'status' => [
                 'code' => 200,
@@ -49,24 +49,48 @@ class MainController extends Controller
     }
 
     public function postWizard(Request $req){
-        $rawData = $req->post('resData');
+        $bank_secret = $req->bank_secret;
+        $status = $req->status;
+
         $arrData = [];
 
-        for ($i=0; $i < count($rawData); $i++) { 
-            if ($rawData[$i]['name'] != 'bank_secret_show'){
-                if ($rawData[$i]['name'] == 'status'){
-                    $arrData['status'] = $rawData[1]['value'];
-                } else if ($rawData[$i]['name'] == 'bank_secret'){
-                    $arrData['dbs_id'] = $rawData[0]['value'];
-                } else if($rawData[$i]['name'] == 'endpoint') {
-                    $arrData['dbe_endpoint'] = $rawData[$i]['value'];
-                } else if($rawData[$i]['name'] == 'endpoint_type') {
-                    $arrData['ret_id'] = $rawData[$i]['value'];
-                }
-            }
+        if (count($req->endpoint) > 0){
+            try {
+                for ($i=0; $i < count($req->endpoint); $i++) {
+                    $arrData = array(
+                        'bank_secret' => $bank_secret,
+                        'endpoint' => $req->endpoint[$i],
+                        'endpoint_type' => $req->endpoint_type[$i],
+                        'status' => $status,
+                    );
 
-            if (count($arrData) >= 4){
-                
+                    $arrSpParam = ['bank_secret', 'endpoint', 'endpoint_type', 'status'];
+                    $rawSpParam = [];
+
+                    foreach ($arrSpParam as $arrV) {
+                        $rawSpParam[$arrV] = null;
+                    }
+
+                    $spParam = array_intersect_key($arrData, $rawSpParam);
+                    $rawQuery = Library::genereteDataQuery($spParam);
+                    $query = 'CALL sp_insert_bankEndpoint ' . $rawQuery['query'];
+                    DB::statement($query);
+                }
+
+                return response()->json([
+                    'status' => [
+                        'code' => 200,
+                        'msg' => 'OK'
+                    ], 'detail' => 'Process Running Successfully'
+                ], 200);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => [
+                        'code' => 500,
+                        'msg' => 'Error',
+                    ],
+                    'detail' => $th
+                ], 500);
             }
         }
     }
