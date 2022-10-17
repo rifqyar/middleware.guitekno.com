@@ -41,15 +41,14 @@
         top: -2px;
         z-index: 100
     }
-    .nav-pills > li.active > a:after {
+    .nav-pills > li.active > a > .icon-circle {
         background-color: #179970;
     }
-    .nav-pills > li.active > a {
+    .nav-pills > li.active > a.active {
         color: #179970;
     }
     .icon-circle.checked {
         border-color: #179970;
-        background-color: #179970
     }
     .icon-circle [class*="fas "] {
         position: absolute;
@@ -71,39 +70,44 @@
     }
 </style>
 <div class="container-fluid">
-    <div class="card px-0 mt-3 mb-4">
-        <div class="container px-0 py-0 pt-3 mb-4">
-            <div class="row justify-content-center">
-                <p>
-                    <h4>Tambah Integrasi Bank</h4>
-                </p>
-                <span>input data bank</span>
+    <div id="bank_res_data"></div>
+    <div id="bEndpoint_res_data"></div>
+    <div id="endpointData"></div>
+
+    <div class="wizard-container">
+        <div class="card px-0 mt-3 mb-2 wizard-card">
+            <div class="wizard-header mt-4">
+                <div class="row justify-content-center">
+                    <p>
+                        <h4>Tambah Integrasi Bank</h4>
+                    </p>
+                </div>
             </div>
 
-            <div class="container mt-5">
+            <div class="wizard-navigation">
                 <div class="progress progress-with-circle" style="height: 2px">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 16.6667%;"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
                 </div>
 
                 <ul class="nav nav-pills" style="text-align: center !important">
-                    <li class="active" style="width: 33.3333%;">
-                        <a href="#about" data-toggle="tab" aria-expanded="true">
-                            <div class="icon-circle checked">
+                    <li class="active" id="step-1">
+                        <a href="#data-bank" data-toggle="tab" aria-expanded="true" >
+                            <div class="icon-circle">
                                 <i class="fas fa-lock"></i>
                             </div>
                             Data Bank
                         </a>
                     </li>
-                    <li style="width: 33.3333%;">
-                        <a href="#account" data-toggle="tab">
+                    <li id="step-2">
+                        <a href="#endpoint-bank" data-toggle="tab" >
                             <div class="icon-circle">
                                 <i class="fas fa-link"></i>
                             </div>
                             Endpoint Bank
                         </a>
                     </li>
-                    <li style="width: 33.3333%;">
-                        <a href="#address" data-toggle="tab">
+                    <li id="step-3" >
+                        <a href="#konfirm" data-toggle="tab">
                             <div class="icon-circle">
                                 <i class="fa fa-check-circle-o"></i>
                             </div>
@@ -111,12 +115,66 @@
                         </a>
                     </li>
                 </ul>
-
-                
             </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="data-bank">
+                    <div class="container">
+                        <div class="card p-4 mt-3">
+                            <div class="row justify-content-center">
+                                @include('integrasI_bank/component/addBankSecret')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="endpoint-bank">
+                    <div class="container">
+                        <div class="card p-4 mt-3">
+                            <div class="row justify-content-center">
+                                @include('integrasI_bank/component/addBankEndpoint')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="konfirm">
+                    <div class="container">
+                        <div class="card p-4 mt-3">
+                            <div class="row justify-content-center">
+                                @include('integrasI_bank/component/preview')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- <div class="wizard-footer p-4">
+                <div class="pull-right">
+                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-next"> 
+                        @lang('Next')
+                        <i class="fas fa-chevron-right mr-2"></i>
+                    </button>
+
+                    <button class="btn btn-primary btn-rounded float-right ml-3 btn-finish"> 
+                        @lang('Finish')
+                        <i class="fas fa-checklist mr-2"></i>
+                    </button>
+                </div>
+
+                <div class="pull-left">
+                    <button class="btn btn-warning btn-rounded float-right btn-previous"> 
+                        <i class="fas fa-chevron-left mr-2"></i>
+                        @lang('Back')
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div> --}}
         </div>
     </div>
 </div>
 
-<script src="{{url('assets/dev/integrasi_bank/js/main.js')}}"></script>
+    {{-- <script src="{{ url('assets/js/masterAPI.min.js') }}"></script> --}}
+    <script src="{{ url('assets/dev/masterAPI.js') }}"></script>
+    <script src="{{url('assets/dev/integrasi_bank/js/main.js')}}"></script>
 @stop

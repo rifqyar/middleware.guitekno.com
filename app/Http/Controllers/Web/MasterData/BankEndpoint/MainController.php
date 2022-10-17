@@ -48,6 +48,29 @@ class MainController extends Controller
         return response()->json($post->original, $post->original['status']['code']);
     }
 
+    public function postWizard(Request $req){
+        $rawData = $req->post('resData');
+        $arrData = [];
+
+        for ($i=0; $i < count($rawData); $i++) { 
+            if ($rawData[$i]['name'] != 'bank_secret_show'){
+                if ($rawData[$i]['name'] == 'status'){
+                    $arrData['status'] = $rawData[1]['value'];
+                } else if ($rawData[$i]['name'] == 'bank_secret'){
+                    $arrData['dbs_id'] = $rawData[0]['value'];
+                } else if($rawData[$i]['name'] == 'endpoint') {
+                    $arrData['dbe_endpoint'] = $rawData[$i]['value'];
+                } else if($rawData[$i]['name'] == 'endpoint_type') {
+                    $arrData['ret_id'] = $rawData[$i]['value'];
+                }
+            }
+
+            if (count($arrData) >= 4){
+                
+            }
+        }
+    }
+
     public function put(Request $req){
         $rawData = $req->post('resData');
         $arrData = [];

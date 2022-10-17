@@ -43,6 +43,14 @@ function fillResData(n, v, form_id){
     }
 }
 
+function fillResData2(n, v, form_id){
+    var resdata = $(`#${form_id}`);
+    var html = `<input type='hidden' name='${n}' value='${v}'>`;
+
+    var inputdata = resdata.find("input[name='"+n+"']")
+    resdata.append(html);
+}
+
 function apiCall(url, type, form_id, beforeAjax = null, errorAjax = null, header = null, callback, thrownError = true){
     var resData = form_id == '' ? null : $(`#${form_id}`).find("input[type='hidden']")
     var arr = new Array();

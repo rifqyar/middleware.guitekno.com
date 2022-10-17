@@ -35,6 +35,7 @@ class MainController extends Controller
         }
 
         $post = Model::postInsertUpdate($arrData, 'insert');
+        $post->original['id'] = $arrData['id'];
         return response()->json($post->original, $post->original['status']['code']);
     }
 

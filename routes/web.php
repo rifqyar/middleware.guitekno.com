@@ -288,6 +288,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('get-banksecret', 'MasterData\BankEndpoint\MainController@getBankSecret');
                 Route::get('get-endpoint', 'MasterData\BankEndpoint\MainController@getEndpointType');
                 Route::post('/', 'MasterData\BankEndpoint\MainController@post');
+                Route::post('/add-wizard', 'MasterData\BankEndpoint\MainController@postWizard');
                 Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
             });
@@ -319,7 +320,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
     Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
 
-
+    Route::get('integrasi-bank/add', function (){
+        return view('integrasi_bank/index');
+    });
 
     // Overbooking New
     Route::get('transaksi', 'Overbooking\OverbookingController@index');
