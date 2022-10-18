@@ -160,7 +160,7 @@
             </div> --}}
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="display: none">
                 <div class="card">
                     <div style="display: flex;justify-content:space-between">
                         <div>
@@ -356,14 +356,14 @@
             pieSeries.ticks.template.disabled = true;
             pieSeries.labels.template.disabled = true;
 
-            
+
             var rgm = new am4core.RadialGradientModifier();
             rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
             pieSeries.slices.template.fillModifier = rgm;
             pieSeries.slices.template.strokeModifier = rgm;
             pieSeries.slices.template.strokeOpacity = 0.4;
             pieSeries.slices.template.strokeWidth = 0;
-            
+
             pieSeries.slices.template.events.on("hit", function(ev) {
                 if(ev.target._uid =='id-1090'){
       console.log("non gaji");
