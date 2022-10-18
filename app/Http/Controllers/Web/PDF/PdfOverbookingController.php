@@ -20,11 +20,11 @@ class PdfOverbookingController extends Controller
             
             return $overbooking;
         }
-        // else {
-        //     $filter = isset($request->filter) ? $request->filter : '';
-        //     $overbooking = TrxOverBooking::getAll();
-        //     return $overbooking;
-        // }
+        else {
+            $filter = isset($request->filter) ? $request->filter : '';
+            $overbooking = TrxOverBooking::getAll();
+            return $overbooking;
+        }
         $data = [
             'overbooking' => $overbooking
         ];
