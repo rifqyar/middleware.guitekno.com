@@ -17,7 +17,7 @@ class IntegrasiBank extends Plugin
         return Item::create(__('Tambah integrasi Bank'))
             ->route('integrasi-bank')
             ->active("integrasi-bank")
-            ->icon('fas fa-link');
-            // ->permissions('master.data');
+            ->icon('fas fa-link')
+            ->permissions('add_integrasi');
     }
 }
