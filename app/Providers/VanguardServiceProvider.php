@@ -24,6 +24,7 @@ class VanguardServiceProvider extends BaseVanguardServiceProvider
         return [
             \Vanguard\Support\Plugins\Dashboard\Dashboard::class,
             \Vanguard\Support\Plugins\MasterData::class,
+            \Vanguard\Support\Plugins\IntegrasiBank::class,
             \Vanguard\Support\Plugins\LogCallback::class,
             // \Vanguard\Support\Plugins\TrxOverbooking::class,
             \Vanguard\Support\Plugins\HistoryOverbooking::class,

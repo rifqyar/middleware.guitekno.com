@@ -302,7 +302,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('integrasi-bank/add', function (){
         return view('integrasi_bank/index');
-    });
+    })->name('integrasi-bank');
 
     // Overbooking New
     Route::get('transaksi', 'Overbooking\OverbookingController@index');
