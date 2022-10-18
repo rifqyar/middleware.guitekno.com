@@ -24,7 +24,11 @@ class ApiUserController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $dat = json_encode($row);
-                $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View Ip List</a> |
+                // $btn = "<a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-primary btn-sm'>View Ip List</a> |
+                // <a href='javascript:editShowModal(`{$dat}`, `{$row->bank->bank_name}`)' class='btn btn-warning btn-sm'>Edit</a> |
+                // <a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-danger btn-sm'>Delete</a>
+                // ";
+                $btn = "
                 <a href='javascript:editShowModal(`{$dat}`, `{$row->bank->bank_name}`)' class='btn btn-warning btn-sm'>Edit</a> |
                 <a href='javascript:getIp(`{$row->bank_id}`)' class='btn btn-danger btn-sm'>Delete</a>
                 ";
