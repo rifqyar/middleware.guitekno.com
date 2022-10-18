@@ -13,23 +13,23 @@ class MasterData extends Plugin
      */
     public function sidebar()
     {
-        $refBank = Item::create(__('Ref Bank'))
+        $refBank = Item::create(__('Bank'))
             ->route('masterdata.refbank')
             ->active("master-data/bank");
 
-        $bankSecret = Item::create(__('Bank Secret'))
+        $bankSecret = Item::create(__('Koneksi'))
             ->route('masterdata.bankSecret')
             ->active("master-data/bank-secret");
 
-        $bankEndpoint = Item::create(__('Bank Endpoint'))
+        $bankEndpoint = Item::create(__('Endpoint'))
             ->route('masterdata.bankEndpoint')
             ->active("master-data/bank-endpoint*");
 
-        $refApiStatus = Item::create(__('Ref Api Status'))
+        $refApiStatus = Item::create(__('Kode Api Status'))
             ->route('masterdata.refApiStatus')
             ->active('master-data/api-status');
 
-        return Item::create(__('Master Data'))
+        return Item::create(__('Data Integrasi'))
             ->href('#masterData-dropdown')
             ->icon('fas fa-database')
             ->addChildren([
