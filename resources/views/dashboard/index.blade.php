@@ -254,9 +254,8 @@
                 <div class="card">
                     <div class="card-body" style="height: 500px">
                         <div class="embed-responsive embed-responsive-21by9">
-                            <embed src="http://103.245.225.162:3000/monitoring" type="">
                             <iframe class="embed-responsive-item"
-                                src="http://103.245.225.162:3000/monitoring"></iframe>
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
                         </div>
                         {{-- <div class="embed-responsive embed-responsive-21by9">
                             <iframe class="embed-responsive-item"
