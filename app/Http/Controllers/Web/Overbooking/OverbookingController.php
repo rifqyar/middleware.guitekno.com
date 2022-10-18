@@ -17,6 +17,7 @@ class OverbookingController extends Controller
 {
     private $headerStyle;
     private $fontStyle;
+    private $fontStylePdf;
     public function __construct()
     {
         $this->headerStyle = [
@@ -40,7 +41,20 @@ class OverbookingController extends Controller
 
         $this->fontStyle = [
             'font' => [
-                'size' => 11,
+                'size' => 12,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],
+            ],
+        ];
+
+        $this->fontStylePdf = [
+            'font' => [
+                'size' => 25,
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -150,16 +164,19 @@ class OverbookingController extends Controller
         // $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         // $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
         $startRow--;
-        $spreadsheet->getActiveSheet()
-            ->getStyle("A1:I{$startRow}")
-            ->applyFromArray($this->fontStyle);
 
         if ($request->button == 'pdf') {
+            $spreadsheet->getActiveSheet()
+                ->getStyle("A1:I{$startRow}")
+                ->applyFromArray($this->fontStylePdf);
             $writer = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
             $path = storage_path("/app/transaksi_overbooking.pdf");
             $writer->save($path);
             return response()->download($path, 'transaksi_overbooking' . time() . '.pdf');
         }
+        $spreadsheet->getActiveSheet()
+            ->getStyle("A1:I{$startRow}")
+            ->applyFromArray($this->fontStyle);
         $writer = new Xlsx($spreadsheet);
         $path = storage_path("/app/transaksi_overbooking.xlsx");
         $writer->save($path);

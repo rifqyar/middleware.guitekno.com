@@ -188,6 +188,7 @@
 
                 processing: true,
                 serverSide: true,
+                searching: false,
                 ajax: {
                     url: '/transaksi/form',
                     method: 'post',
@@ -222,7 +223,9 @@
                         orderable: false,
                     },
                     {
-                        data: 'tbk_recipient_account'
+                        data: 'tbk_recipient_account',
+                        responsivePriority: -1
+
                     },
                     {
                         data: 'tbk_amount'
@@ -234,7 +237,9 @@
                         data: 'tbk_execution_time'
                     },
                     {
-                        data: 'tbk_sp2d_desc'
+                        data: 'tbk_sp2d_desc',
+                        responsivePriority: -1
+
                     },
                     {
                         name: 'ras_id',
@@ -245,7 +250,9 @@
                         // orderable: false,
                     },
                     {
-                        data: 'callback'
+                        data: 'callback',
+                        responsivePriority: -1
+
                     }
                     // {
                     //     data: 'Actions',
