@@ -9,6 +9,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="baseurl" content="{{ asset('') }}">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <title>@yield('page-title') - {{ setting('app_name') }}</title>
 
@@ -81,8 +82,9 @@
         integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery-bootstrap-wizard@1.4.2/jquery.bootstrap.wizard.min.js"></script>
     @yield('scripts')
-
     @hook('app:scripts')
 </body>
 

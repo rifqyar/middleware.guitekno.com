@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -88,22 +88,6 @@
                                 <div class="text-muted float-right">Bank Teraktif</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body" style="height: 500px">
-                        <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div>
-                        {{-- <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -176,7 +160,7 @@
             </div> --}}
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" style="display: none">
                 <div class="card">
                     <div style="display: flex;justify-content:space-between">
                         <div>
@@ -261,6 +245,22 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" style="height: 500px">
+                        <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div>
+                        {{-- <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -356,6 +356,7 @@
             pieSeries.ticks.template.disabled = true;
             pieSeries.labels.template.disabled = true;
 
+
             var rgm = new am4core.RadialGradientModifier();
             rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
             pieSeries.slices.template.fillModifier = rgm;
@@ -363,13 +364,25 @@
             pieSeries.slices.template.strokeOpacity = 0.4;
             pieSeries.slices.template.strokeWidth = 0;
 
+            pieSeries.slices.template.events.on("hit", function(ev) {
+                if(ev.target._uid =='id-1090'){
+      console.log("non gaji");
+      localStorage.setItem("tx-type", 'non gaji');
+    }else{
+        localStorage.setItem("tx-type", 'gaji');
+        console.log("gaji ");
+        window.location.href='/history-overbooking'
+}
+}, this)
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
             var markerTemplate = chart.legend.markers.template;
             markerTemplate.width = 12;
             markerTemplate.height = 12;
         }
-
+        // $('[role="menuitem"]').on('click',function(){
+        //     console.log('ooo')
+        // })
         function createTxBank(data) {
 
             // Apply chart themes
@@ -531,6 +544,7 @@
                 series.columns.template.tooltipText = "{name}: [bold]{valueX}[/]";
 
                 console.log(field, "field")
+
                 if (field === 'Failed') {
                     series.stroke = am4core.color("#fc031c")
                     series.fill = am4core.color("#fc031c")

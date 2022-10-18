@@ -23,6 +23,21 @@ class TrxOverBooking extends Model
         return $this->hasOne(RefBank::class, 'bank_id', 'tbk_sender_bank_id');
     }
 
+    public function receiverBank()
+    {
+        return $this->hasOne(RefBank::class, 'bank_id', 'tbk_recipient_bank_id');
+    }
+
+    public function ras()
+    {
+        return $this->hasOne(RefApiStatus::class, 'ras_id', 'ras_id');
+    }
+
+    public function logCallback()
+    {
+        return $this->hasOne(LogCallback::class, 'lcb_partnerid', 'tbk_partnerid')->orderBy('lcb_created', 'desc');
+    }
+
     public static function typeTrx()
     {
         return DB::SELECT("SELECT

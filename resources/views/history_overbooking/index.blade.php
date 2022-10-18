@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('page-title', __('History Overbookng'))
-@section('page-heading', __('History Overbookng'))
+@section('page-title', __('History Overbooking'))
+@section('page-heading', __('History Overbooking'))
 
 @section('breadcrumbs')
     <li class="breadcrumb-item active">
-        @lang('History Overbookng')
+        @lang('History Overbooking')
     </li>
 @stop
 
@@ -25,7 +25,8 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-
+                    <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4"> <i
+                                class="fas fa-download"></i> Export to PDF</button></a>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
@@ -47,7 +48,7 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script>
-    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script> --}}
+    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script> --}}
+    <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script>
 
 @stop

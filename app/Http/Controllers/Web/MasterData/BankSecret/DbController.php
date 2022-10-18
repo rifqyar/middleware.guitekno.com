@@ -41,7 +41,6 @@ class DbController
         $spParam = array_intersect_key($data, $rawSpParam);
         $rawQuery = Library::genereteDataQuery($spParam);
         $query = 'CALL sp_' . $action . '_bankSecret ' . $rawQuery['query'];
-
         $exec = self::execQuery($query, 'statement');
         return $exec;
     }
@@ -67,7 +66,8 @@ class DbController
                 'status' => [
                     'code' => 200,
                     'msg' => 'OK'
-                ], 'detail' => 'Process Running Successfully'
+                ], 
+                'detail' => 'Process Running Successfully',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

@@ -16,7 +16,7 @@ class MainController extends Controller
      */
     public function getBankSecret(){
         $data = Model::getDBS();
-        
+
         return response()->json([
             'status' => [
                 'code' => 200,
@@ -46,6 +46,53 @@ class MainController extends Controller
 
         $post = Model::postInsertUpdate($arrData, 'insert');
         return response()->json($post->original, $post->original['status']['code']);
+    }
+
+    public function postWizard(Request $req){
+        $bank_secret = $req->bank_secret;
+        $status = $req->status;
+
+        $arrData = [];
+
+        if (count($req->endpoint) > 0){
+            try {
+                for ($i=0; $i < count($req->endpoint); $i++) {
+                    $arrData = array(
+                        'bank_secret' => $bank_secret,
+                        'endpoint' => $req->endpoint[$i],
+                        'endpoint_type' => $req->endpoint_type[$i],
+                        'status' => $status,
+                    );
+
+                    $arrSpParam = ['bank_secret', 'endpoint', 'endpoint_type', 'status'];
+                    $rawSpParam = [];
+
+                    foreach ($arrSpParam as $arrV) {
+                        $rawSpParam[$arrV] = null;
+                    }
+
+                    $spParam = array_intersect_key($arrData, $rawSpParam);
+                    $rawQuery = Library::genereteDataQuery($spParam);
+                    $query = 'CALL sp_insert_bankEndpoint ' . $rawQuery['query'];
+                    DB::statement($query);
+                }
+
+                return response()->json([
+                    'status' => [
+                        'code' => 200,
+                        'msg' => 'OK'
+                    ], 'detail' => 'Process Running Successfully'
+                ], 200);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => [
+                        'code' => 500,
+                        'msg' => 'Error',
+                    ],
+                    'detail' => $th
+                ], 500);
+            }
+        }
     }
 
     public function put(Request $req){

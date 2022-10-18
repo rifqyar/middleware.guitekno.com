@@ -95,6 +95,10 @@
         </div>
     </div>
 
+
+@stop
+
+@section('scripts')
     <script>
         $(function() {
             renderTable()
@@ -139,7 +143,7 @@
                         name: 'status_message'
                     }
                 ],
-                lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+                lengthMenu: [10, 20, 50, 100, 200, 500],
                 columnDefs: [{
                     orderable: false,
                     targets: 0

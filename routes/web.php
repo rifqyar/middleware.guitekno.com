@@ -48,6 +48,7 @@ Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProvider
 
 //Overbooking
 Route::get('overbooking', 'Overbooking\OverbookingController@index');
+Route::get('overbooking-pdf', 'PDF\PdfOverbookingController@generatePDF');
 
 /**
  * Impersonate Routes
@@ -153,7 +154,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             ->middleware('permission:permissions.manage');
 
         Route::resource('permissions', 'PermissionsController')->middleware('permission:permissions.manage');
-
     });
 
     /**
@@ -268,13 +268,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::get('get-banksecret', 'MasterData\BankEndpoint\MainController@getBankSecret');
                 Route::get('get-endpoint', 'MasterData\BankEndpoint\MainController@getEndpointType');
                 Route::post('/', 'MasterData\BankEndpoint\MainController@post');
+                Route::post('/add-wizard', 'MasterData\BankEndpoint\MainController@postWizard');
                 Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
             });
         });
 
-        Route::middleware(['permission:master.data_refApiStatus'])->group(function() {
-            Route::prefix('api-status')->group(function() {
+        Route::middleware(['permission:master.data_refApiStatus'])->group(function () {
+            Route::prefix('api-status')->group(function () {
                 Route::get('/', 'MasterData\MasterDataController@getApiStatus')->name('masterdata.refApiStatus');
                 Route::get('get/{id}', 'MasterData\ApiStatus\MainController@getApiStatus');
                 Route::post('/', 'MasterData\ApiStatus\MainController@post');
@@ -298,6 +299,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('user-service/ip/view/{bank}', 'ApiUser\IpController@getIpByDbs')->name('user-service.ip.index');
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
     Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
+
+    Route::get('integrasi-bank/add', function (){
+        return view('integrasi_bank/index');
+    })->name('integrasi-bank');
+
+    // Overbooking New
+    Route::get('transaksi', 'Overbooking\OverbookingController@index');
+    Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
+    Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
+    Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
 });
 
 

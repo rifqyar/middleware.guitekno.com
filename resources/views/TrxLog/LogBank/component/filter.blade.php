@@ -26,7 +26,7 @@
                     </select>
                 </div>
                 <div class="col-md-8 col-12">
-                    <input type="date" name="tgl" class="form-control" disabled>
+                    <input type="date" name="tgl" class="form-control" readonly>
                 </div>
             </div>
         {{-- </div> --}}

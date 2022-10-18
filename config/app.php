@@ -208,6 +208,7 @@ return [
         Vanguard\Services\Auth\TwoFactor\AuthyServiceProvider::class,
         Vanguard\Providers\VanguardServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -270,6 +271,7 @@ return [
         'Authy' => Vanguard\Services\Auth\TwoFactor\Facade::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Helper' => App\Helpers\Helper::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

@@ -19,4 +19,9 @@ class DatBankSecret extends Model
     {
         return count(DB::SELECT("SELECT * from dat_bank_secret x, ref_bank y where x.code_bank=y.bank_id"));
     }
+
+    public function bank()
+    {
+        return $this->hasOne(RefBank::class, 'bank_id', 'code_bank');
+    }
 }

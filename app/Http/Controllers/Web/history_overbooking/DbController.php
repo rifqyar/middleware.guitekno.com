@@ -15,7 +15,7 @@ class DbController
         $kabupaten = auth()->user()->present()->dati_id;
         $filter = rtrim(base64_decode($filter));
         $where = '';
-        
+
         switch ($role) {
             case 1:
             case 3:
@@ -41,7 +41,7 @@ class DbController
         $whereClause = '';
         if(count($excludeColumn) > 0){
             $whereClause = 'AND column_id NOT IN (';
-            for ($i=0; $i < count($excludeColumn); $i++) { 
+            for ($i=0; $i < count($excludeColumn); $i++) {
                 $whereClause .= "'$excludeColumn[$i]',";
             }
             $whereClause = rtrim($whereClause, ',');
