@@ -25,7 +25,7 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-                    <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4" onclick="showData()"> <i
+                    <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4"> <i
                                 class="fas fa-download"></i> Export to PDF</button></a>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">

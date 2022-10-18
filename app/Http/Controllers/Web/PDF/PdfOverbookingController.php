@@ -12,13 +12,13 @@ class PdfOverbookingController extends Controller
 {
     public function generatePDF(Request $req)
     {
+        $filter = isset($req->filter) ? $req->filter : '';
+        dd($filter);
         $overbooking = TrxOverBooking::getAll();
 
         $data = [
             'overbooking' => $overbooking
         ];
-
-        $print_date = date('dmY');
 
         $pdf = PDF::loadView('Overbooking/overbookingPDF', $data);
         $pdf->setPaper('A4', 'landscape');
