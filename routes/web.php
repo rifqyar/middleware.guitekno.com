@@ -5,6 +5,8 @@
  */
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
+use Vanguard\Http\Controllers\ChartController;
 use Vanguard\Models\LogCallback;
 use Vanguard\Models\RefApiStatus;
 
@@ -300,7 +302,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('user-service/ip/save', 'ApiUser\IpController@saveIp')->name('user-service.ip.save');
     Route::delete('user-service/ip/delete/{id}', 'ApiUser\IpController@deleteDatIp')->name('user-service.ip.delete');
 
-    Route::get('integrasi-bank/add', function (){
+    Route::get('integrasi-bank/add', function () {
         return view('integrasi_bank/index');
     })->name('integrasi-bank');
 
@@ -326,4 +328,10 @@ Route::group(['prefix' => 'install'], function () {
     Route::post('install-app', 'InstallController@install')->name('install.install');
     Route::get('complete', 'InstallController@complete')->name('install.complete');
     Route::get('error', 'InstallController@error')->name('install.error');
+});
+
+Route::prefix('chart')->group(function () {
+    Route::post('/tx-type', [ChartController::class, 'chartTxType']);
+    Route::post('/tx-bank', [ChartController::class, 'chartTxBank']);
+    Route::post('/tx-status', [ChartController::class, 'chartTxStatus']);
 });
