@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('page-title', __('History Overbookng'))
-@section('page-heading', __('History Overbookng'))
+@section('page-title', __('History Overbooking'))
+@section('page-heading', __('History Overbooking'))
 
 @section('breadcrumbs')
     <li class="breadcrumb-item active">
-        @lang('History Overbookng')
+        @lang('History Overbooking')
     </li>
 @stop
 

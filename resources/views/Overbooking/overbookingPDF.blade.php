@@ -1,16 +1,118 @@
 <head>
     <title>Overbooking - Middleware</title>
     {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url('assets/img/icons/kemendagri.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ url('assets/img/icons/kemendagri.png') }}" />
+    <style>
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table-sm th,
+        .table-sm td {
+            padding: 0.3rem;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .badge {
+                transition: none;
+            }
+        }
+
+        a.badge:hover,
+        a.badge:focus {
+            text-decoration: none;
+        }
+
+        .badge:empty {
+            display: none;
+        }
+
+        .btn .badge {
+            position: relative;
+            top: -1px;
+        }
+
+        .badge-pill {
+            padding-right: 0.6em;
+            padding-left: 0.6em;
+            border-radius: 10rem;
+        }
+
+        .text-light {
+            color: #f8f9fa !important;
+        }
+
+        a.text-light:hover,
+        a.text-light:focus {
+            color: #cbd3da !important;
+        }
+
+        .text-dark {
+            color: #343a40 !important;
+        }
+
+        a.text-dark:hover,
+        a.text-dark:focus {
+            color: #121416 !important;
+        }
+
+        .mr-2,
+        .mx-2 {
+            margin-right: 0.5rem !important;
+        }
+    </style>
 </head>
 <h1 style="text-align: center">Overbooking Transaction</h1>
 <p>Tanggal Cetak: {{ date('d F Y') }}</p>
 {{-- <p>Author: {{ auth()->user()->present()->nameOrEmail }}</p> --}}
-<table class="table" style="margin-left: -15px; font-size: 10px;width: 50%;">
+<table class="table" style="margin-left: -35px; font-size: 11.5px;width: 50%;">
     <thead>
         <tr>
             {{-- <th>Action</th> --}}

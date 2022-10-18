@@ -18,9 +18,13 @@ class PdfOverbookingController extends Controller
             'overbooking' => $overbooking
         ];
 
+        $print_date = date('dmY');
+
         $pdf = PDF::loadView('Overbooking/overbookingPDF', $data);
         $pdf->setPaper('A4', 'landscape');
+        $pdf->render();
         return $pdf->stream('Overbooking.pdf');
+        // return $pdf->download('Overbooking.pdf');
 
     }
 }
