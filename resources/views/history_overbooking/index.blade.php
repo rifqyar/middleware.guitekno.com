@@ -25,8 +25,10 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-                    <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4"> <i
-                                class="fas fa-download"></i> Export to PDF</button></a>
+                    {{-- <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4"> <i
+                                class="fas fa-download"></i> Export to PDF</button></a> --}}
+                    <button class="btn btn-danger ml-4" onclick="pdfByFilter()"> <i class="fas fa-download"></i> Export to
+                        PDF</button>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
@@ -48,7 +50,31 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script> --}}
-    <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script>
+    <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script>
+    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.js') }}"></script> --}}
 
+@stop
+
+@section('scripts')
+
+    <script>
+        function pdfByFilter() {
+            var field = $('.select-field').val();
+            var operator = $('.select-operator').val();
+            var value = $('.select-value').val();
+            var filter = btoa(`${field} ${operator} '${value}'`);
+            // console.log(filter, 'apa aja');
+            $.ajax({
+                type: "GET",
+                url: "overbooking-pdf",
+                data: {
+                    filter,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    location.href = "overbooking-pdf"
+                }
+            })
+        }
+    </script>
 @stop

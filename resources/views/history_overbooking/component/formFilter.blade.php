@@ -12,10 +12,11 @@
     <div class="col-md-3 col-12">
         <div class="form-group">
             <label for="field">Filter by</label>
-            <select name="field_name" id="" class="form-control required select-field" onchange="getValueColumn(this)" style="width: 100%">
+            <select name="field_name" id="" class="form-control required select-field"
+                onchange="getValueColumn(this)" style="width: 100%">
                 <option></option>
                 @foreach ($column as $c)
-                    <option value="{{$c->column_name}}">
+                    <option value="{{ $c->column_name }}">
                         @php
                             $name = '';
                             $name = strtolower($name);
@@ -23,7 +24,7 @@
                             $name = str_replace('_', ' ', $name);
                             echo ucwords(strtolower($name));
                         @endphp
-                    </option>    
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -32,13 +33,17 @@
     <div class="col-md-2 col-12">
         <div class="form-group">
             <label for="operator">Operator</label>
-            <select name="operator" id="" class="form-control required">
+            <select name="operator" id="" class="form-control required select-operator">
                 <option value="=">= (Equal)</option>
-                <option value="<>"><> (Not Equal)</option>
+                <option value="<>">
+                    <> (Not Equal)
+                </option>
                 <option value=">">> (Greater Than)</option>
-                <option value="<">< (Less Than)</option>
+                <option value="<">
+                    < (Less Than)</option>
                 <option value=">=">>= (Greater or Equal Than)</option>
-                <option value="<="><= (Less or Equal Than)</option>
+                <option value="<=">
+                    <= (Less or Equal Than)</option>
             </select>
         </div>
     </div>

@@ -1,6 +1,6 @@
 const mainComponent = $("#overbooking-component");
 function showData(e = "") {
-    console.log(e);
+    // console.log(e);
     if (
         (mainComponent.find("#form-filter").fadeOut(),
         "none" == mainComponent.find("#list-data").css("display") &&
@@ -131,7 +131,7 @@ function getValueColumn(e) {
     } else n.html("<option></option>");
 }
 function setFilter() {
-    const e = mainComponent.find("#form-filter").find(".form-container");
+    var e = mainComponent.find("#form-filter").find(".form-container");
     var n = mainComponent.find(e).find(".required");
     n.removeClass("is-invalid");
     for (var t = 0; t < n.length; t++)

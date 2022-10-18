@@ -135,10 +135,6 @@
             <tr>
                 @if ($data->status_text === 'Processed')
                     <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span></td>
-                    {{-- @elseif($data->status_text === 'Process')
-                    <td><span
-                            class="badge badge-pill bg-warning text-dark mr-2 text-dark">{{ $data->status_text }}</span>
-                    </td> --}}
                 @elseif($data->status_text === 'Success')
                     <td><span class="badge badge-pill bg-success mr-2 text-light">{{ $data->status_text }}</span></td>
                 @else

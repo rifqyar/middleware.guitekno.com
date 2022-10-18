@@ -10,19 +10,28 @@ use PDF;
 
 class PdfOverbookingController extends Controller
 {
-    public function generatePDF(Request $req)
+    public function generatePDF(Request $request)
     {
-        $filter = isset($req->filter) ? $req->filter : '';
-        dd($filter);
-        $overbooking = TrxOverBooking::getAll();
-
+        // dd($request->filter);
+        if($request->filter){
+            // $filter = $request->filter;
+            $filter = isset($request->filter) ? $request->filter : '';
+            $overbooking = TrxOverBooking::getAll($filter);
+            
+            return $overbooking;
+        }
+        // else {
+        //     $filter = isset($request->filter) ? $request->filter : '';
+        //     $overbooking = TrxOverBooking::getAll();
+        //     return $overbooking;
+        // }
         $data = [
             'overbooking' => $overbooking
         ];
+        dd($data);
 
         $pdf = PDF::loadView('Overbooking/overbookingPDF', $data);
         $pdf->setPaper('A4', 'landscape');
-        $pdf->render();
         return $pdf->stream('Overbooking.pdf');
         // return $pdf->download('Overbooking.pdf');
 
