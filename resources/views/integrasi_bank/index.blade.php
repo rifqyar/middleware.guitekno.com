@@ -122,7 +122,7 @@
                     <div class="container">
                         <div class="card p-4 mt-3">
                             <div class="row justify-content-center">
-                                @include('integrasI_bank/component/addBankSecret')
+                                @include('integrasi_bank/component/addBankSecret')
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                     <div class="container">
                         <div class="card p-4 mt-3">
                             <div class="row justify-content-center">
-                                @include('integrasI_bank/component/addBankEndpoint')
+                                @include('integrasi_bank/component/addBankEndpoint')
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                     <div class="container">
                         <div class="card p-4 mt-3">
                             <div class="row justify-content-center">
-                                @include('integrasI_bank/component/preview')
+                                @include('integrasi_bank/component/preview')
                             </div>
                         </div>
                     </div>
