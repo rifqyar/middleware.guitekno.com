@@ -93,22 +93,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body" style="height: 500px">
-                        <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div>
-                        {{-- <div class="embed-responsive embed-responsive-21by9">
-                            <iframe class="embed-responsive-item"
-                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
-                        </div> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-4">
                 <div class="card" style="height: 400px">
                     <h6 class="card-header"><b>Transaksi(Bank)</b></h6>
@@ -265,6 +249,22 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" style="height: 500px">
+                        <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div>
+                        {{-- <div class="embed-responsive embed-responsive-21by9">
+                            <iframe class="embed-responsive-item"
+                                src="https://middlewareapi.guitekno.com/monitoring"></iframe>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- <?php //echo phpinfo();
@@ -356,20 +356,26 @@
             pieSeries.ticks.template.disabled = true;
             pieSeries.labels.template.disabled = true;
 
+            
             var rgm = new am4core.RadialGradientModifier();
             rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
             pieSeries.slices.template.fillModifier = rgm;
             pieSeries.slices.template.strokeModifier = rgm;
             pieSeries.slices.template.strokeOpacity = 0.4;
             pieSeries.slices.template.strokeWidth = 0;
-
+            
+            pieSeries.slices.template.events.on("hit", function(ev) {
+  console.log("clicked on ", ev.target);
+}, this)
             chart.legend = new am4charts.Legend();
             chart.legend.position = "right";
             var markerTemplate = chart.legend.markers.template;
             markerTemplate.width = 12;
             markerTemplate.height = 12;
         }
-
+        // $('[role="menuitem"]').on('click',function(){
+        //     console.log('ooo')
+        // })
         function createTxBank(data) {
 
             // Apply chart themes
