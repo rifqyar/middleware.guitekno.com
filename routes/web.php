@@ -334,4 +334,5 @@ Route::prefix('chart')->group(function () {
     Route::post('/tx-type', [ChartController::class, 'chartTxType']);
     Route::post('/tx-bank', [ChartController::class, 'chartTxBank']);
     Route::post('/tx-status', [ChartController::class, 'chartTxStatus']);
+    Route::post('/tx-daily', [ChartController::class, 'chartTxDaily']);
 });
