@@ -132,8 +132,9 @@
     </thead>
     <tbody>
         @foreach ($overbooking as $data)
+            {{-- {{ dd($data) }} --}}
             <tr>
-                @if ($data->status_text === 'Processed')
+                {{-- @if ($data->status_text === 'Processed')
                     <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span></td>
                 @elseif($data->status_text === 'Success')
                     <td><span class="badge badge-pill bg-success mr-2 text-light">{{ $data->status_text }}</span></td>
@@ -141,18 +142,18 @@
                     <td><span class="badge badge-pill bg-danger mr-2 text-light">{{ $data->status_text }}</span></td>
                 @endif
 
-                <td>{{ $data->tbk_id }}</td>
+                <td>{{ $data->tbk_partnerid }}</td>
                 <td>{{ $data->sender_bank_name }}</td>
-                <td>{{ $data->tbk_sender_account }}</td>
+                <td>{{ $data->tbk_sender_account }}</td> --}}
                 {{-- <td>Rp {{ number_format($data->tbk_sender_amount, 3, ',', '.') }}</td> --}}
                 <td>Rp {{ number_format($data->tbk_sender_amount, 0, ',', '.') }}</td>
-                <td>{{ $data->tbk_notes }}</td>
+                {{-- <td>{{ $data->tbk_notes }}</td>
                 <td>{{ $data->recipient_bank_name }}</td>
                 <td>{{ $data->tbk_recipient_account }}</td>
                 <td>Rp {{ number_format($data->tbk_recipient_amount, 0, ',', '.') }}</td>
                 <td>{{ $data->tbk_execution_time }}</td>
                 <td>{{ $data->tbk_sp2d_desc }}</td>
-                <td>{{ $data->status_message }}</td>
+                <td>{{ $data->status_message }}</td> --}}
             </tr>
         @endforeach
 

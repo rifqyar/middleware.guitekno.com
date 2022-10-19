@@ -59,10 +59,11 @@
 
     <script>
         function pdfByFilter() {
+
             var field = $('.select-field').val();
             var operator = $('.select-operator').val();
             var value = $('.select-value').val();
-            var filter = btoa(`${field} ${operator} '${value}'`);
+            var filter = btoa(`${field} ${operator} '${value}' `);
             // console.log(filter, 'apa aja');
             $.ajax({
                 type: "GET",
