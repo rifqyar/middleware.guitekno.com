@@ -24,6 +24,18 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-4">
+                                <p>Transaksi ID</p>
+                                <input class="form-control filter datatable-input" placeholder="Invoice ID"
+                                    name="tbk_partnerid" id="tbk_partnerid" />
+                                {{-- {{ var_dump($param['rst_id']) }} --}}
+                            </div>
+                            <div class="col-md-4">
+                                <p>Nama Penerima</p>
+                                <input class="form-control filter datatable-input" placeholder="Nama Penerima"
+                                    name="tbk_recipent_name" id="tbk_recipent_name" />
+                                {{-- {{ var_dump($param['rst_id']) }} --}}
+                            </div>
+                            <div class="col-md-4">
                                 <p>Bank Pengirim</p>
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
@@ -36,7 +48,7 @@
                                 </select>
                                 {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-2">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -48,7 +60,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-2">
                                 <p>Type</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="type"
                                     id="type">
@@ -68,7 +80,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-8 mt-2">
+                            <div class="col-md-12 mt-2">
                                 <p>Tanggal Pengiriman</p>
                                 <div class="row">
                                     <div class="col-4">
@@ -90,9 +102,6 @@
                                             id="end_date" readonly>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -121,8 +130,9 @@
                                 <th>#</th>
                                 {{-- <th>Id Transaksi</th> --}}
                                 <th>Bank Pengirim</th>
-                                <th>Rekening Pengirim</th>
                                 <th>Bank Penerima</th>
+                                {{-- <th>Nama Pengirim</th> --}}
+                                <th>Nama Penerima</th>
                                 <th>Rekening Penerima</th>
                                 <th>Total Transfer</th>
                                 <th>Tipe</th>
@@ -130,6 +140,7 @@
                                 <th>Keterangan</th>
                                 <th>Status</th>
                                 <th>Callback</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -195,6 +206,8 @@
                     url: '/transaksi/form',
                     method: 'post',
                     data: function(data) {
+                        data.tbk_partnerid = $('#tbk_partnerid').val()
+                        data.tbk_recipent_name = $('#tbk_recipent_name').val()
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
@@ -218,12 +231,14 @@
                         orderable: false,
                     },
                     {
-                        data: 'tbk_sender_account'
-                    },
-                    {
                         data: 'receiver_bank.bank_name',
                         orderable: false,
                     },
+                    {
+                        data: 'tbk_recipent_name',
+                        responsivePriority: -1
+                    },
+
                     {
                         data: 'tbk_recipient_account',
                         responsivePriority: -1
@@ -252,33 +267,19 @@
                         // orderable: false,
                     },
                     {
-                        data: 'callback',
+                        data: 'Callback',
                         responsivePriority: -1
 
-                    }
-                    // {
-                    //     data: 'Actions',
-                    //     responsivePriority: -1
-                    // },
+                    },
+                    {
+                        data: 'Actions',
+                        responsivePriority: -1
+                    },
                 ],
             });
 
             $('#kt_search').on('click', function(e) {
                 e.preventDefault();
-                // var params = {};
-                // $('.datatable-input').each(function() {
-                //     var i = $(this).data('col-index');
-                //     console.log($(this).val())
-                //     if (params[i]) {
-                //         params[i] += '|' + $(this).val();
-                //     } else {
-                //         params[i] = $(this).val();
-                //     }
-                // });
-                // $.each(params, function(i, val) {
-                //     // apply search params to datatable
-                //     table.column(i).search(val ? val : '', false, false);
-                // });
                 table.table().draw();
             });
 
