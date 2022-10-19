@@ -4,6 +4,7 @@
     {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url('assets/img/icons/kemendagri.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ url('assets/img/icons/kemendagri.png') }}" />
     <style>
@@ -132,7 +133,7 @@
     </thead>
     <tbody>
         @foreach ($overbooking as $data)
-            {{-- {{ dd($data) }} --}}
+            {{ dd($data) }}
             <tr>
                 @if ($data->status_text === 'Processed')
                     <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span></td>

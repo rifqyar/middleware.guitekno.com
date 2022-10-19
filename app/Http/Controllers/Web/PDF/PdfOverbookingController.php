@@ -15,27 +15,25 @@ class PdfOverbookingController extends Controller
     {
         // $filter = base64_decode($request->filter);
 
-        $table = $request->field;
-        $parameters = $request->operator;
-        $value = $request->value;
-        // dd($value);
-
         // $overbooking = TrxOverBooking::getAll();
         // $overbooking = DB::select("SELECT * FROM vw_Overbooking_H where {$field} $operator '$value' ");
 
-        // $overbooking = DB::table('vw_Overbooking_H')->where('$field', '$operator', '$value')->get();
-        $overbooking = DB::select("SELECT * from vw_Overbooking_H where $table $parameters '$value'");
+        if($request->ajax() == true)
+        {
+            $overbooking = DB::table('vw_overbooking_h')
+            ->where($request->field, $request->operator, $request->value)->orderBy('tbk_id', 'asc')->get();
 
-        $data = [
-            'overbooking' => $overbooking
-        ];
+            $data = [
+                'overbooking' => $overbooking
+            ];
 
-        // dd($overbooking);
+            // dd($data);
 
-        $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
-        $pdf->setPaper('A4', 'landscape');
-        $pdf->render();
-        return $pdf->download('Overbooking.pdf');
+            $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
+            $pdf->setPaper('A4', 'landscape');
+            $pdf->render();
+            return $pdf->stream('Overbooking.pdf');
+        }
     }
 }
 
