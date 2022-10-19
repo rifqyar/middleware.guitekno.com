@@ -82,12 +82,12 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
-                                        <input type="date" class="form-control filter" name="start_date" id="start_date"
-                                            readonly>
+                                        <input type="date" class="form-control filter datatable-input" name="start_date"
+                                            id="start_date" readonly>
                                     </div>
                                     <div class="col-4">
-                                        <input type="date" class="form-control filter" name="end_date" id="end_date"
-                                            readonly>
+                                        <input type="date" class="form-control filter datatable-input" name="end_date"
+                                            id="end_date" readonly>
                                     </div>
                                 </div>
 
@@ -169,6 +169,8 @@
                 // $(location).href('/transaksi/export/excel')
 
             })
+
+
         });
 
         function render() {
@@ -280,6 +282,15 @@
                 table.table().draw();
             });
 
+            $('.datatable-input').on('change', function(e) {
+                console.log(e)
+                e.preventDefault();
+                table.table().draw();
+                // window.location.replace('/transaksi/export/excel')
+
+                // $(location).href('/transaksi/export/excel')
+
+            })
 
             $('#kt_reset').on('click', function(e) {
                 console.log(e)
@@ -290,6 +301,8 @@
                 });
                 table.table().draw();
             });
+
+            $
         }
 
         function openDetailCallback(id) {
