@@ -4,7 +4,14 @@ $(document).ready(function(){
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    showData()
+
+    var tx_type = localStorage.getItem('tx-type') == 'Gaji' ? 'LS|GAJI' : 'LS|NONGAJI' 
+    var filter = localStorage.getItem('tx-type') ? `tbk_type = '${tx_type}'` : ''
+
+    filter = window.btoa(filter)
+    showData(filter)
+    
+    localStorage.removeItem('tx-type')
 })
 
 function showData(filter = ''){
@@ -73,7 +80,7 @@ function addFilter(type){
                 content: {
                     element: "i",
                     attributes: {
-                    className: "fas fa-spinner fa-spin text-large",
+                        className: "fas fa-spinner fa-spin text-large",
                     },
                 },
                 buttons: false,

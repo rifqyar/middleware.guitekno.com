@@ -199,9 +199,26 @@ function changeOperatorTgl(e){
     if ($(e).val() != '0'){
         $('input[name="tgl"]').addClass('required')
         $('input[name="tgl"]').removeAttr('readonly')
+
+        if ($(e).val() == 'between'){
+            $('.date-end').fadeIn()
+            $('input[name="tgl2"]').addClass('required')
+            $('input[name="tgl2"]').removeAttr('readonly')
+        } else {
+            $('.date-end').fadeOut()
+            $('input[name="tgl2"]').val('')
+            $('input[name="tgl2"]').removeClass('required')
+            $('input[name="tgl2"]').prop('readonly', 'readonly')
+        }
     } else {
+        $('.date-end').fadeOut()
+        $('input[name="tgl"]').val('')
         $('input[name="tgl"]').removeClass('required')
         $('input[name="tgl"]').prop('readonly', 'readonly')
+
+        $('input[name="tgl2"]').val('')
+        $('input[name="tgl2"]').removeClass('required')
+        $('input[name="tgl2"]').prop('readonly', 'readonly')
     }
 }
 
@@ -233,8 +250,11 @@ function setFilter(id){
         var bpd = typeof $('select[name="bpd"] option:selected').val() == 'undefined' ? null : $('select[name="bpd"] option:selected').val();
         var tgl = $('input[name="tgl"]').val() == '' ? null : $('input[name="tgl"]').val();
         var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
+        var tgl2 = $('input[name="tgl2"]').val() == '' ? null : $('input[name="tgl2"]').val();
 
-        var filter = window.btoa(`{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}"}`)
+        var filter = `{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}", "tgl2": "${tgl2}"}`
+
+        var filter = window.btoa(filter)
         
         getData(id, filter)
     }

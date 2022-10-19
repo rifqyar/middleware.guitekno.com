@@ -11,9 +11,9 @@ function collapse(id){
     $(`.data-log-sipd:not(#data-${id})`).slideUp()
 }
 
-function getData(id){
+function getData(id, filter = null){
     let perPage = $('select[name="perPage"] option:selected').val()
-    let url = 'log-transaction/sipd/getData/'+id+'/'+perPage
+    let url = filter != null ? 'log-transaction/sipd/getData/'+id+'/'+perPage+'/'+filter : 'log-transaction/sipd/getData/'+id+'/'+perPage
     apiCall(url, 'GET', null, () => {
         $(`#data-${id}`).html(`
             <div class="row justify-content-center">   
@@ -26,6 +26,12 @@ function getData(id){
         $(`#data-${id}`).html(res.blade)
         $(`#data-${id}`).find('th').css('white-space', 'nowrap')
         $(`#data-${id}`).find('td').css('white-space', 'nowrap')
+
+        
+        $(`#data-${id}`).find('#filter').fadeIn()
+        $(`#data-${id}`).find('.btn-filter').attr(`onclick`, `addFilter('${id}')`)
+        $(`#data-${id}`).find('.btn-showAllData').attr(`onclick`, `getData('${id}')`)
+        $(`#data-${id}`).find('#setFilter').attr(`onclick`, `setFilter('${id}')`)
     }, true)
 }
 
@@ -120,4 +126,104 @@ function closeDetailData(el){
     $(el).parent().find('.detail-data').html('')
     $(el).parentsUntil('#detail-log-sipd').find('.title-detail').html('')
     $(el).fadeOut()
+}
+
+function addFilter(rst_id){
+    let filterContainer = $(`#data-${rst_id}`).find('#filter').find('#form-filter')
+
+    if(filterContainer.children().length == 0){
+        apiCall('log-transaction/sipd/render-filter', '', 'GET', () => {
+            swal({
+                title: 'Render Filter...',
+                content: {
+                    element: "i",
+                    attributes: {
+                    className: "fas fa-spinner fa-spin text-large",
+                    },
+                },
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        }, null, null, (res) => {
+            filterContainer.html(res.blade)
+            $(`#data-${rst_id}`).find('#filter').find('#setFilter').fadeIn()
+            
+            let arrRst = ['011', '021']
+            if (!arrRst.includes(rst_id)){
+                $(`#data-${rst_id}`).find('#form_bpd').fadeOut(100)
+                $(`#data-${rst_id}`).find('#form_bpd').find('.required').each((k, v) => {
+                    $(v).removeClass('required')
+                })
+            }
+
+            filterContainer.slideDown()
+            swal.close()
+        })
+    }
+}
+
+function changeOperatorTgl(e){
+    if ($(e).val() != '0'){
+        $('input[name="tgl"]').addClass('required')
+        $('input[name="tgl"]').removeAttr('readonly')
+
+        if ($(e).val() == 'between'){
+            $('.date-end').fadeIn()
+            $('input[name="tgl2"]').addClass('required')
+            $('input[name="tgl2"]').removeAttr('readonly')
+        } else {
+            $('.date-end').fadeOut()
+            $('input[name="tgl2"]').val('')
+            $('input[name="tgl2"]').removeClass('required')
+            $('input[name="tgl2"]').prop('readonly', 'readonly')
+        }
+    } else {
+        $('.date-end').fadeOut()
+        $('input[name="tgl"]').val('')
+        $('input[name="tgl"]').removeClass('required')
+        $('input[name="tgl"]').prop('readonly', 'readonly')
+
+        $('input[name="tgl2"]').val('')
+        $('input[name="tgl2"]').removeClass('required')
+        $('input[name="tgl2"]').prop('readonly', 'readonly')
+    }
+}
+
+function setFilter(id){
+    const formContainer = $(`#data-${id}`).find('#filter').find('#form-filter').find('.form-container')
+    let required = formContainer.find('.required')
+    let form = formContainer.find('.form-control')
+    var canInput = true
+
+    required.removeClass('is-invalid')
+    
+    for(var i = 0; i < required.length; i++){
+        if (required[i].value == ''){
+            canInput = false
+            mainComponent.find(formContainer).find(`input[name="${required[i].name}"]`).addClass('is-invalid')
+            var form_name = required[i].name.replace('_', ' ').toUpperCase()
+            $.toast({
+                heading: 'Warning',
+                text: `Form ${form_name} is Required`,
+                icon: 'warning',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }
+    }
+
+    if (canInput){
+        var bpd = typeof $('select[name="bpd"] option:selected').val() == 'undefined' ? null : $('select[name="bpd"] option:selected').val();
+        var tgl = $('input[name="tgl"]').val() == '' ? null : $('input[name="tgl"]').val();
+        var operator_tgl = $('select[name="operator_tanggal"] option:selected').val()
+        var tgl2 = $('input[name="tgl2"]').val() == '' ? null : $('input[name="tgl2"]').val();
+
+        var filter = `{"bpd": "${bpd}", "tgl": "${tgl}", "operator_tgl": "${operator_tgl}", "tgl2": "${tgl2}"}`
+
+        var filter = window.btoa(filter)
+        
+        getData(id, filter)
+    }
 }

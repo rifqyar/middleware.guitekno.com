@@ -65,6 +65,7 @@
     @include('TrxLog.LogSIPD.component.modal')
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
+    {{-- <script src="{{ url("assets/dev/trxlog/sipd/main.js") }}"></script> --}}
     <script src="{{ url("vendor/plugins/trxlog/sipd/main.min.js") }}"></script>
     
 @stop

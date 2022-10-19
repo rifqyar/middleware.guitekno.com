@@ -224,7 +224,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::prefix('sipd')->group(function () {
             Route::get('/', "TrxLog\LogSIPD\MainController@index")->name('trxLog.sipd')->middleware('auth');
-            Route::get('/getData/{rst_id}/{perPage?}', "TrxLog\LogSIPD\MainController@getData");
+            Route::get('/getData/{rst_id}/{perPage}/{filter?}', "TrxLog\LogSIPD\MainController@getData");
+            Route::get('/render-filter', 'TrxLog\LogSIPD\MainController@renderFilter');
         });
     });
 
@@ -307,10 +308,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     })->name('integrasi-bank');
 
     // Overbooking New
-    Route::get('transaksi', 'Overbooking\OverbookingController@index');
+    Route::get('transaksi', 'Overbooking\OverbookingController@index')->name('transaksi-overbooking');
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
     Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
+
+    Route::get('stream-log', function() {
+        return view('stream_log/index');
+    })->name('stream-log');
 });
 
 

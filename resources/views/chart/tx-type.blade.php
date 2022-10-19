@@ -22,15 +22,10 @@
     pieSeries.slices.template.strokeWidth = 0;
 
     pieSeries.slices.template.events.on("hit", function(ev) {
-        if (ev.target._uid == 'id-1090') {
-            console.log("non gaji");
-            localStorage.setItem("tx-type", 'non gaji');
-        } else {
-            localStorage.setItem("tx-type", 'gaji');
-            console.log("gaji ");
-        }
+        localStorage.setItem("tx-type", ev.target.dataItem.category);
         window.location.href = '/history-overbooking'
     }, this)
+    
     chart.legend = new am4charts.Legend();
     chart.legend.position = "right";
     var markerTemplate = chart.legend.markers.template;

@@ -257,22 +257,17 @@
         var chart = am4core.create("divTxDaily", am4charts.XYChart);
         var bank = <?= json_encode($data['bank'], true) ?>;
         var data = <?= json_encode($data['transaksi'], true) ?>;
-        console.log(data, 'ddd')
         let chartData = []
         for (i in data) {
-            console.log(i, 'i')
             var tempData = {
                 tanggal: data[i].tanggal
             }
             for (j in data[i].data) {
                 var valueName = `value${data[i].data[j].tbk_sender_bank_id}`
-                // console.log(valueName, 'value')
                 tempData[valueName] = data[i].data[j].total
             }
-            console.log(tempData, 'ooo')
             chartData.push(tempData);
         }
-        console.log(chartData, 'result')
         // Add data
         chart.data = chartData;
 
@@ -329,7 +324,6 @@
                 data: <?= json_encode($data['jenis'], true) ?>
             },
             success: function(res) {
-                console.log(res)
                 $('#chartTxType').html(res)
             }
         })
@@ -348,7 +342,6 @@
                 data: <?= json_encode($data['bank'], true) ?>
             },
             success: function(res) {
-                console.log(res)
                 $('#chartTxBank').html(res)
             }
         })
@@ -367,7 +360,6 @@
                 data: <?= json_encode($data['status'], true) ?>
             },
             success: function(res) {
-                console.log(res)
                 $('#chartTxStatus').html(res)
             }
         })
