@@ -63,13 +63,15 @@
             var field = $('.select-field').val();
             var operator = $('.select-operator').val();
             var value = $('.select-value').val();
-            var filter = btoa(`${field} ${operator} '${value}' `);
-            // console.log(filter, 'apa aja');
+            // var filter = btoa(`${field} ${operator} '${value}' `);
+            console.log(field, 'apa aja');
             $.ajax({
                 type: "GET",
                 url: "overbooking-pdf",
                 data: {
-                    filter,
+                    field,
+                    operator,
+                    value,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {

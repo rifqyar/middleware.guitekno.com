@@ -13,41 +13,29 @@ class PdfOverbookingController extends Controller
 {
     public function generatePDF(Request $request)
     {
-        // // $filter = isset($request->filter) ? $request->filter : '';
-        // // $filter = base64_decode($request->filter);
-        // // $overbooking = TrxOverBooking::getAll($filter);
-        // $overbooking = TrxOverBooking::getAll();
-        // // $overbooking = DB::SELECT("SELECT * FROM vw_Overbooking_H where $filter");
+        // $filter = base64_decode($request->filter);
 
-        // $data = [
-        //     'overbooking' => $overbooking
-        // ];
-
-        // // dd($overbooking);
-
-        // $pdf = PDF::loadView('Overbooking/overbookingPDF', $data);
-        // $pdf->setPaper('A4', 'landscape');
-        // $pdf->render();
-        // return $pdf->stream('Overbooking.pdf');
-        // return $pdf->download('Overbooking.pdf');
-
-        $filter = base64_decode($request->filter);
+        $table = $request->field;
+        $parameters = $request->operator;
+        $value = $request->value;
+        // dd($value);
 
         // $overbooking = TrxOverBooking::getAll();
-        $overbooking = DB::select("SELECT * FROM vw_Overbooking_H where sender_bank_name = 'BANK JATENG' ");
-        // $overbooking = DB::table('vw_Overbooking_H')->where($filter)->get();
+        // $overbooking = DB::select("SELECT * FROM vw_Overbooking_H where {$field} $operator '$value' ");
+
+        // $overbooking = DB::table('vw_Overbooking_H')->where('$field', '$operator', '$value')->get();
+        $overbooking = DB::select("SELECT * from vw_Overbooking_H where $table $parameters '$value'");
 
         $data = [
             'overbooking' => $overbooking
         ];
 
-        // dd($filter);
+        // dd($overbooking);
 
         $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
         $pdf->setPaper('A4', 'landscape');
         $pdf->render();
-        return $pdf->stream('Overbooking.pdf');
-
+        return $pdf->download('Overbooking.pdf');
     }
 }
 
