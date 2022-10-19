@@ -1,4 +1,4 @@
-<div id="divTxStatus"></div>
+<div id="divTxStatus" style="height: 100%"></div>
 <script>
     // Themes begin
     am4core.useTheme(am4themes_animated);

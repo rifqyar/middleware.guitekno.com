@@ -69,7 +69,7 @@ class OverbookingController extends Controller
     public function index()
     {
         $data['banks'] = DatBankSecret::get();
-        $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
+        $data['types'] = TrxOverBooking::select(['tbk_type', 'tbk_create_by'])->groupBy(['tbk_type', 'tbk_create_by'])->get();
         $data['status'] = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         return view('Overbooking.indexnew', $data);
     }
@@ -84,14 +84,21 @@ class OverbookingController extends Controller
             ->editColumn('tbk_execution_time', function ($data) {
                 return Helper::getFormatWib($data->tbk_execution_time);
             })
-            ->addColumn('callback', function ($data) {
+            ->addColumn('Callback', function ($data) {
+                if ($data->logCallback && $data->logCallback->lcb_request) {
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Open</button>';
+                } else {
+                    return '-';
+                }
+            })
+            ->addColumn('Actions', function ($data) {
                 if ($data->logCallback && $data->logCallback->lcb_request) {
                     return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Detail</button>';
                 } else {
                     return '-';
                 }
             })
-            ->rawColumns(['callback'])
+            ->rawColumns(['Callback', 'Actions'])
             ->make(true);
     }
 
@@ -198,6 +205,11 @@ class OverbookingController extends Controller
             ->with('receiverBank')
             ->with('ras')
             ->with('logCallback');
+        if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
+        if ($request->tbk_recipent_name) {
+            $upper_tbk_recipent_name = strtoupper($request->tbk_recipent_name);
+            $overBooking->where('tbk_recipent_name', 'LIKE', "%{$upper_tbk_recipent_name}%");
+        }
         if ($request->sender_bank) $overBooking->where('tbk_sender_bank_id', $request->sender_bank);
 
         if ($request->recipient_bank) $overBooking->where('tbk_recipient_bank_id', $request->recipient_bank);

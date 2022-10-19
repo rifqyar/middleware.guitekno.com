@@ -1,4 +1,4 @@
-<div id="divTxType"></div>
+<div id="divTxType" style="height: 100%"></div>
 <script>
     var chart = am4core.create("divTxType", am4charts.PieChart);
     var data = <?= json_encode($data, true) ?>;

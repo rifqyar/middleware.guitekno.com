@@ -1,4 +1,4 @@
-<div id="divTxBank"></div>
+<div id="divTxBank" style="height: 100%"></div>
 <script>
     // Apply chart themes
     am4core.useTheme(am4themes_animated);
