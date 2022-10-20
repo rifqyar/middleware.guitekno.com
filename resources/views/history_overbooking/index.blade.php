@@ -63,13 +63,14 @@
             var parameter = $('.select-operator').val();
             var value = $('.select-value').val();
             var separator = $('#separator').val();
+            var full = `${field} ${parameter} '${value}' ${separator}`
             console.log(separator, 'test')
 
             if (typeof field === 'undefined' || typeof operator === 'undefined' || typeof value === 'undefined' ||
                 typeof separator === 'undefined') {
                 var filter = 'all';
             } else {
-                var filter = btoa(`${field} ${operator} '${value}' ${} `);
+                var filter = btoa(`${field} ${operator} '${value}' `);
             }
             // window.location = '/overbooking-pdf/' + filter
         }
