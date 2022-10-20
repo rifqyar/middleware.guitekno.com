@@ -1,4 +1,4 @@
-const mainComponent = $('#overbooking-component')
+    const mainComponent = $('#overbooking-component')
 
 $(document).ready(function(){
     $(function () {
@@ -65,6 +65,11 @@ function showData(filter = ''){
                 },
             ],
             order: [[9, 'desc']],
+            createdRow: function(row, data, dataIndex){
+                if (data.status_cutoff == 'true'){
+                    $(row).addClass('cutoff');
+                }
+            }
         });
     }
 }
@@ -175,4 +180,37 @@ function setFilter(){
         filter = window.btoa(filter)
         showData(filter)
     }
+}
+
+function cutoffData(){
+    swal({
+        title: 'Yakin ingin melakukan cutoff data?',
+        text: '',
+        buttons: true
+    }).then((confirm) => {
+        if (confirm){
+            swal({
+                title: 'Mohon Tunggu...',
+                text: 'Sedang melakukan cutoff pada data',
+                content: {
+                  element: "i",
+                  attributes: {
+                    className: "fas fa-spinner fa-spin text-large",
+                  },
+                },
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+
+            apiCall('history-overbooking/cutoffData', 'GET', '',
+            () => {},
+            null,
+            () => {},
+            (res) => {
+                swal('Cut Off Data Berhasil!', 'Berhasil melakukan cutoff data', 'success')
+                showData()
+            },true)
+        }
+    })
 }

@@ -27,19 +27,22 @@
                     <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <p>Transaksi ID</p>
                                 <input class="form-control filter datatable-input" placeholder="Invoice ID"
                                     name="tbk_partnerid" id="tbk_partnerid" />
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
                             <div class="col-md-3">
                                 <p>Nama Penerima</p>
                                 <input class="form-control filter datatable-input" placeholder="Nama Penerima"
-                                    name="tbk_recipent_name" id="tbk_recipient_name" />
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
+                                    name="tbk_recipient_name" id="tbk_recipient_name" />
                             </div>
                             <div class="col-md-3">
+                                <p>Rekening Penerima</p>
+                                <input class="form-control filter datatable-input" placeholder="No Rekening Penerima"
+                                    name="tbk_recipient_account" id="tbk_recipient_account" />
+                            </div>
+                            <div class="col-md-2">
                                 <p>Bank Pengirim</p>
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
@@ -50,9 +53,8 @@
                                     @endforeach
 
                                 </select>
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -140,6 +142,7 @@
                                 <th>Nama Penerima</th>
                                 <th>Rekening Penerima</th>
                                 <th>Total Transfer</th>
+                                <th>NO SP2D</th>
                                 <th>Tipe</th>
                                 <th>Tanggal Pengiriman</th>
                                 <th>Keterangan</th>
@@ -262,6 +265,7 @@
                     data: function(data) {
                         data.tbk_partnerid = $('#tbk_partnerid').val()
                         data.tbk_recipient_name = $('#tbk_recipient_name').val()
+                        data.tbk_recipient_account = $('#tbk_recipient_account').val()
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
@@ -300,6 +304,9 @@
                     },
                     {
                         data: 'tbk_amount'
+                    },
+                    {
+                        data: 'tbk_sp2d_no'
                     },
                     {
                         data: 'tbk_type'
