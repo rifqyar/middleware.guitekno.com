@@ -54,7 +54,11 @@ class DbController
                     break;
             };
             if ($parameter->tgl != 'null' && $parameter->operator_tgl != '0'){
-                $data->where('lbt_created', $parameter->operator_tgl, $parameter->tgl);
+                if($parameter->tgl2 != 'null'){
+                    $data->whereBetween('lbt_created', [$parameter->tgl, $parameter->tgl2]);
+                } else {
+                    $data->where('lbt_created', $parameter->operator_tgl, $parameter->tgl);
+                }
             }
         } else {
             $data = DB::table("vw_logbanktransaction")->where('rst_id', $rst_id);

@@ -14,7 +14,7 @@ class IntegrasiBank extends Plugin
     public function sidebar()
     {
 
-        return Item::create(__('Tambah integrasi Bank'))
+        return Item::create(__('Integrasi Bank'))
             ->route('integrasi-bank')
             ->active("integrasi-bank")
             ->icon('fas fa-link')

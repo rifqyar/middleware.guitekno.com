@@ -12,11 +12,13 @@ use Vanguard\Models\TrxOverBooking;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
+use Illuminate\Support\Arr;
 
 class OverbookingController extends Controller
 {
     private $headerStyle;
     private $fontStyle;
+    private $fontStylePdf;
     public function __construct()
     {
         $this->headerStyle = [
@@ -40,7 +42,20 @@ class OverbookingController extends Controller
 
         $this->fontStyle = [
             'font' => [
-                'size' => 11,
+                'size' => 12,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN],
+            ],
+        ];
+
+        $this->fontStylePdf = [
+            'font' => [
+                'size' => 25,
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -57,6 +72,10 @@ class OverbookingController extends Controller
         $data['banks'] = DatBankSecret::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         $data['status'] = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
+        $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
+        $data['name'] = implode(',', $data['recipient_name']);
+
+        // dd($recipient_name);
         return view('Overbooking.indexnew', $data);
     }
 
@@ -70,14 +89,21 @@ class OverbookingController extends Controller
             ->editColumn('tbk_execution_time', function ($data) {
                 return Helper::getFormatWib($data->tbk_execution_time);
             })
-            ->addColumn('callback', function ($data) {
+            ->addColumn('Callback', function ($data) {
+                if ($data->logCallback && $data->logCallback->lcb_request) {
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Open</button>';
+                } else {
+                    return '-';
+                }
+            })
+            ->addColumn('Actions', function ($data) {
                 if ($data->logCallback && $data->logCallback->lcb_request) {
                     return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Detail</button>';
                 } else {
                     return '-';
                 }
             })
-            ->rawColumns(['callback'])
+            ->rawColumns(['Callback', 'Actions'])
             ->make(true);
     }
 
@@ -150,16 +176,19 @@ class OverbookingController extends Controller
         // $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         // $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
         $startRow--;
-        $spreadsheet->getActiveSheet()
-            ->getStyle("A1:I{$startRow}")
-            ->applyFromArray($this->fontStyle);
 
         if ($request->button == 'pdf') {
+            $spreadsheet->getActiveSheet()
+                ->getStyle("A1:I{$startRow}")
+                ->applyFromArray($this->fontStylePdf);
             $writer = new \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf($spreadsheet);
             $path = storage_path("/app/transaksi_overbooking.pdf");
             $writer->save($path);
             return response()->download($path, 'transaksi_overbooking' . time() . '.pdf');
         }
+        $spreadsheet->getActiveSheet()
+            ->getStyle("A1:I{$startRow}")
+            ->applyFromArray($this->fontStyle);
         $writer = new Xlsx($spreadsheet);
         $path = storage_path("/app/transaksi_overbooking.xlsx");
         $writer->save($path);
@@ -181,6 +210,11 @@ class OverbookingController extends Controller
             ->with('receiverBank')
             ->with('ras')
             ->with('logCallback');
+        if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
+        if ($request->tbk_recipent_name) {
+            $upper_tbk_recipent_name = strtoupper($request->tbk_recipent_name);
+            $overBooking->where('tbk_recipent_name', 'LIKE', "%{$upper_tbk_recipent_name}%");
+        }
         if ($request->sender_bank) $overBooking->where('tbk_sender_bank_id', $request->sender_bank);
 
         if ($request->recipient_bank) $overBooking->where('tbk_recipient_bank_id', $request->recipient_bank);

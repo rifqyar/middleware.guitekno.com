@@ -9,7 +9,6 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="baseurl" content="{{ asset('') }}">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <title>@yield('page-title') - {{ setting('app_name') }}</title>
 
@@ -30,6 +29,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {{-- <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
@@ -82,8 +83,10 @@
         integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/jquery-bootstrap-wizard@1.4.2/jquery.bootstrap.wizard.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
     @yield('scripts')
     @hook('app:scripts')
 </body>

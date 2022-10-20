@@ -4,23 +4,30 @@
     }
 </style>
 <div class="container-fluid">
+    <div id="filter" style="display: none">
+        <div class="d-flex mb-3">
+            <button class="btn btn-sm btn-outline-success btn-filter" {{--onclick="addFilter()"--}}> <i class="fas fa-filter"></i> Filter</button>
+            <button class="btn btn-sm btn-success ml-4 btn-showAllData" {{--onclick="showData()"--}}> <i class="fas fa-database"></i> Show All Data</button>
+        </div>
+
+        <div class="container-fluid" id="form-filter" style="display: none">
+        </div>
+
+        <button class="btn btn-outline-primary btn-sm mb-2 float-right" id="setFilter" style="display: none" {{--onclick="setFilter()"--}}>
+            Show Filtered Data
+        </button>
+    </div>
+
     <div class="table-responsive">
         <table class="table t-logSIPD" style="width: 100%">
             <thead>
                 <tr>
                     <th>Action</th>
-                    {{-- <th>LST ID</th> --}}
-                    <th>SIPD Transactionn ID</th>
-                    <th>BPD Transactionn ID</th>
                     <th>Created</th>
                     <th>Created By</th>
                     <th>Last Update</th>
-                    <th>Last Update By</th>
                     {{-- <th>Request Data</th> --}}
                     {{-- <th>Response Data</th> --}}
-                    <th>USer ID</th>
-                    <th>IP</th>
-                    <th>Account Number</th>
                     <th>Service Type ID</th>
                     <th>Service Name</th>
                     <th>Status</th>
@@ -54,16 +61,9 @@
                             <i class="fas fa-eye"></i>
                         </button>
                     </td>
-                    {{-- <td class="text-center align-middle">{{$dt->lst_id}}</td> --}}
-                    <td class="text-center align-middle">{{$dt->lst_sipd_tx_id}}</td>
-                    <td class="text-center align-middle">{{$dt->lst_bpd_tx_id}}</td>
                     <td class="text-center align-middle tgl">{{$dt->lst_created}}</td>
                     <td class="text-center align-middle">{{$dt->lst_create_by}}</td>
                     <td class="text-center align-middle tgl">{{$dt->lst_last_updated}}</td>
-                    <td class="text-center align-middle">{{$dt->lst_last_update_by}}</td>
-                    <td class="text-center align-middle">{{$dt->lst_userid}}</td>
-                    <td class="text-center align-middle">{{$dt->lst_id}}</td>
-                    <td class="text-center align-middle">{{$dt->lst_acc_number}}</td>
                     <td class="text-center align-middle">{{$dt->rst_id}}</td>
                     <td class="text-center align-middle">{{$dt->rst_name}}</td>
                     <td class="text-center align-middle">
