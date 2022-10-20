@@ -215,6 +215,7 @@ class OverbookingController extends Controller
             $upper_tbk_recipent_name = strtoupper($request->tbk_recipent_name);
             $overBooking->where('tbk_recipent_name', 'LIKE', "%{$upper_tbk_recipent_name}%");
         }
+        if ($request->tbk_recipient_account) $overBooking->where('tbk_recipient_account', $request->tbk_recipient_account);
         if ($request->sender_bank) $overBooking->where('tbk_sender_bank_id', $request->sender_bank);
 
         if ($request->recipient_bank) $overBooking->where('tbk_recipient_bank_id', $request->recipient_bank);
