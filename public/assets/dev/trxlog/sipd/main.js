@@ -48,11 +48,42 @@ function showDetail(res, req){
 
     let resData = JSON.parse(JSON.parse(window.atob(res)))
     let reqData = JSON.parse(JSON.parse(window.atob(req)))
+
+    $('#request-raw').find('.prettyprint').html(JSON.stringify(reqData, undefined, 4))
+    $('#response-raw').find('.prettyprint').html(JSON.stringify(resData, undefined, 4))
+    
     reqData = Array.isArray(reqData) == false ? [reqData] : reqData
     resData = Array.isArray(resData) == false ? [resData] : resData
 
     renderTable(reqData, '#table-request')
     renderTable(resData, '#table-response')
+}
+
+function copyClipboard(el){
+    var text = $(el).parent().children()[1]
+    text = $(text).html()
+    navigator.clipboard.writeText(text).then(
+        function() {
+            $.toast({
+                heading: 'Coppied!',
+                text: `Content Coppied to clipboard`,
+                icon: 'info',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }, 
+        function() {
+            $.toast({
+                heading: 'Error',
+                text: `Your browser doesn't support`,
+                icon: 'error',
+                loader: true,       
+                loaderBg: '#9EC600', 
+                position: 'top-right',
+            })
+        }
+      )
 }
 
 function renderTable(data, containerID, detail = false, detailTitle = ''){

@@ -24,6 +24,6 @@ class ChartController extends Controller
 
     public function chartTxDaily(Request $request)
     {
-        return view('chart.tx-daily', ['bank' => $request->bank, 'transaksi' => $request->transaksi]);
+        return view('chart.tx-daily', ['transaksi' => $request->transaksi]);
     }
 }

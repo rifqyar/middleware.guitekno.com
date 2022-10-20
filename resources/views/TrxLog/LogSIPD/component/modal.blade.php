@@ -1,3 +1,15 @@
+<style>
+    pre {
+        font-size: 100% !important;
+    }
+    .btn-group-xs > .btn, .btn-xs {
+        padding: .25rem .4rem;
+        font-size: .875rem;
+        line-height: .5;
+        border-radius: .2rem;
+    }
+</style>
+
 <div class="modal" id="detail-log-sipd">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -13,11 +25,20 @@
                         <ul class="nav nav-tabs card-header-tabs" id="list-detail" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link" id="request-tab" href="#request" role="tab"
-                                    aria-controls="request" aria-selected="true">Request Data</a>
+                                    aria-controls="request" aria-selected="true">Request Data (Table) </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="response-tab" href="#response" role="tab"
-                                    aria-controls="response" aria-selected="false">Response Data</a>
+                                    aria-controls="response" aria-selected="false">Response Data (Table) </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="request_raw-tab" href="#request-raw" role="tab"
+                                    aria-controls="request-raw" aria-selected="true">Request Data (Raw Data)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="response_raw-tab" href="#response-raw" role="tab"
+                                    aria-controls="response-raw" aria-selected="false">Response Data (Raw Data)</a>
                             </li>
                         </ul>
                     </div>
@@ -63,6 +84,21 @@
                                     <span>Close Detail</span>
                                     <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
                                 </button>
+                            </div>
+
+                            {{-- RAW --}}
+                            <div class="tab-pane" id="request-raw" role="tabpanel">
+                                <button class="btn btn-xs btn-outline-primary float-right" onclick="copyClipboard(this)"><i class="fa fa-clipboard"></i> Copy</button>
+                                <pre class="prettyprint">
+                                    
+                                </pre>
+                            </div>
+
+                            <div class="tab-pane" id="response-raw" role="tabpanel">
+                                <button class="btn btn-xs btn-outline-primary float-right" onclick="copyClipboard(this)"><i class="fa fa-clipboard"></i> Copy</button>
+                                <pre class="prettyprint">
+                                    
+                                </pre>
                             </div>
                         </div>
                     </div>
