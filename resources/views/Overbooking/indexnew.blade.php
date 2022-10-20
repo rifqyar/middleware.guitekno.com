@@ -138,6 +138,7 @@
                                 <th>Nama Penerima</th>
                                 <th>Rekening Penerima</th>
                                 <th>Total Transfer</th>
+                                <th>NO SP2D</th>
                                 <th>Tipe</th>
                                 <th>Tanggal Pengiriman</th>
                                 <th>Keterangan</th>
@@ -253,6 +254,9 @@
                     },
                     {
                         data: 'tbk_amount'
+                    },
+                    {
+                        data: 'tbk_sp2d_no'
                     },
                     {
                         data: 'tbk_type'
