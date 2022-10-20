@@ -7,6 +7,8 @@ use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Controllers\Library;
 use Yajra\Datatables\Datatables;
 use Vanguard\Http\Controllers\Web\history_overbooking\DbController as Model;
+use Vanguard\Models\TrxOverBooking;
+use Vanguard\Models\TrxOverbookingCutoff;
 
 class MainController extends Controller
 {
@@ -86,5 +88,45 @@ class MainController extends Controller
                 'msg' => 'OK'
             ], 'data' => $data
         ], 200);
+    }
+
+    public function cutoffData(){
+        // $filter = "tbk_created <= '2022-09-20'";
+        $data = Model::getAll();
+        $column = Model::getColumnName([], 'trx_overbooking');
+
+        try {
+            $arrCol = [];
+            foreach ($column as $v) {
+                array_push($arrCol, $v->column_name);
+            }
+    
+            $arrData = [];
+            foreach ($data as $val) {
+                foreach ($arrCol as $arrV) {
+                    $arrData[$arrV] = $val->$arrV;
+                }
+                TrxOverbookingCutoff::insert($arrData);
+            }
+
+            Model::CutoffData();
+
+            return response()->json([
+                'status' => [
+                    'code' => 200,
+                    'msg' => 'OK'
+                ]
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => [
+                    'code' => 500,
+                    'msg' => 'Error',
+                ],
+                'detail' => $th
+            ], 500);
+        }
+        
+
     }
 }

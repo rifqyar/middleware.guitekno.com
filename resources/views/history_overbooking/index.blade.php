@@ -27,6 +27,10 @@
                         Data</button>
                     <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4" onclick="showData()"> <i
                                 class="fas fa-download"></i> Export to PDF</button></a>
+                    
+                    <button class="btn btn-sm btn-warning ml-auto" onclick="cutoffData()">
+                        Cut Off Data
+                    </button>
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
