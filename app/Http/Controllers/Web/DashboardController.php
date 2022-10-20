@@ -47,7 +47,7 @@ class DashboardController extends Controller
 
         $data['bank'] = TrxOverBooking::countTrxBank();
 
-        // dd($data['jenis']);
+        // dd($data['transaksi']);
 
         return view('dashboard.index', compact('data'));
     }
