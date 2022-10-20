@@ -60,22 +60,38 @@
 
     <script>
         function pdfByFilter() {
-            var field = $('.select-field').val();
-            var parameter = $('.select-operator').val();
-            var value = $('.select-value').val();
-            var separator = $('#separator').val();
-            console.log(field, 'test')
 
-            // var filter = btoa(`${field} ${parameter} '${value}' `);
+            // // var filter = btoa(`${field} ${parameter} '${value}' `);
 
-            if (typeof field === 'undefined' || typeof parameter === 'undefined' || typeof value === 'undefined') {
-                var filter = 'all';
+            // if (typeof field === 'undefined' || typeof parameter === 'undefined' || typeof value === 'undefined') {
+            //     var filter = 'all';
+            // } else {
+            //     var filter = btoa(`${field} ${parameter} '${value}' `);
+            // }
+            // // var filter = btoa(`${field} ${parameter} '${value}' `);
+
+            // console.log(filter)
+            // window.location = '/overbooking-pdf/' + filter
+
+            const mainComponent = $("#overbooking-component");
+            var e = mainComponent.find("#form-filter").find(".form-container");
+            var n = mainComponent.find(e).find(".required");
+            var filter_data = "";
+
+            e.find(".form-control").each((e, n) => {
+                "none" != $(n).css("display") &&
+                    (filter_data +=
+                        "value" != $(n).attr("name") ?
+                        `${$(n).val()} ` :
+                        `'${$(n).val()}' `);
+            })
+            if (filter_data == '') {
+                var filter = 'all'
             } else {
-                var filter = btoa(`${field} ${parameter} '${value}' `);
+                var filter = btoa(`${filter_data}`)
             }
-            // var filter = btoa(`${field} ${parameter} '${value}' `);
 
-            console.log(filter)
+            console.log(filter, 'data')
             window.location = '/overbooking-pdf/' + filter
         }
     </script>

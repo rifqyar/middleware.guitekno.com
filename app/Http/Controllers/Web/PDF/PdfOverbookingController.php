@@ -11,7 +11,7 @@ use PDF;
 
 class PdfOverbookingController extends Controller
 {
-    public function generatePDF($filter)
+    public function generatePDF($filter = '')
     {
         // dd($filter);
         $where = base64_decode($filter);
