@@ -48,7 +48,7 @@ Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProvider
 
 //Overbooking
 Route::get('overbooking', 'Overbooking\OverbookingController@index');
-Route::get('overbooking-pdf', 'PDF\PdfOverbookingController@generatePDF');
+Route::get('overbooking-pdf/{filter}', 'PDF\PdfOverbookingController@generatePDF');
 
 /**
  * Impersonate Routes

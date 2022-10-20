@@ -59,25 +59,19 @@
 
     <script>
         function pdfByFilter() {
-
             var field = $('.select-field').val();
-            var operator = $('.select-operator').val();
+            var parameter = $('.select-operator').val();
             var value = $('.select-value').val();
-            // var filter = btoa(`${field} ${operator} '${value}' `);
-            console.log(field, 'apa aja');
-            $.ajax({
-                type: "GET",
-                url: "overbooking-pdf",
-                data: {
-                    field,
-                    operator,
-                    value,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    location.href = "overbooking-pdf"
-                }
-            })
+            var separator = $('#separator').val();
+            console.log(separator, 'test')
+
+            if (typeof field === 'undefined' || typeof operator === 'undefined' || typeof value === 'undefined' ||
+                typeof separator === 'undefined') {
+                var filter = 'all';
+            } else {
+                var filter = btoa(`${field} ${operator} '${value}' ${} `);
+            }
+            // window.location = '/overbooking-pdf/' + filter
         }
     </script>
 @stop

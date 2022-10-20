@@ -11,29 +11,33 @@ use PDF;
 
 class PdfOverbookingController extends Controller
 {
-    public function generatePDF(Request $request)
+    public function generatePDF($filter)
     {
-        // $filter = base64_decode($request->filter);
-
-        // $overbooking = TrxOverBooking::getAll();
-        // $overbooking = DB::select("SELECT * FROM vw_Overbooking_H where {$field} $operator '$value' ");
-
-        if($request->ajax() == true)
+        // dd($filter);
+        $where = base64_decode($filter);
+        if($filter = 'all')
         {
-            $overbooking = DB::table('vw_overbooking_h')
-            ->where($request->field, $request->operator, $request->value)->orderBy('tbk_id', 'asc')->get();
+            $overbooking = DB::select("SELECT * FROM vw_overbooking_h");
 
             $data = [
                 'overbooking' => $overbooking
             ];
-
-            // dd($data);
-
-            $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
-            $pdf->setPaper('A4', 'landscape');
-            $pdf->render();
-            return $pdf->stream('Overbooking.pdf');
         }
+        else{
+            $overbooking = DB::select("SELECT * FROM vw_overbooking_h where $where");
+
+            $data = [
+                'overbooking' => $overbooking
+            ];
+        }
+        // dd($data);
+
+        $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->render();
+        return $pdf->stream('Overbooking.pdf');
+
+        // return view('Overbooking.overbookingPDF', $data);
     }
 }
 

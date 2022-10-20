@@ -2,7 +2,7 @@
     <div class="col-md-2 col-12 separator" style="display: none">
         <div class="form-group">
             <label for="separator">&nbsp;</label>
-            <select name="separator" id="" class="form-control required separator" style="display: none">
+            <select name="separator" id="separator" class="form-control required separator" style="display: none">
                 <option value="AND">AND</option>
                 <option value="OR">OR</option>
             </select>

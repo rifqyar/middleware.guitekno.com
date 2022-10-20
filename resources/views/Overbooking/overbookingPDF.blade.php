@@ -2,6 +2,7 @@
     <title>Overbooking - Middleware</title>
     {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url('assets/img/icons/kemendagri.png') }}" />
@@ -112,7 +113,7 @@
 <h1 style="text-align: center">Overbooking Transaction</h1>
 <p>Tanggal Cetak: {{ date('d F Y') }}</p>
 {{-- <p>Author: {{ auth()->user()->present()->nameOrEmail }}</p> --}}
-<table class="table" style="margin-left: -35px; font-size: 11.5px;width: 50%;">
+<table class="table" style="margin-left: -25px; font-size: 9px;width: 50%;">
     <thead>
         <tr>
             {{-- <th>Action</th> --}}
@@ -132,7 +133,7 @@
     </thead>
     <tbody>
         @foreach ($overbooking as $data)
-            {{ dd($data) }}
+            {{-- {{ dd($data) }} --}}
             <tr>
                 @if ($data->status_text === 'Processed')
                     <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span></td>
