@@ -12,6 +12,7 @@ use Vanguard\Models\TrxOverBooking;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
+use Illuminate\Support\Arr;
 
 class OverbookingController extends Controller
 {
@@ -69,8 +70,12 @@ class OverbookingController extends Controller
     public function index()
     {
         $data['banks'] = DatBankSecret::get();
-        $data['types'] = TrxOverBooking::select(['tbk_type', 'tbk_create_by'])->groupBy(['tbk_type', 'tbk_create_by'])->get();
+        $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         $data['status'] = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
+        $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
+        $data['name'] = implode(',', $data['recipient_name']);
+
+        // dd($recipient_name);
         return view('Overbooking.indexnew', $data);
     }
 

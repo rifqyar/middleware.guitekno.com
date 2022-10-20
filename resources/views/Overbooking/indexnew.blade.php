@@ -23,19 +23,19 @@
                     <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p>Transaksi ID</p>
                                 <input class="form-control filter datatable-input" placeholder="Invoice ID"
                                     name="tbk_partnerid" id="tbk_partnerid" />
                                 {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p>Nama Penerima</p>
                                 <input class="form-control filter datatable-input" placeholder="Nama Penerima"
-                                    name="tbk_recipent_name" id="tbk_recipent_name" />
+                                    name="tbk_recipent_name" id="tbk_recipient_name" />
                                 {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p>Bank Pengirim</p>
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
@@ -48,7 +48,7 @@
                                 </select>
                                 {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -60,7 +60,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <p>Type</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="type"
                                     id="type">
@@ -70,7 +70,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <p>Status</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="ras_id"
                                     id="ras_id">
@@ -80,13 +80,14 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-12 mt-2">
+                            <div class="col-md-7 mt-2">
                                 <p>Tanggal Pengiriman</p>
                                 <div class="row">
                                     <div class="col-4">
                                         <select class="form-control filter" name="parameter" onchange="formDate()"
                                             id="parameter">
                                             <option value="">All</option>
+                                            <option value="=">=</option>
                                             <option value="<=">
                                                 <= </option>
                                             <option value=">="> >= </option>
@@ -180,8 +181,11 @@
                 // $(location).href('/transaksi/export/excel')
 
             })
-
-
+            var recepientName = `{{ $name }}`;
+            console.log(recepientName, 'rn')
+            $("#tbk_recipient_name").autocomplete({
+                source: recepientName.split(',')
+            });
         });
 
         function render() {
@@ -207,7 +211,7 @@
                     method: 'post',
                     data: function(data) {
                         data.tbk_partnerid = $('#tbk_partnerid').val()
-                        data.tbk_recipent_name = $('#tbk_recipent_name').val()
+                        data.tbk_recipient_name = $('#tbk_recipient_name').val()
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
@@ -235,7 +239,7 @@
                         orderable: false,
                     },
                     {
-                        data: 'tbk_recipent_name',
+                        data: 'tbk_recipient_name',
                         responsivePriority: -1
                     },
 
@@ -283,15 +287,15 @@
                 table.table().draw();
             });
 
-            $('.datatable-input').on('change', function(e) {
-                console.log(e)
-                e.preventDefault();
-                table.table().draw();
-                // window.location.replace('/transaksi/export/excel')
+            // $('.datatable-input').on('change', function(e) {
+            //     console.log(e)
+            //     e.preventDefault();
+            //     table.table().draw();
+            // window.location.replace('/transaksi/export/excel')
 
-                // $(location).href('/transaksi/export/excel')
+            // $(location).href('/transaksi/export/excel')
 
-            })
+            // })
 
             $('#kt_reset').on('click', function(e) {
                 console.log(e)
@@ -335,6 +339,10 @@
                 $('#start_date').attr("readonly", true);
             }
         }
+
+        // $(function() {
+
+        // });
     </script>
 
 @endsection

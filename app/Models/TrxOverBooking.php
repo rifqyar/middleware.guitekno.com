@@ -55,14 +55,14 @@ class TrxOverBooking extends Model
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
             $value->data = DB::select("select ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') group by ref_bank.bank_name");
-            // if (!is_null($value->data)) {
-            //     $bank[] = $value->data->bank_name;
-            // }
+            if (!is_null($value->data)) {
+                $bank[] = $value->data->bank_name;
+            }
         }
         // if (!empty($bank)) {
         //     $bank = array_unique($bank);
         // }
-        // $query['bank'] = $bank;
+        $query['bank'] = $bank;
         return $query;
     }
 
