@@ -3,6 +3,10 @@
 @section('page-title', __('Transaction - Overbooking'))
 @section('page-heading', __('Transaction - Overbooking'))
 
+@section('styles')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+@endsection
+
 @section('breadcrumbs')
     {{-- <li class="breadcrumb-item">
         @lang('Log Transaction')
@@ -157,12 +161,55 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Callback</h5>
+                    <h5 class="modal-title">Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="body-callback">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalDetail">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Transaksi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <h6>Sender Info</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Nama Pengirim</label>
+                                <input type="email" class="form-control" id="detail_sender_bank" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Rekening Pengirim</label>
+                                <input type="email" class="form-control" id="detail_sender_account" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <h6>Penerima</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Nama Penerima</label>
+                                <input type="email" class="form-control" id="detail_recipient_bank" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Rekening Penerima</label>
+                                <input type="email" class="form-control" id="detail_recipient_account" readonly>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +218,9 @@
 
 
 @section('scripts')
+    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
             console.log("ready!");
@@ -318,12 +368,22 @@
                     res = data.data.lcb_request;
                     var res = JSON.parse(res);
                     var html = `<pre>${JSON.stringify(res, undefined, 4)}</pre>`
-                    $('.modal-body').html(html)
+                    $('#body-callback').html(html)
                     $('#modalCallback').modal('show')
                     // swal("Data dari bank!", html);
 
                     console.log(data.data)
                 });
+        }
+
+        function openDetailTransaksi(data) {
+            var aa = JSON.parse(atob(data));
+            console.log(aa)
+            $('#modalDetail').modal('show')
+            $('#detail_sender_bank').val(aa.sender_info.account_bank_name)
+            $('#detail_sender_account').val(aa.sender_info.account_number)
+            $('#detail_recipient_bank').val(aa.recipient_info.account_bank_name)
+            $('#detail_recipient_account').val(aa.recipient_info.account_number)
         }
 
         function formDate() {

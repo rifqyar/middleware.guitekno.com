@@ -97,8 +97,9 @@ class OverbookingController extends Controller
                 }
             })
             ->addColumn('Actions', function ($data) {
-                if ($data->logCallback && $data->logCallback->lcb_request) {
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Detail</button>';
+                if ($data->request_data) {
+                    $res = base64_encode($data->request_data);
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
                 } else {
                     return '-';
                 }
