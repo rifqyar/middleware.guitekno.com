@@ -25,10 +25,11 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-                    {{-- <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4"> <i
-                                class="fas fa-download"></i> Export to PDF</button></a> --}}
                     <button class="btn btn-danger ml-4" onclick="pdfByFilter()"> <i class="fas fa-download"></i> Export to
                         PDF</button>
+                    {{-- <button class="btn btn-danger ml-4" id="test"> <i class="fas fa-download"></i>
+                        Export to
+                        PDF(test)</button> --}}
                 </div>
                 <div class="container-fluid ml-3" id="form-filter" style="display: none">
                     <button class="btn btn-info ml-3 mb-3" onclick="addFilter('add')">
@@ -63,16 +64,19 @@
             var parameter = $('.select-operator').val();
             var value = $('.select-value').val();
             var separator = $('#separator').val();
-            var full = `${field} ${parameter} '${value}' ${separator}`
-            console.log(separator, 'test')
+            console.log(field, 'test')
 
-            if (typeof field === 'undefined' || typeof operator === 'undefined' || typeof value === 'undefined' ||
-                typeof separator === 'undefined') {
+            // var filter = btoa(`${field} ${parameter} '${value}' `);
+
+            if (typeof field === 'undefined' || typeof parameter === 'undefined' || typeof value === 'undefined') {
                 var filter = 'all';
             } else {
-                var filter = btoa(`${field} ${operator} '${value}' `);
+                var filter = btoa(`${field} ${parameter} '${value}' `);
             }
-            // window.location = '/overbooking-pdf/' + filter
+            // var filter = btoa(`${field} ${parameter} '${value}' `);
+
+            console.log(filter)
+            window.location = '/overbooking-pdf/' + filter
         }
     </script>
 @stop

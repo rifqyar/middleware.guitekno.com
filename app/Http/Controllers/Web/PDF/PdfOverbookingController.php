@@ -15,21 +15,18 @@ class PdfOverbookingController extends Controller
     {
         // dd($filter);
         $where = base64_decode($filter);
-        if($filter = 'all')
+
+        if($filter == 'all')
         {
             $overbooking = DB::select("SELECT * FROM vw_overbooking_h");
-
-            $data = [
-                'overbooking' => $overbooking
-            ];
         }
         else{
             $overbooking = DB::select("SELECT * FROM vw_overbooking_h where $where");
-
-            $data = [
-                'overbooking' => $overbooking
-            ];
         }
+
+        $data = [
+            'overbooking' => $overbooking
+        ];
         // dd($data);
 
         $pdf = PDF::loadView('Overbooking.overbookingPDF', $data);
@@ -38,6 +35,13 @@ class PdfOverbookingController extends Controller
         return $pdf->stream('Overbooking.pdf');
 
         // return view('Overbooking.overbookingPDF', $data);
+    }
+
+    public function test(Request $request)
+    {
+        $data = $request->all();
+
+        dd($data);
     }
 }
 
