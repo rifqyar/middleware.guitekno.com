@@ -3,10 +3,14 @@
     {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
-    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
+
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url('assets/img/icons/kemendagri.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ url('assets/img/icons/kemendagri.png') }}" />
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
+    <meta name="application-name" content="{{ setting('app_name') }}" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="{{ url('assets/img/icons/kemendagri.png') }}" />
     <style>
         .table {
             width: 100%;
@@ -110,7 +114,7 @@
         }
     </style>
 </head>
-<h1 style="text-align: center">Overbooking Transaction</h1>
+<h1 style="text-align: center">History Overbooking Transaction</h1>
 <p>Tanggal Cetak: {{ date('d F Y') }}</p>
 {{-- <p>Author: {{ auth()->user()->present()->nameOrEmail }}</p> --}}
 <table class="table" style="margin-left: -25px; font-size: 9px;width: 100%;">
