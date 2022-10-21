@@ -85,14 +85,23 @@
                         `${$(n).val()} ` :
                         `'${$(n).val()}' `);
             })
-            if (filter_data == '') {
+            if (filter_data == "" || filter_data == " = 'null' ") {
                 var filter = 'all'
-            } else {
-                var filter = btoa(`${filter_data}`)
-            }
+                window.location = '/overbooking-pdf/' + filter
 
-            console.log(filter, 'data')
-            window.location = '/overbooking-pdf/' + filter
+            }
+            // else if (filter_data == " <> 'null' " || filter_data == " > 'null' " || filter_data == " < 'null' " ||
+            //     filter_data == " >= 'null' " || filter_data == " <= 'null' ") {
+            //     swal({
+            //         title: "Failed",
+            //         text: "Please insert the filter",
+            //         icon: "error",
+            //     });
+            // }
+            else {
+                var filter = btoa(`${filter_data}`)
+                window.location = '/overbooking-pdf/' + filter
+            }
         }
     </script>
 @stop
