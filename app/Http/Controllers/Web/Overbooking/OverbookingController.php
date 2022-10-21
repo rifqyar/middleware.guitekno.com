@@ -297,7 +297,6 @@ class OverbookingController extends Controller
 
     private function getDataNew($request){
         $paramFilter = ["tbk_partnerid", 'tbk_recipent_name', 'tbk_recipient_account', 'tbk_sp2d_no', 'sender_bank', 'recipient_bank', 'type', 'ras_status', 'parameter', 'start_date', 'end_date'];
-
         $queryFilter = ["tbk_partnerid", 'tbk_recipent_name', 'tbk_recipient_account', 'tbk_sp2d_no', 'tbk_sender_bank_id', 'tbk_recipient_bank_id', 'tbk_type', 'ras_id'];
 
         $overBooking = TrxOverBooking::with('senderBank')
