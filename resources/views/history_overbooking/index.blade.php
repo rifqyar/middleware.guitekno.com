@@ -25,8 +25,8 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-                    <a href="{{ url('overbooking-pdf') }}"><button class="btn btn-danger ml-4" onclick="showData()"> <i
-                                class="fas fa-download"></i> Export to PDF</button></a>
+                    <button class="btn btn-danger ml-4" onclick="pdfByFilter()"> <i class="fas fa-download"></i> Export to
+                        PDF</button>
 
                     <button class="btn btn-sm btn-warning ml-auto" onclick="cutoffData()">
                         Cut Off Data
@@ -61,18 +61,6 @@
 
     <script>
         function pdfByFilter() {
-
-            // // var filter = btoa(`${field} ${parameter} '${value}' `);
-
-            // if (typeof field === 'undefined' || typeof parameter === 'undefined' || typeof value === 'undefined') {
-            //     var filter = 'all';
-            // } else {
-            //     var filter = btoa(`${field} ${parameter} '${value}' `);
-            // }
-            // // var filter = btoa(`${field} ${parameter} '${value}' `);
-
-            // console.log(filter)
-            // window.location = '/overbooking-pdf/' + filter
 
             const mainComponent = $("#overbooking-component");
             var e = mainComponent.find("#form-filter").find(".form-container");
