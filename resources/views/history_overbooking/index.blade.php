@@ -77,7 +77,6 @@
             if (filter_data == "" || filter_data == " = 'null' " || filter_data == " = '' ") {
                 var filter = 'all'
                 window.location = '/overbooking-pdf/' + filter
-
             }
             // else if (filter_data == " <> 'null' " || filter_data == " > 'null' " || filter_data == " < 'null' " ||
             //     filter_data == " >= 'null' " || filter_data == " <= 'null' ") {
