@@ -70,7 +70,6 @@ class OverbookingController extends Controller
             'code' => ['000', '001', '002', '100'],
             'success' => ['000', '001', '002'],
             'process' => ['100'],
-            'failed' => ['270', '273', '200', '201', '202', '302', '303', '400', '401', '299'],
             'message' => [
                 '000' => '<span class="badge badge-pill bg-success text-white">Success</span>',
                 '001' => '<span class="badge badge-pill bg-success text-white">Success no tax</span>',
@@ -84,13 +83,7 @@ class OverbookingController extends Controller
     {
         $data['banks'] = DatBankSecret::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
-        $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
-        // foreach($status as $st){
-        //     switch($status->){
-        //         case
-        //     }
-        // }
-        // dd($status);
+        // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
 
@@ -252,8 +245,13 @@ class OverbookingController extends Controller
 
         if ($request->type) $overBooking->where('tbk_type', $request->type);
 
-        if ($request->ras_status) $overBooking->whereIn('ras_id', $this->status[$request->ras_status]);
-
+        if ($request->ras_status) {
+            if ($request->ras_status != 'failed') {
+                $overBooking->whereIn('ras_id', $this->status[$request->ras_status]);
+            } else {
+                $overBooking->whereNotIn('ras_id', $this->status['code']);
+            }
+        }
         if ($request->parameter) {
             if ($request->parameter == 'between') {
                 $overBooking->whereBetween('tbk_execution_time', [$request->start_date, $request->end_date]);
