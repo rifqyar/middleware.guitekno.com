@@ -27,7 +27,7 @@
                     <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p>Transaksi ID</p>
                                 <input class="form-control filter datatable-input" placeholder="Invoice ID"
                                     name="tbk_partnerid" id="tbk_partnerid" />
@@ -42,7 +42,12 @@
                                 <input class="form-control filter datatable-input" placeholder="No Rekening Penerima"
                                     name="tbk_recipient_account" id="tbk_recipient_account" />
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
+                                <p>No SP2D</p>
+                                <input class="form-control filter datatable-input" placeholder="No SP2D" name="tbk_sp2d_no"
+                                    id="tbk_sp2d_no" />
+                            </div>
+                            <div class="col-md-3 mt-2">
                                 <p>Bank Pengirim</p>
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
@@ -54,7 +59,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3 mt-2">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -266,6 +271,7 @@
                         data.tbk_partnerid = $('#tbk_partnerid').val()
                         data.tbk_recipient_name = $('#tbk_recipient_name').val()
                         data.tbk_recipient_account = $('#tbk_recipient_account').val()
+                        data.tbk_sp2d_no = $('#tbk_sp2d_no').val()
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()

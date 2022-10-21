@@ -217,6 +217,7 @@ class OverbookingController extends Controller
             $overBooking->where('tbk_recipent_name', 'LIKE', "%{$upper_tbk_recipent_name}%");
         }
         if ($request->tbk_recipient_account) $overBooking->where('tbk_recipient_account', $request->tbk_recipient_account);
+        if ($request->tbk_sp2d_no) $overBooking->where('tbk_sp2d_no', $request->tbk_sp2d_no);
         if ($request->sender_bank) $overBooking->where('tbk_sender_bank_id', $request->sender_bank);
 
         if ($request->recipient_bank) $overBooking->where('tbk_recipient_bank_id', $request->recipient_bank);
@@ -232,7 +233,6 @@ class OverbookingController extends Controller
                 $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
             }
         }
-
         return $overBooking;
     }
 }
