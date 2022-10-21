@@ -113,7 +113,7 @@
 <h1 style="text-align: center">Overbooking Transaction</h1>
 <p>Tanggal Cetak: {{ date('d F Y') }}</p>
 {{-- <p>Author: {{ auth()->user()->present()->nameOrEmail }}</p> --}}
-<table class="table" style="margin-left: -25px; font-size: 9px;width: 50%;">
+<table class="table" style="margin-left: -25px; font-size: 9px;width: 100%;">
     <thead>
         <tr>
             {{-- <th>Action</th> --}}
