@@ -238,6 +238,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/column-header', 'history_overbooking\MainController@columnHeader');
             Route::get('/column-data/{column_name}', 'history_overbooking\MainController@columnData');
             Route::get('/render-filter', 'history_overbooking\MainController@renderFilterForm');
+            Route::get('/cutoffData', 'history_overbooking\MainController@cutoffData');
         });
     });
 

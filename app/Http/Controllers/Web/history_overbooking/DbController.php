@@ -37,7 +37,7 @@ class DbController
         return $data;
     }
 
-    public static function getColumnName($excludeColumn = []){
+    public static function getColumnName($excludeColumn = [], $table = 'vw_overbooking_h'){
         $whereClause = '';
         if(count($excludeColumn) > 0){
             $whereClause = 'AND column_id NOT IN (';
@@ -47,7 +47,7 @@ class DbController
             $whereClause = rtrim($whereClause, ',');
             $whereClause .= ')';
         }
-        $data = DB::SELECT("SELECT * FROM SchemaInfo where table_name = 'vw_overbooking_h' $whereClause");
+        $data = DB::SELECT("SELECT * FROM SchemaInfo where table_name = '$table' $whereClause");
 
         return $data;
     }
@@ -56,5 +56,18 @@ class DbController
         $data = DB::SELECT("SELECT DISTINCT $col FROM VW_OVERBOOKING_H r GROUP BY $col");
 
         return $data;
+    }
+
+    public static function CutoffData($filter = ''){
+        $filter = rtrim(base64_decode($filter));
+        if ($filter != ''){
+            $query = "DELETE FROM trx_overbooking where $filter";
+        } else {
+            $query = "DELETE FROM trx_overbooking";
+        }
+
+        DB::statement($query);
+
+        return true;
     }
 }

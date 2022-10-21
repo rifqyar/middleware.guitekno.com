@@ -15,7 +15,7 @@ class TrxOverBooking extends Model
         'TBK_ID', 'TBK_CREATED', 'TBK_CREATE_BY', 'TBK_LAST_UPDATED', 'TBK_;AST_UPDATE_BY', 'TBK_NOTES', 'TBK_TX_ID', 'TBK_TX_ID', 'TBK_PARTNERID',
         'TBK_AMOUNT', 'TBK_USERID', 'TBK_SENDER_BANK_ID', 'TBK_SENDER_ACCOUNT', 'TBK_SENDER_AMOUNT', 'TBK_RECIPIENT_BANK_ID', 'TBK_RECIPIENT_ACCOUNT',
         'TBK_RECIPIENT_AMOUNT', 'TBK_INTERNA_STATUS', 'TBK_SP2D_NO', 'TBK_SP2D_DESC', 'TBK_EXCETUIN_TIME', 'TBK_BILLING_ID', 'TBK_NTPN', 'TBK_NTPN_DATE',
-        'TBK_NTB', 'TBK_TYPE', 'RAS_ID'
+        'TBK_NTB', 'TBK_TYPE', 'RAS_ID', 'PROP_ID', 'DATI2_ID', 'REQUEST_DATA', 'TBK_RECIPIENT_NAME', 'TBK_RECIPIENT_NIK', 'TBK_RECIPIENT_ADDRESS', 'STATE'
     ];
 
     public function senderBank()
@@ -73,12 +73,12 @@ class TrxOverBooking extends Model
     public static function status()
     {
         return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking)
-        SELECT x.name keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) x order by x.name");
+        SELECT x.name keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
     public static function countTransaksi()
     {
-        return DB::SELECT("SELECT COUNT(1) total from trx_overbooking where ras_id='100'")[0]->total;
+        return DB::SELECT("SELECT COUNT(1) as total from trx_overbooking where ras_id='100'")[0]->total;
     }
 
     public static function jmlTransaksi()

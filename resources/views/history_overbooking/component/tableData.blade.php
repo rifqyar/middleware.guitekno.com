@@ -1,3 +1,9 @@
+<style>
+    .cutoff{
+        background-color: #353535;
+        color:  #ffffff
+    }
+</style>
 <div class="card-body">
     <div class="table-responsive">
         <table class="table t-overbooking" style="width: 100%">

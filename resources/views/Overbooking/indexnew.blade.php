@@ -3,6 +3,10 @@
 @section('page-title', __('Transaction - Overbooking'))
 @section('page-heading', __('Transaction - Overbooking'))
 
+@section('styles')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+@endsection
+
 @section('breadcrumbs')
     {{-- <li class="breadcrumb-item">
         @lang('Log Transaction')
@@ -27,15 +31,23 @@
                                 <p>Transaksi ID</p>
                                 <input class="form-control filter datatable-input" placeholder="Invoice ID"
                                     name="tbk_partnerid" id="tbk_partnerid" />
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
                             <div class="col-md-3">
                                 <p>Nama Penerima</p>
                                 <input class="form-control filter datatable-input" placeholder="Nama Penerima"
-                                    name="tbk_recipent_name" id="tbk_recipient_name" />
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
+                                    name="tbk_recipient_name" id="tbk_recipient_name" />
                             </div>
                             <div class="col-md-3">
+                                <p>Rekening Penerima</p>
+                                <input class="form-control filter datatable-input" placeholder="No Rekening Penerima"
+                                    name="tbk_recipient_account" id="tbk_recipient_account" />
+                            </div>
+                            <div class="col-md-3">
+                                <p>No SP2D</p>
+                                <input class="form-control filter datatable-input" placeholder="No SP2D" name="tbk_sp2d_no"
+                                    id="tbk_sp2d_no" />
+                            </div>
+                            <div class="col-md-3 mt-2">
                                 <p>Bank Pengirim</p>
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
@@ -46,9 +58,8 @@
                                     @endforeach
 
                                 </select>
-                                {{-- {{ var_dump($param['rst_id']) }} --}}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 mt-2">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -136,6 +147,7 @@
                                 <th>Nama Penerima</th>
                                 <th>Rekening Penerima</th>
                                 <th>Total Transfer</th>
+                                <th>NO SP2D</th>
                                 <th>Tipe</th>
                                 <th>Tanggal Pengiriman</th>
                                 <th>Keterangan</th>
@@ -157,12 +169,55 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Callback</h5>
+                    <h5 class="modal-title">Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="body-callback">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalDetail">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Transaksi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <h6>Sender Info</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Nama Pengirim</label>
+                                <input type="email" class="form-control" id="detail_sender_bank" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Rekening Pengirim</label>
+                                <input type="email" class="form-control" id="detail_sender_account" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <h6>Penerima</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Nama Penerima</label>
+                                <input type="email" class="form-control" id="detail_recipient_bank" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Rekening Penerima</label>
+                                <input type="email" class="form-control" id="detail_recipient_account" readonly>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +226,9 @@
 
 
 @section('scripts')
+    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
             console.log("ready!");
@@ -212,6 +270,8 @@
                     data: function(data) {
                         data.tbk_partnerid = $('#tbk_partnerid').val()
                         data.tbk_recipient_name = $('#tbk_recipient_name').val()
+                        data.tbk_recipient_account = $('#tbk_recipient_account').val()
+                        data.tbk_sp2d_no = $('#tbk_sp2d_no').val()
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
@@ -225,7 +285,8 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
-                        orderable: false
+                        orderable: false,
+                        responsivePriority: -1
                     },
                     // {
                     //     data: 'tbk_partnerid'
@@ -252,6 +313,10 @@
                         data: 'tbk_amount'
                     },
                     {
+                        data: 'tbk_sp2d_no',
+                        responsivePriority: -1
+                    },
+                    {
                         data: 'tbk_type'
                     },
                     {
@@ -267,12 +332,12 @@
                         data: {
                             _: 'ras.ras_description',
                             sort: 'ras_id'
-                        }
+                        },
+                        responsivePriority: -1
                         // orderable: false,
                     },
                     {
                         data: 'Callback',
-                        responsivePriority: -1
 
                     },
                     {
@@ -318,12 +383,22 @@
                     res = data.data.lcb_request;
                     var res = JSON.parse(res);
                     var html = `<pre>${JSON.stringify(res, undefined, 4)}</pre>`
-                    $('.modal-body').html(html)
+                    $('#body-callback').html(html)
                     $('#modalCallback').modal('show')
                     // swal("Data dari bank!", html);
 
                     console.log(data.data)
                 });
+        }
+
+        function openDetailTransaksi(data) {
+            var aa = JSON.parse(atob(data));
+            console.log(aa)
+            $('#modalDetail').modal('show')
+            $('#detail_sender_bank').val(aa.sender_info.account_bank_name)
+            $('#detail_sender_account').val(aa.sender_info.account_number)
+            $('#detail_recipient_bank').val(aa.recipient_info.account_bank_name)
+            $('#detail_recipient_account').val(aa.recipient_info.account_number)
         }
 
         function formDate() {
