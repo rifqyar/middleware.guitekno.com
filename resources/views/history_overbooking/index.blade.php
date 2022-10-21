@@ -75,7 +75,18 @@
                         `'${$(n).val()}' `);
             })
             if (filter_data == "" || filter_data == " = 'null' " || filter_data == " = '' ") {
-                var filter = 'all'
+                var filter = btoa('all')
+                swal({
+                    title: "Success",
+                    text: "Please Waiting for PDF Page",
+                    icon: "success",
+                    timer: 3000,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    buttons: !1,
+                    closeOnClickOutside: !1,
+                    closeOnEsc: !1,
+                })
                 window.location = '/overbooking-pdf/' + filter
             }
             // else if (filter_data == " <> 'null' " || filter_data == " > 'null' " || filter_data == " < 'null' " ||
@@ -88,6 +99,24 @@
             // }
             else {
                 var filter = btoa(`${filter_data}`)
+                swal({
+                    title: 'Now loading',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    timer: 2000,
+                    content: {
+                        element: "i",
+                        attributes: {
+                            className: "fas fa-spinner fa-spin text-large",
+                        },
+                    },
+                    buttons: !1,
+                    closeOnClickOutside: !1,
+                    closeOnEsc: !1,
+                    onOpen: () => {
+                        swal.showLoading();
+                    }
+                })
                 window.location = '/overbooking-pdf/' + filter
             }
         }

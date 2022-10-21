@@ -16,7 +16,7 @@ class PdfOverbookingController extends Controller
         // dd($filter);
         $where = base64_decode($filter);
 
-        if($filter == 'all')
+        if($where == 'all')
         {
             $overbooking = DB::select("SELECT * FROM vw_overbooking_h");
         }
