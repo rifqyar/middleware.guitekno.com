@@ -50,7 +50,8 @@
         "vanguardapp/announcements": "^4.0",
         "vanguardapp/plugins": "^4.0",
         "webpatser/laravel-countries": "dev-master",
-        "yajra/laravel-datatables": "^9.0"
+        "yajra/laravel-datatables": "^9.0",
+        "yajra/laravel-oci8": "^9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
