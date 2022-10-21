@@ -285,7 +285,8 @@
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
-                        orderable: false
+                        orderable: false,
+                        responsivePriority: -1
                     },
                     // {
                     //     data: 'tbk_partnerid'
@@ -312,7 +313,8 @@
                         data: 'tbk_amount'
                     },
                     {
-                        data: 'tbk_sp2d_no'
+                        data: 'tbk_sp2d_no',
+                        responsivePriority: -1
                     },
                     {
                         data: 'tbk_type'
@@ -330,12 +332,12 @@
                         data: {
                             _: 'ras.ras_description',
                             sort: 'ras_id'
-                        }
+                        },
+                        responsivePriority: -1
                         // orderable: false,
                     },
                     {
                         data: 'Callback',
-                        responsivePriority: -1
 
                     },
                     {
