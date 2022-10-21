@@ -180,7 +180,7 @@ class OverbookingController extends Controller
             $startCol++;
             $sheet->setCellValue("{$startCol}{$startRow}", Helper::getFormatWib($value->tbk_execution_time));
             $startCol++;
-            $sheet->setCellValue("{$startCol}{$startRow}", $value->ras->ras_description);
+            $sheet->setCellValue("{$startCol}{$startRow}", (in_array($value->ras->ras_id, $this->status['success']) ? "Success" : $value->ras->ras_id == '100') ? "Processed" : "Failed");
             $startCol++;
             $sheet->setCellValue("{$startCol}{$startRow}", $value->tbk_sp2d_desc);
             $startRow++;
