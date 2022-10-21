@@ -71,7 +71,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <p>Type</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="type"
                                     id="type">

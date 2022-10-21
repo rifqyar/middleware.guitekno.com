@@ -84,7 +84,13 @@ class OverbookingController extends Controller
     {
         $data['banks'] = DatBankSecret::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
-        $data['status'] = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
+        $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
+        // foreach($status as $st){
+        //     switch($status->){
+        //         case
+        //     }
+        // }
+        // dd($status);
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
 
