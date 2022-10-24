@@ -71,7 +71,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-2 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <p>Type</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="type"
                                     id="type">
@@ -83,12 +83,14 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <p>Status</p>
-                                <select class="form-control filter datatable-input" data-col-index=2 name="ras_id"
-                                    id="ras_id">
+                                <select class="form-control filter datatable-input" data-col-index=2 name="ras_status"
+                                    id="ras_status">
                                     <option value="">All</option>
-                                    @foreach ($status as $list)
-                                        <option value="{{ $list->ras_id }}">{{ $list->ras->ras_description }}</option>
-                                    @endforeach
+                                    {{-- @foreach ($status as $list) --}}
+                                    <option value="success">Success</option>
+                                    <option value="process">Process</option>
+                                    <option value="failed">Failed</option>
+                                    {{-- @endforeach --}}
                                 </select>
                             </div>
                             <div class="col-md-7 mt-2">
@@ -136,7 +138,7 @@
                     </form>
                 </div>
                 <div class="table-responsive">
-                    <table class="table t-overbooking" style="width: 100%;font-size:12px">
+                    <table class="table table-striped t-overbooking" style="width: 100%;font-size:12px">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -275,7 +277,7 @@
                         data.sender_bank = $('#sender_bank').val()
                         data.recipient_bank = $('#recipient_bank').val()
                         data.type = $('#type').val()
-                        data.ras_id = $('#ras_id').val()
+                        data.ras_status = $('#ras_status').val()
                         data.parameter = $('#parameter').val()
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
@@ -328,11 +330,11 @@
 
                     },
                     {
-                        name: 'ras_id',
-                        data: {
-                            _: 'ras.ras_description',
-                            sort: 'ras_id'
-                        },
+                        data: 'ras_id',
+                        // data: {
+                        //     _: 'ras_id',
+                        //     sort: 'ras_id'
+                        // },
                         responsivePriority: -1
                         // orderable: false,
                     },

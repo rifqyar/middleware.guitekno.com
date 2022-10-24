@@ -36,7 +36,7 @@
                             </div>
                             <div class="pr-3">
                                 <h2 class="text-right">{{ $data['countTransaksi'] }}</h2>
-                                <div class="text-muted">Jumlah Proses Transaksi</div>
+                                <div class="text-muted">Jumlah Transaksi</div>
                             </div>
                         </div>
                     </div>

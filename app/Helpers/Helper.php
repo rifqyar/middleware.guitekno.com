@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Auth;
+
 class Helper
 {
     public static function getRupiah($value)
@@ -71,5 +73,51 @@ class Helper
         ];
 
         return $role[$user->role_id];
+    }
+
+    public static function getRoleFilter($type, $query = null){
+        if ($type == 'query'){
+            $role = Auth::user()->role_id;
+            $prop = Auth::user()->province_id;
+            $kabupaten = Auth::user()->dati_id;
+            $where = '';
+
+            switch ($role) {
+                case 4:
+                    $where = "prop_id = '$prop'";
+                    break;
+
+                case 5:
+                    $where = "prop_id = '$prop' AND dati2_id = '$kabupaten')";
+                    break;
+                default:
+                    $where = '';
+                    break;
+            }
+
+            return $where;
+        } else if ($type == 'model'){
+            $role = Auth::user()->role_id;
+            $prop = Auth::user()->province_id;
+            $kabupaten = Auth::user()->dati_id;
+
+            $query->where(function($query) use ($role, $prop, $kabupaten) {
+                switch ($role) {
+                    case 4:
+                        $query->where('prop_id', $prop);
+                        break;
+    
+                    case 5:
+                        $query->where('prop_id', $prop); 
+                        $query->where('dati2_id', $kabupaten);
+                        break;
+                    default:
+                        $where = '';
+                        break;
+                }
+            });
+
+            return $query;
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Vanguard\Http\Controllers\Web\history_overbooking;
 
+use Auth;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Controllers\Library;
@@ -10,9 +11,9 @@ class DbController
     /** GET DATA */
     public static function getAll($filter = ''){
         //Filter by role
-        $role = auth()->user()->present()->role_id;
-        $prop = auth()->user()->present()->province_id;
-        $kabupaten = auth()->user()->present()->dati_id;
+        $role = Auth::user()->role_id;
+        $prop = Auth::user()->province_id;
+        $kabupaten = Auth::user()->dati_id;
         $filter = rtrim(base64_decode($filter));
         $where = '';
 

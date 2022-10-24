@@ -2,6 +2,8 @@
 
 namespace Vanguard\Models;
 
+use App\Helpers\Helper;
+use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -40,21 +42,27 @@ class TrxOverBooking extends Model
 
     public static function typeTrx()
     {
+        $where = Helper::getRoleFilter('query');
+        $where = $where != '' ? "WHERE $where" : '';
+
         return DB::SELECT("SELECT
                         CASE tbk_type
                         WHEN 'LS|NONGAJI' THEN 'Non Gaji'
                         ELSE 'Gaji' END as type,
-                    count(tbk_type) as amount from trx_overbooking group by tbk_type");
+                    count(tbk_type) as amount from trx_overbooking $where group by tbk_type");
     }
 
     public static function trxChart()
     {
-        $query = DB::select("select to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking
-        group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
+        $where = Helper::getRoleFilter('query');
+        $where2 = $where != '' ? "WHERE $where" : '';
+        $where = $where != '' ? "and ($where)" : '';
+
+        $query = DB::SELECT("SELECT to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
         $bank = [];
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
-            $value->data = DB::select("select ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') group by ref_bank.bank_name");
+            $value->data = DB::select("SELECT ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') $where group by ref_bank.bank_name");
             if (!empty($value->data)) {
                 foreach ($value->data as $bankName) {
                     $bank[] = $bankName->bank_name;
@@ -72,18 +80,26 @@ class TrxOverBooking extends Model
 
     public static function status()
     {
-        return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking)
-        SELECT x.name keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
+        $where = Helper::getRoleFilter('query');
+        $where = $where != '' ? "WHERE $where" : '';
+        
+        return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking $where)
+        SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
     public static function countTransaksi()
     {
-        return DB::SELECT("SELECT COUNT(1) as total from trx_overbooking where ras_id='100'")[0]->total;
+        $where = Helper::getRoleFilter('query');
+        $where = $where != '' ? "WHERE $where" : '';
+        $query = "SELECT COUNT(1) as total from trx_overbooking $where";
+        return DB::SELECT($query)[0]->total;
     }
 
     public static function jmlTransaksi()
     {
-        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H")[0]->jumlah;
+        $where = Helper::getRoleFilter('query');
+        $where = $where != '' ? "WHERE $where" : '';
+        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H $where")[0]->jumlah;
     }
 
     public static function mostActiveBank()
@@ -94,6 +110,9 @@ class TrxOverBooking extends Model
 
     public static function countTrxBank()
     {
-        return DB::SELECT("SELECT ref_bank.bank_name as name, ref_bank.bank_id, count(vw_overbooking_h.tbk_id) as value from vw_overbooking_h inner join ref_bank on ref_bank.bank_id = vw_overbooking_h.tbk_sender_bank_id group by ref_bank.bank_name, vw_overbooking_h.tbk_sender_bank_id, ref_bank.bank_id");
+        $where = Helper::getRoleFilter('query');
+        $where = $where != '' ? "WHERE $where" : '';
+
+        return DB::SELECT("SELECT sender_bank_name as name, tbk_sender_bank_id as bank_id, count(tbk_id) as value from vw_overbooking_h $where group by sender_bank_name, tbk_sender_bank_id");
     }
 }
