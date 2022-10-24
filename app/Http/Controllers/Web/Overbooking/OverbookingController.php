@@ -81,8 +81,6 @@ class OverbookingController extends Controller
                 '100' => '<span class="badge badge-pill bg-warning text-dark">Processed</span>'
             ]
         ];
-
-        
     }
 
     public function index()
@@ -243,6 +241,7 @@ class OverbookingController extends Controller
             ->with('ras')
             ->with('logCallback');
 
+        if ($request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
         if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
         if ($request->tbk_recipient_name) {
             $upper_tbk_recipient_name = strtoupper($request->tbk_recipient_name);
@@ -278,12 +277,12 @@ class OverbookingController extends Controller
 
         switch ($this->role) {
             case 4:
-                $overBooking->where(function($query){
+                $overBooking->where(function ($query) {
                     $query->where('prop_id', $this->province_id);
                 });
                 break;
             case 5:
-                $overBooking->where(function($query){
+                $overBooking->where(function ($query) {
                     $query->where('prop_id', $this->province_id);
                     $query->where('dati2_id', $this->dati_id);
                 });
@@ -295,7 +294,8 @@ class OverbookingController extends Controller
         return $overBooking;
     }
 
-    private function getDataNew($request){
+    private function getDataNew($request)
+    {
         $paramFilter = ["tbk_partnerid", 'tbk_recipent_name', 'tbk_recipient_account', 'tbk_sp2d_no', 'sender_bank', 'recipient_bank', 'type', 'ras_status', 'parameter', 'start_date', 'end_date'];
         $queryFilter = ["tbk_partnerid", 'tbk_recipent_name', 'tbk_recipient_account', 'tbk_sp2d_no', 'tbk_sender_bank_id', 'tbk_recipient_bank_id', 'tbk_type', 'ras_id'];
 
@@ -304,20 +304,20 @@ class OverbookingController extends Controller
             ->with('ras')
             ->with('logCallback');
 
-        for ($i=0; $i < count($paramFilter); $i++) { 
-            if (array_key_exists($paramFilter[$i], $request->all()) && $request->all()[$paramFilter[$i]] != null){
-                if ($paramFilter[$i] != 'parameter' && $paramFilter[$i] != 'start_date' && $paramFilter[$i] != 'end_date'){
-                    if ($paramFilter[$i] == 'ras_status'){
+        for ($i = 0; $i < count($paramFilter); $i++) {
+            if (array_key_exists($paramFilter[$i], $request->all()) && $request->all()[$paramFilter[$i]] != null) {
+                if ($paramFilter[$i] != 'parameter' && $paramFilter[$i] != 'start_date' && $paramFilter[$i] != 'end_date') {
+                    if ($paramFilter[$i] == 'ras_status') {
                         $overBooking->whereIn($queryFilter[$i], $this->status[$request->all()[$paramFilter[$i]]]);
                     } else {
                         $overBooking->where($queryFilter[$i], $request->all()[$paramFilter[$i]]);
                     }
                 }
-                if ($paramFilter[$i] == 'parameter'){
-                    if ($request->all()[$paramFilter[$i]] == 'between'){
-                        $overBooking->whereBetween('tbk_execution_time', [$request->all()[$paramFilter[$i+1]], $request->all()[$paramFilter[$i+2]]]);
+                if ($paramFilter[$i] == 'parameter') {
+                    if ($request->all()[$paramFilter[$i]] == 'between') {
+                        $overBooking->whereBetween('tbk_execution_time', [$request->all()[$paramFilter[$i + 1]], $request->all()[$paramFilter[$i + 2]]]);
                     } else {
-                        if ($paramFilter[$i] != 'end_date'){
+                        if ($paramFilter[$i] != 'end_date') {
                             $overBooking->where('tbk_execution_time', $request->parameter, $request->all()[$paramFilter[$i]]);
                         }
                     }
