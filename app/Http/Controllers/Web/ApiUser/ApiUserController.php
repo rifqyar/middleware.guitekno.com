@@ -41,7 +41,7 @@ class ApiUserController extends Controller
     public function form()
     {
         $apiUser = DatApiUser::get()->pluck('bank_id')->toArray();
-        $data['banks'] = RefBank::whereNotIn('bank_id', $apiUser)->get();
+        $data['banks'] = RefBank::get();
         return view('api_user.add', $data);
     }
 
@@ -59,7 +59,7 @@ class ApiUserController extends Controller
     {
         $user = DatApiUser::where('bank_id', $request->bank_id)->first();
         $user->dau_username = $request->username;
-        if ($request->password) $user->dau_password = $request->password;
+        if ($request->password) $user->dau_password = bcrypt($request->password);
         $user->save();
         return response()->json($user);
     }
