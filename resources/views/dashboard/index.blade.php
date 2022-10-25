@@ -51,7 +51,7 @@
                             </div>
                             <div class="pr-3">
                                 <h2 class="text-right">{{ $data['jumlahTransaksi'] }}</h2>
-                                <div class="text-muted">Total Transaksi</div>
+                                <div class="text-muted">Total Transaksi Berhasil</div>
                             </div>
                         </div>
                     </div>

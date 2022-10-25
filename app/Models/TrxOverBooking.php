@@ -98,8 +98,8 @@ class TrxOverBooking extends Model
     public static function jmlTransaksi()
     {
         $where = Helper::getRoleFilter('query');
-        $where = $where != '' ? "WHERE $where" : '';
-        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H $where")[0]->jumlah;
+        $where = $where != '' ? "AND ($where)" : '';
+        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where")[0]->jumlah;
     }
 
     public static function mostActiveBank()
