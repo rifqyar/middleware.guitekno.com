@@ -87,7 +87,7 @@
             </div>
             <div class="form-group" id="regency_div" style="display:none;">
                 <label for="address">@lang('Regency')</label>
-                {!! Form::select('dati2_id', $regency, $edit ? $user->dati2_id : '', [
+                {!! Form::select('dati_id', $regency, $edit ? $user->dati2_id : '', [
                     'class' => 'form-control input-solid',
                     'id' => 'regency',
                 ]) !!}
