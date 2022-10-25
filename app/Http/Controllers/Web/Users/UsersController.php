@@ -14,7 +14,6 @@ use Vanguard\Repositories\Country\CountryRepository;
 use Vanguard\Repositories\Role\RoleRepository;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Repositories\Province\ProvinceRepository;
-use Vanguard\Repositories\UserTypes\TypeRepository;
 use Vanguard\Support\Enum\UserStatus;
 use Vanguard\User;
 use Vanguard\Province;
@@ -68,7 +67,7 @@ class UsersController extends Controller
      * @param RoleRepository $roleRepository
      * @return Factory|View
      */
-    public function create(CountryRepository $countryRepository, Province $province, TypeRepository $type, RoleRepository $roleRepository)
+    public function create(CountryRepository $countryRepository, Province $province, RoleRepository $roleRepository)
     {
         $permission = Helper::getPermission(auth()->user());
         return view('user.add', [
