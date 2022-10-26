@@ -8,6 +8,7 @@ use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Models\DatBankSecret;
+use Vanguard\Models\RefRunState;
 use Vanguard\Models\TrxOverBooking;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -90,6 +91,10 @@ class OverbookingController extends Controller
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
+        $data['states'] = RefRunState::get();
+
+        // URL Production untuk sortir filter
+        $data['production_trx'] = url()->current() == 'http://103.245.225.163/transaksi';
 
         return view('Overbooking.indexnew', $data);
     }
@@ -124,6 +129,9 @@ class OverbookingController extends Controller
                     return '-';
                 }
             })
+            // ->addColumn('State', function($data) {
+
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {
@@ -270,6 +278,8 @@ class OverbookingController extends Controller
                 $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
             }
         }
+
+        if($request->state) $overBooking->where('state', $request->state);
 
         /** Filter by user */
         $this->role = auth()->user()->present()->role_id;

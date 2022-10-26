@@ -2,15 +2,25 @@
     <title>Overbooking - Middleware</title>
     {{-- <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
     {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
-    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
-    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url('assets/img/icons/kemendagri.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ url('assets/img/icons/kemendagri.png') }}" />
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ url('assets/img/icons/kemendagri.png') }}" sizes="16x16" />
+    <meta name="application-name" content="{{ setting('app_name') }}" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="{{ url('assets/img/icons/kemendagri.png') }}" />
     <style>
         .table {
             width: 100%;
             margin-bottom: 1rem;
             color: #212529;
+        }
+
+        .cutoff {
+            background-color: #353535;
+            color: #ffffff
         }
 
         .table th,
@@ -109,10 +119,10 @@
         }
     </style>
 </head>
-<h1 style="text-align: center">Overbooking Transaction</h1>
+<h1 style="text-align: center">History Overbooking Transaction</h1>
 <p>Tanggal Cetak: {{ date('d F Y') }}</p>
 {{-- <p>Author: {{ auth()->user()->present()->nameOrEmail }}</p> --}}
-<table class="table" style="margin-left: -35px; font-size: 11.5px;width: 50%;">
+<table class="table" style="margin-left: -25px; font-size: 9px;width: 100%;">
     <thead>
         <tr>
             {{-- <th>Action</th> --}}
@@ -132,32 +142,58 @@
     </thead>
     <tbody>
         @foreach ($overbooking as $data)
-            <tr>
-                @if ($data->status_text === 'Processed')
-                    <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span></td>
-                    {{-- @elseif($data->status_text === 'Process')
-                    <td><span
-                            class="badge badge-pill bg-warning text-dark mr-2 text-dark">{{ $data->status_text }}</span>
-                    </td> --}}
-                @elseif($data->status_text === 'Success')
-                    <td><span class="badge badge-pill bg-success mr-2 text-light">{{ $data->status_text }}</span></td>
-                @else
-                    <td><span class="badge badge-pill bg-danger mr-2 text-light">{{ $data->status_text }}</span></td>
-                @endif
+            {{-- {{ dd($data) }} --}}
+            @if ($data->status_cutoff == 'true')
+                <tr class="cutoff">
+                    @if ($data->status_text === 'Processed')
+                        <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span>
+                        </td>
+                    @elseif($data->status_text === 'Success')
+                        <td><span class="badge badge-pill bg-success mr-2 text-light">{{ $data->status_text }}</span>
+                        </td>
+                    @else
+                        <td><span class="badge badge-pill bg-danger mr-2 text-light">{{ $data->status_text }}</span>
+                        </td>
+                    @endif
 
-                <td>{{ $data->tbk_id }}</td>
-                <td>{{ $data->sender_bank_name }}</td>
-                <td>{{ $data->tbk_sender_account }}</td>
-                {{-- <td>Rp {{ number_format($data->tbk_sender_amount, 3, ',', '.') }}</td> --}}
-                <td>Rp {{ number_format($data->tbk_sender_amount, 0, ',', '.') }}</td>
-                <td>{{ $data->tbk_notes }}</td>
-                <td>{{ $data->recipient_bank_name }}</td>
-                <td>{{ $data->tbk_recipient_account }}</td>
-                <td>Rp {{ number_format($data->tbk_recipient_amount, 0, ',', '.') }}</td>
-                <td>{{ $data->tbk_execution_time }}</td>
-                <td>{{ $data->tbk_sp2d_desc }}</td>
-                <td>{{ $data->status_message }}</td>
-            </tr>
+                    <td>{{ $data->tbk_partnerid }}</td>
+                    <td>{{ $data->sender_bank_name }}</td>
+                    <td>{{ $data->tbk_sender_account }}</td>
+                    <td>Rp {{ number_format($data->tbk_sender_amount, 0, ',', '.') }}</td>
+                    <td>{{ $data->tbk_notes }}</td>
+                    <td>{{ $data->recipient_bank_name }}</td>
+                    <td>{{ $data->tbk_recipient_account }}</td>
+                    <td>Rp {{ number_format($data->tbk_recipient_amount, 0, ',', '.') }}</td>
+                    <td>{{ $data->tbk_execution_time }}</td>
+                    <td>{{ $data->tbk_sp2d_desc }}</td>
+                    <td>{{ $data->status_message }}</td>
+                </tr>
+            @else
+                <tr>
+                    @if ($data->status_text === 'Processed')
+                        <td><span class="badge badge-pill bg-warning mr-2 text-dark">{{ $data->status_text }}</span>
+                        </td>
+                    @elseif($data->status_text === 'Success')
+                        <td><span class="badge badge-pill bg-success mr-2 text-light">{{ $data->status_text }}</span>
+                        </td>
+                    @else
+                        <td><span class="badge badge-pill bg-danger mr-2 text-light">{{ $data->status_text }}</span>
+                        </td>
+                    @endif
+
+                    <td>{{ $data->tbk_partnerid }}</td>
+                    <td>{{ $data->sender_bank_name }}</td>
+                    <td>{{ $data->tbk_sender_account }}</td>
+                    <td>Rp {{ number_format($data->tbk_sender_amount, 0, ',', '.') }}</td>
+                    <td>{{ $data->tbk_notes }}</td>
+                    <td>{{ $data->recipient_bank_name }}</td>
+                    <td>{{ $data->tbk_recipient_account }}</td>
+                    <td>Rp {{ number_format($data->tbk_recipient_amount, 0, ',', '.') }}</td>
+                    <td>{{ $data->tbk_execution_time }}</td>
+                    <td>{{ $data->tbk_sp2d_desc }}</td>
+                    <td>{{ $data->status_message }}</td>
+                </tr>
+            @endif
         @endforeach
 
     </tbody>
