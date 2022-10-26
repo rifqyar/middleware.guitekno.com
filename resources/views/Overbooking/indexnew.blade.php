@@ -22,121 +22,134 @@
         <div class="card" id="list-data">
             <div class="card-body">
                 <h4>Transaksi</h4>
-                <div>
-                    <h6>Filter</h6>
-                    <form class="form-group" method="post" action="/transaksi/export/file">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-3">
-                                <p>Transaksi ID</p>
-                                <input class="form-control filter datatable-input" placeholder="Invoice ID"
-                                    name="tbk_partnerid" id="tbk_partnerid" />
-                            </div>
-                            <div class="col-md-3">
-                                <p>Nama Penerima</p>
-                                <input class="form-control filter datatable-input" placeholder="Nama Penerima"
-                                    name="tbk_recipient_name" id="tbk_recipient_name" />
-                            </div>
-                            <div class="col-md-3">
-                                <p>Rekening Penerima</p>
-                                <input class="form-control filter datatable-input" placeholder="No Rekening Penerima"
-                                    name="tbk_recipient_account" id="tbk_recipient_account" />
-                            </div>
-                            <div class="col-md-3">
-                                <p>No SP2D</p>
-                                <input class="form-control filter datatable-input" placeholder="No SP2D" name="tbk_sp2d_no"
-                                    id="tbk_sp2d_no" />
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                <p>Bank Pengirim</p>
-                                <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
-                                    id="sender_bank">
-                                    <option value="">All</option>
+                @if (!$production_trx)
+                    <div>
+                        <h6>Filter</h6>
+                        <form class="form-group" method="post" action="/transaksi/export/file">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p>Transaksi ID</p>
+                                    <input class="form-control filter datatable-input" placeholder="Invoice ID"
+                                        name="tbk_partnerid" id="tbk_partnerid" />
+                                </div>
+                                <div class="col-md-3">
+                                    <p>Nama Penerima</p>
+                                    <input class="form-control filter datatable-input" placeholder="Nama Penerima"
+                                        name="tbk_recipient_name" id="tbk_recipient_name" />
+                                </div>
+                                <div class="col-md-3">
+                                    <p>Rekening Penerima</p>
+                                    <input class="form-control filter datatable-input" placeholder="No Rekening Penerima"
+                                        name="tbk_recipient_account" id="tbk_recipient_account" />
+                                </div>
+                                <div class="col-md-3">
+                                    <p>No SP2D</p>
+                                    <input class="form-control filter datatable-input" placeholder="No SP2D"
+                                        name="tbk_sp2d_no" id="tbk_sp2d_no" />
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Bank Pengirim</p>
+                                    <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
+                                        id="sender_bank">
+                                        <option value="">All</option>
 
-                                    @foreach ($banks as $bank)
-                                        <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
-                                    @endforeach
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
+                                        @endforeach
 
-                                </select>
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                <p>Bank Penerima</p>
-                                <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
-                                    id="recipient_bank">
-                                    <option value="">All</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Bank Penerima</p>
+                                    <select class="form-control filter datatable-input" data-col-index=1
+                                        name="recipient_bank" id="recipient_bank">
+                                        <option value="">All</option>
 
-                                    @foreach ($banks as $bank)
-                                        <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
-                                    @endforeach
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
+                                        @endforeach
 
-                                </select>
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                <p>Type</p>
-                                <select class="form-control filter datatable-input" data-col-index=2 name="type"
-                                    id="type">
-                                    <option value="">All</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->tbk_type }}">{{ $type->tbk_type }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                <p>Status</p>
-                                <select class="form-control filter datatable-input" data-col-index=2 name="ras_status"
-                                    id="ras_status">
-                                    <option value="">All</option>
-                                    {{-- @foreach ($status as $list) --}}
-                                    <option value="success">Success</option>
-                                    <option value="process">Process</option>
-                                    <option value="failed">Failed</option>
-                                    {{-- @endforeach --}}
-                                </select>
-                            </div>
-                            <div class="col-md-7 mt-2">
-                                <p>Tanggal Pengiriman</p>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <select class="form-control filter" name="parameter" onchange="formDate()"
-                                            id="parameter">
-                                            <option value="">All</option>
-                                            <option value="=">=</option>
-                                            <option value="<=">
-                                                <= </option>
-                                            <option value=">="> >= </option>
-                                            <option value="between">Between</option>
-                                        </select>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Type</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="type"
+                                        id="type">
+                                        <option value="">All</option>
+                                        @foreach ($types as $type)
+                                            <option value="{{ $type->tbk_type }}">{{ $type->tbk_type }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Status</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="ras_status"
+                                        id="ras_status">
+                                        <option value="">All</option>
+                                        {{-- @foreach ($status as $list) --}}
+                                        <option value="success">Success</option>
+                                        <option value="process">Process</option>
+                                        <option value="failed">Failed</option>
+                                        {{-- @endforeach --}}
+                                    </select>
+                                </div>
+                                <div class="col-md-7 mt-2">
+                                    <p>Tanggal Pengiriman</p>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <select class="form-control filter" name="parameter" onchange="formDate()"
+                                                id="parameter">
+                                                <option value="">All</option>
+                                                <option value="=">=</option>
+                                                <option value="<=">
+                                                    <= </option>
+                                                <option value=">="> >= </option>
+                                                <option value="between">Between</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="date" class="form-control filter datatable-input"
+                                                name="start_date" id="start_date" readonly>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="date" class="form-control filter datatable-input"
+                                                name="end_date" id="end_date" readonly>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <input type="date" class="form-control filter datatable-input" name="start_date"
-                                            id="start_date" readonly>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="date" class="form-control filter datatable-input" name="end_date"
-                                            id="end_date" readonly>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>State</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="state"
+                                        id="state">
+                                        <option value="">All</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->rrs_id }}">{{ $state->rrs_desc }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
+                                    <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
+                                    <button type="button" class="btn btn-warning mb-2 dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Export
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                            name="button" value="excel">Excel</button>
+                                        <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
+                                            name="button" value="pdf">Pdf</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col">
-                                <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
-                                <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
-                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    Export
-                                </button>
-                                <div class="dropdown-menu">
-                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
-                                        name="button" value="excel">Excel</button>
-                                    <button type="submit" class="btn btn-warning dropdown-item" id="exportExcel"
-                                        name="button" value="pdf">Pdf</button>
-                                </div>
-                            </div>
-                        </div>
 
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                @endif
+
                 <div class="table-responsive">
                     <table class="table table-striped t-overbooking" style="width: 100%;font-size:12px">
                         <thead>
@@ -309,6 +322,7 @@
                         data.parameter = $('#parameter').val()
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
+                        data.state = $('#state').val()
 
                     }
                 },
