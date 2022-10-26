@@ -94,7 +94,8 @@ class OverbookingController extends Controller
         $data['states'] = RefRunState::get();
 
         // URL Production untuk sortir filter
-        $data['production_trx'] = url()->current() == 'http://103.245.225.163/transaksi';
+        $data['production_trx'] = url()->current() == 'https://middleware.guitekno.com/transaksi';
+        // $data['production_trx'] = true;
 
         return view('Overbooking.indexnew', $data);
     }
@@ -279,7 +280,7 @@ class OverbookingController extends Controller
             }
         }
 
-        if($request->state) $overBooking->where('state', $request->state);
+        if ($request->state) $overBooking->where('state', $request->state);
 
         /** Filter by user */
         $this->role = auth()->user()->present()->role_id;
