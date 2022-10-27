@@ -17,7 +17,7 @@ class DatBankSecret extends Model
 
     public static function countBank()
     {
-        return count(DB::SELECT("SELECT * from dat_bank_secret x, ref_bank y where x.code_bank=y.bank_id"));
+        return count(DB::SELECT("SELECT * from dat_bank_secret x where x.code_bank != '000' and x.code_bank != 'tes'"));
     }
 
     public function bank()
