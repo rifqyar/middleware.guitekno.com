@@ -14,16 +14,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -186,7 +186,18 @@
                 <div class="card">
                     <div style="display: flex;justify-content:space-between">
                         <div>
-                            <h6 class="card-header">Data Transaksi Ongoing</h6>
+                            <h6 class="card-header" id="transaksi_terkini"><b>Transaksi Hari Ini</b></h6>
+                            </a>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div style="display: flex;justify-content:space-between">
+                        <div>
+                            <h6 class="card-header"><b>Transaksi Dalam Proses Bank</b></h6>
                         </div>
                         <div class="card-header">
                             <a href="/history-overbooking">
@@ -201,22 +212,17 @@
                         <table class="table" id="lastOverBooking">
                             <thead>
                                 <tr>
-                                    <th>Partner Id</th>
+                                    <th>Status</th>
+                                    {{-- <th>Partner Id</th> --}}
                                     <th>Nama Bank</th>
                                     <th>Tanggal pengiriman</th>
                                     <th>Jumlah</th>
                                     <th>Tipe</th>
-                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data['trxOverbooking'] as $value)
                                     <tr>
-                                        <td>{{ $value->tbk_partnerid }}</td>
-                                        <td>{{ $value->senderBank->bank_name }}</td>
-                                        <td>{{ Helper::getFormatWib($value->tbk_execution_time) }} </td>
-                                        <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
-                                        <td> {{ $value->tbk_type }}</td>
                                         @if ($value->ras_id == '000')
                                             <td><span class="badge badge-success">Success</span></td>
                                         @elseif ($value->ras_id == '100')
@@ -224,6 +230,11 @@
                                         @else
                                             <td><span class="badge badge-danger">Failed</span></td>
                                         @endif
+                                        {{-- <td>{{ $value->tbk_partnerid }}</td> --}}
+                                        <td>{{ $value->senderBank->bank_name }}</td>
+                                        <td>{{ Helper::getFormatWib($value->tbk_execution_time) }} </td>
+                                        <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
+                                        <td> {{ $value->tbk_type }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -250,6 +261,29 @@
         </div>
     </div>
     <script>
+        $('#transaksi_terkini').on('click', function(e) {
+            // if (e) {
+            //     const year = new Date().getFullYear()
+            //     const month = ("0" + (new Date().getMonth() + 1)).slice(-2)
+            //     const date = ("0" + new Date().getDate()).slice(-2)
+            //     const tanggal = `${year}-${month}-${date}`
+            //     console.log(tanggal)
+            //     localStorage.setItem('tanggal', tanggal)
+            //     window.location = '/transaksi'
+            // } else {
+            //     window.localStorage.removeItem('tanggal')
+            // }
+            const year = new Date().getFullYear()
+            const month = ("0" + (new Date().getMonth() + 1)).slice(-2)
+            const date = ("0" + new Date().getDate()).slice(-2)
+            const tanggal = `${year}-${month}-${date}`
+            console.log(tanggal)
+
+            localStorage.setItem('tanggal', tanggal)
+            window.location = '/transaksi'
+
+        })
+
         function chartTxDaily() {
             $.ajaxSetup({
                 headers: {

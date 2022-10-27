@@ -242,6 +242,7 @@ class OverbookingController extends Controller
 
     private function getData($request)
     {
+        // dd($request->start_date);
         $overBooking = TrxOverBooking::with('senderBank')
             ->with('receiverBank')
             ->with('ras')
@@ -284,6 +285,12 @@ class OverbookingController extends Controller
             $overBooking->where('state', '01');
         } else {
             if ($request->state) $overBooking->where('state', $request->state);
+        }
+
+        if($request->tanggal == ''){
+            $overBooking->orderBy('tbk_created', 'desc');
+        }else{
+            $overBooking->where('tbk_created', '=', $request->tanggal);
         }
 
 

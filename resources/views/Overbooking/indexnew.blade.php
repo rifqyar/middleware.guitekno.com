@@ -119,6 +119,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3 mt-2">
+                                <p>State</p>
+                                <input type="date" class="form-control filter datatable-input" name="end_date"
+                                    id="end_date">
+                            </div>
                             @if (env('APP_ENV') == 'development')
                                 <div class="col-md-3 mt-2">
                                     <p>State</p>
@@ -292,6 +297,7 @@
         });
 
         function render() {
+            // const tanggal = localStorage.getItem('tanggal')
             var table = $('.table').DataTable({
                 responsive: true,
                 lengthMenu: [
@@ -325,6 +331,7 @@
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
                         data.state = $('#state').val()
+                        // data.tanggal = tanggal
 
                     }
                 },
@@ -395,6 +402,8 @@
 
             $('#kt_search').on('click', function(e) {
                 e.preventDefault();
+                localStorage.removeItem('tanggal')
+                console.log($('#start_date').val())
                 table.table().draw();
             });
 
@@ -411,6 +420,7 @@
             $('#kt_reset').on('click', function(e) {
                 console.log(e)
                 e.preventDefault();
+                localStorage.removeItem('tanggal')
                 $('.datatable-input').each(function() {
                     $(this).val('');
                     table.column($(this).data('col-index')).search('', false, false);
