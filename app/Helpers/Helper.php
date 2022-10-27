@@ -88,7 +88,7 @@ class Helper
                     break;
 
                 case 5:
-                    $where = "prop_id = '$prop' AND dati2_id = '$kabupaten')";
+                    $where = "prop_id = '$prop' AND dati2_id = '$kabupaten'";
                     break;
                 default:
                     $where = '';

@@ -8,6 +8,7 @@ use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 use Vanguard\Models\DatBankSecret;
+use Vanguard\Models\RefRunState;
 use Vanguard\Models\TrxOverBooking;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -90,6 +91,7 @@ class OverbookingController extends Controller
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
+        $data['states'] = RefRunState::get();
 
         return view('Overbooking.indexnew', $data);
     }
@@ -110,7 +112,8 @@ class OverbookingController extends Controller
             })
             ->addColumn('Callback', function ($data) {
                 if ($data->logCallback && $data->logCallback->lcb_request) {
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $data->tbk_partnerid . '`)">Open</button>';
+                    $res = base64_encode($data->logCallback->lcb_request);
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $res . '`)">Open</button>';
                 } else {
                     return '-';
                 }
@@ -123,6 +126,9 @@ class OverbookingController extends Controller
                     return '-';
                 }
             })
+            // ->addColumn('State', function($data) {
+
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {
@@ -242,13 +248,18 @@ class OverbookingController extends Controller
             ->with('logCallback');
 
         if ($request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
+
         if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
+
         if ($request->tbk_recipient_name) {
             $upper_tbk_recipient_name = strtoupper($request->tbk_recipient_name);
             $overBooking->where('tbk_recipient_name', 'LIKE', "%{$upper_tbk_recipient_name}%");
         }
+
         if ($request->tbk_recipient_account) $overBooking->where('tbk_recipient_account', $request->tbk_recipient_account);
+
         if ($request->tbk_sp2d_no) $overBooking->where('tbk_sp2d_no', $request->tbk_sp2d_no);
+
         if ($request->sender_bank) $overBooking->where('tbk_sender_bank_id', $request->sender_bank);
 
         if ($request->recipient_bank) $overBooking->where('tbk_recipient_bank_id', $request->recipient_bank);
@@ -269,6 +280,12 @@ class OverbookingController extends Controller
                 $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
             }
         }
+        if (env('APP_ENV') == 'production') {
+            $overBooking->where('state', '01');
+        } else {
+            if ($request->state) $overBooking->where('state', $request->state);
+        }
+
 
         /** Filter by user */
         $this->role = auth()->user()->present()->role_id;

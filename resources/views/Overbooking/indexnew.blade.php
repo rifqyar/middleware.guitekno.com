@@ -27,11 +27,13 @@
                     <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
-                            <div class="col-md-3">
-                                <p>Transaksi ID</p>
-                                <input class="form-control filter datatable-input" placeholder="Invoice ID"
-                                    name="tbk_partnerid" id="tbk_partnerid" />
-                            </div>
+                            @if (env('APP_ENV') == 'development')
+                                <div class="col-md-3">
+                                    <p>Transaksi ID</p>
+                                    <input class="form-control filter datatable-input" placeholder="Invoice ID"
+                                        name="tbk_partnerid" id="tbk_partnerid" />
+                                </div>
+                            @endif
                             <div class="col-md-3">
                                 <p>Nama Penerima</p>
                                 <input class="form-control filter datatable-input" placeholder="Nama Penerima"
@@ -117,6 +119,18 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (env('APP_ENV') == 'development')
+                                <div class="col-md-3 mt-2">
+                                    <p>State</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="state"
+                                        id="state">
+                                        <option value="">All</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->rrs_id }}">{{ $state->rrs_desc }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                         </div>
                         <div class="row mt-4">
                             <div class="col">
@@ -137,6 +151,7 @@
 
                     </form>
                 </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped t-overbooking" style="width: 100%;font-size:12px">
                         <thead>
@@ -198,11 +213,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="inputEmail4">Nama Pengirim</label>
-                                <input type="email" class="form-control" id="detail_sender_bank" readonly>
+                                <input type="text" class="form-control" id="detail_sender_bank" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputEmail4">Rekening Pengirim</label>
-                                <input type="email" class="form-control" id="detail_sender_account" readonly>
+                                <input type="text" class="form-control" id="detail_sender_account" readonly>
                             </div>
                         </div>
                     </div>
@@ -212,11 +227,39 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="inputEmail4">Nama Penerima</label>
-                                <input type="email" class="form-control" id="detail_recipient_bank" readonly>
+                                <input type="text" class="form-control" id="detail_recipient_bank" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputEmail4">Rekening Penerima</label>
-                                <input type="email" class="form-control" id="detail_recipient_account" readonly>
+                                <input type="text" class="form-control" id="detail_recipient_account" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <h6>Detail</h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="inputEmail4">Invoice Id</label>
+                                <input type="text" class="form-control" id="detail_invoice_id" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="inputEmail4">Type</label>
+                                <input type="text" class="form-control" id="detail_type" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">No SP2D</label>
+                                <input type="text" class="form-control" id="detail_sp2d_no" readonly>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-3">
+                                <label for="inputEmail4">Nominal SP2D</label>
+                                <input type="text" class="form-control" id="detail_nominal_sp2d" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail4">Desc SP2D</label>
+                                <input type="text" class="form-control" id="detail_desc_sp2d" readonly>
                             </div>
                         </div>
                     </div>
@@ -281,6 +324,7 @@
                         data.parameter = $('#parameter').val()
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
+                        data.state = $('#state').val()
 
                     }
                 },
@@ -377,20 +421,11 @@
             $
         }
 
-        function openDetailCallback(id) {
-            $.ajax({
-                    url: "/transaksi/callback/" + id,
-                })
-                .done(function(data) {
-                    res = data.data.lcb_request;
-                    var res = JSON.parse(res);
-                    var html = `<pre>${JSON.stringify(res, undefined, 4)}</pre>`
-                    $('#body-callback').html(html)
-                    $('#modalCallback').modal('show')
-                    // swal("Data dari bank!", html);
-
-                    console.log(data.data)
-                });
+        function openDetailCallback(data) {
+            var res = JSON.parse(atob(data));
+            var html = `<pre>${JSON.stringify(res, undefined, 4)}</pre>`
+            $('#body-callback').html(html)
+            $('#modalCallback').modal('show')
         }
 
         function openDetailTransaksi(data) {
@@ -401,6 +436,11 @@
             $('#detail_sender_account').val(aa.sender_info.account_number)
             $('#detail_recipient_bank').val(aa.recipient_info.account_bank_name)
             $('#detail_recipient_account').val(aa.recipient_info.account_number)
+            $('#detail_sp2d_no').val(aa.tx_additional_data.no_sp2d)
+            $('#detail_nominal_sp2d').val(aa.tx_additional_data.nominal_sp2d)
+            $('#detail_type').val(aa.tx_type)
+            $('#detail_invoice_id').val(aa.tx_partner_id)
+            $('#detail_desc_sp2d').val(aa.tx_additional_data.desc_sp2d)
         }
 
         function formDate() {
