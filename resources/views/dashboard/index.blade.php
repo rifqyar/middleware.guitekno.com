@@ -322,13 +322,13 @@
             </div>
             <div class="col-md-12">
                 <div class="card">
-                    <div style="display: flex;justify-content:space-between">
-                        <div>
-                            <h6 class="card-header">Data Transaksi Menunggu</h6>
-                        </div>
-                        <div class="card-header">
-                            <a href="{{ route('transaksi-today') }}">
-                                <button class="btn btn-success ">
+                    {{-- <div style="display: flex;justify-content:space-between"> --}}
+                        <div style="display: flex;justify-content:space-between">
+                            <h6>Data Transaksi Menunggu</h6>
+                        {{-- </div>
+                        <div class="card-header"> --}}
+                            <a class="btn btn-success" href="/history-overbooking">
+                                {{-- <button class="btn btn-success"> --}}
                                     Lihat Semua
                                 {{-- </button> --}}
                             </a>
