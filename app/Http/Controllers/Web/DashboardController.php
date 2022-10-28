@@ -42,7 +42,7 @@ class DashboardController extends Controller
         //     'jumlahTransaksiToday' => $data['jumlahTransaksiToday'],
         // ]);
         // die();
-
+        // dd(env('APP_ENV'));
         $data['logCallback'] = LogCallback::orderBy('lcb_last_updated', 'desc')
             ->limit(10)->get();
         // dd($data['logCallback']);
@@ -57,11 +57,12 @@ class DashboardController extends Controller
 
         $data['lastMontTrans'] = TrxOverBooking::lastMonthTrx();
         $data['thisMontTrans'] = TrxOverBooking::thisMonthTrx();
-        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans']-(int)$data['lastMontTrans'])/(int)$data['lastMontTrans'] *100,2) : 100;
+        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans'] - (int)$data['lastMontTrans']) / (int)$data['lastMontTrans'] * 100, 2) : 100;
 
         $data['lastYearTrans'] = TrxOverBooking::lastYearTrx();
+        // dd($data['lastYearTrans']);
         $data['thisYearTrans'] = TrxOverBooking::thisYearTrx();
-        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans']-(int)$data['lastYearTrans'])/(int)$data['lastYearTrans'] *100 ,2) : 100;
+        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans'] - (int)$data['lastYearTrans']) / (int)$data['lastYearTrans'] * 100, 2) : 100;
 
         return view('dashboard.index', compact('data'));
     }
@@ -105,7 +106,8 @@ class DashboardController extends Controller
         $log = TrxOverBooking::with('senderBank')
             ->with('receiverBank')
             ->with('ras')
-            ->with('logCallback');
+            ->with('logCallback')->limit(5);
+        // dd($log);
         if (env('APP_ENV') == 'production') {
             $log->where('state', '01');
         }
@@ -113,21 +115,21 @@ class DashboardController extends Controller
             ->editColumn('tbk_amount', function ($data) {
                 return Helper::getRupiah($data->tbk_amount);
             })
-            ->addColumn('Actions', function ($data) {
-                if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
-                } else {
-                    return '-';
-                }
-            })
+            // ->addColumn('Actions', function ($data) {
+            //     if ($data->request_data) {
+            //         $res = base64_encode($data->request_data);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
-                if (in_array($data->ras_id,  $this->status['code'])) {
-                    return $this->status['message'][$data->ras_id];
-                } else {
-                    return '<span class="badge badge-pill bg-danger text-white">Failed</span>';
-                }
+                // if (in_array($data->ras_id,  $this->status['code'])) {
+                //     return $this->status['message'][$data->ras_id];
+                // } else {
+                return '<span class="badge badge-pill bg-danger text-white">Failed</span>';
+                // }
             })
             ->rawColumns(['Callback', 'Actions', 'ras_id'])
             ->make(true);
@@ -148,14 +150,14 @@ class DashboardController extends Controller
             ->editColumn('tbk_amount', function ($data) {
                 return Helper::getRupiah($data->tbk_amount);
             })
-            ->addColumn('Actions', function ($data) {
-                if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
-                } else {
-                    return '-';
-                }
-            })
+            // ->addColumn('Actions', function ($data) {
+            //     if ($data->request_data) {
+            //         $res = base64_encode($data->request_data);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {

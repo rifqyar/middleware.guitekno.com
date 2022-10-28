@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- @if (env('APP_ENV') == 'development')
+                            @if (env('APP_ENV') == 'development')
                                 <div class="col-md-3 mt-2">
                                     <p>State</p>
                                     <select class="form-control filter datatable-input" data-col-index=2 name="state"
@@ -131,7 +131,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            @endif --}}
+                            @endif
                             @if (auth()->user()->present()->role_id < 5)
                                 <div class="col-md-3 mt-2">
                                     <p>Provinsi</p>
