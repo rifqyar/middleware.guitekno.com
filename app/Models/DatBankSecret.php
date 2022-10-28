@@ -17,7 +17,14 @@ class DatBankSecret extends Model
 
     public static function countBank()
     {
-        return count(DB::SELECT("SELECT * from dat_bank_secret x where x.code_bank != '000' and x.code_bank != 'tes'"));
+        return DB::SELECT("SELECT count(1) as total_prop from (
+            SELECT distinct prop_id
+            from trx_overbooking to2
+            where prop_id is not null
+                and prop_id not like '%|'
+                and prop_id not like '|%'
+            group by prop_id
+        ) as data")[0];
     }
 
     public function bank()
