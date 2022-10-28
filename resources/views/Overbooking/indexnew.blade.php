@@ -166,10 +166,9 @@
                                 <th>Total Transfer</th>
                                 <th>NO SP2D</th>
                                 <th>Tipe</th>
+                                <th>Tanggal Request</th>
                                 <th>Tanggal Pengiriman</th>
-                                <th>Keterangan</th>
                                 <th>Status</th>
-                                <th>Callback</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -366,26 +365,28 @@
                         data: 'tbk_type'
                     },
                     {
-                        data: 'tbk_execution_time'
+                        name: 'tbk_created.display',
+                        data: {
+                            _: 'tbk_created.display',
+                            sort: 'tbk_created.timestamp'
+                        },
                     },
                     {
-                        data: 'tbk_sp2d_desc',
-                        responsivePriority: -1
-
+                        name: 'tbk_execution_time.display',
+                        data: {
+                            _: 'tbk_execution_time.display',
+                            sort: 'tbk_execution_time.timestamp'
+                        },
                     },
                     {
                         data: 'ras_id',
-                        // data: {
-                        //     _: 'ras_id',
-                        //     sort: 'ras_id'
-                        // },
                         responsivePriority: -1
                         // orderable: false,
                     },
-                    {
-                        data: 'Callback',
+                    // {
+                    //     data: 'Callback',
 
-                    },
+                    // },
                     {
                         data: 'Actions',
                         responsivePriority: -1

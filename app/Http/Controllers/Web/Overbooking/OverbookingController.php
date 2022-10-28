@@ -108,29 +108,59 @@ class OverbookingController extends Controller
                 return Helper::getRupiah($data->tbk_amount);
             })
             ->editColumn('tbk_execution_time', function ($data) {
-                return Helper::getFormatWib($data->tbk_execution_time);
+                return [
+                    'display' => e(
+                        Helper::getFormatWib($data->tbk_execution_time)
+                    ),
+                    'timestamp' => strtotime(Helper::getFormatWib($data->tbk_execution_time))
+                ];
             })
-            ->addColumn('Callback', function ($data) {
-                if ($data->logCallback && $data->logCallback->lcb_request) {
-                    $res = base64_encode($data->logCallback->lcb_request);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $res . '`)">Open</button>';
-                } else {
-                    return '-';
-                }
+            ->editColumn('tbk_created', function ($data) {
+                return [
+                    'display' => e(
+                        Helper::getFormatWibTanggal($data->tbk_created)
+                    ),
+                    'timestamp' => strtotime(Helper::getFormatWibTanggal($data->tbk_created))
+                ];
             })
+            // ->addColumn('Callback', function ($data) {
+            //     if ($data->logCallback && $data->logCallback->lcb_request) {
+            //         $res = base64_encode($data->logCallback->lcb_request);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $res . '`)">Open</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->addColumn('Actions', function ($data) {
+                $return = '<div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Action
+                </button>
+                <div class="dropdown-menu">';
+
+
                 if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+                    $detail = base64_encode($data->request_data);
+                    $return .= '<a class="dropdown-item" href="javascript:void(0)" onclick="openDetailTransaksi(`' . $detail . '`)">Detail</a>';
                 } else {
-                    return '-';
+                    $return .= '';
                 }
+
+                if ($data->logCallback && $data->logCallback->lcb_request) {
+                    $callback = base64_encode($data->logCallback->lcb_request);
+                    return $return .= '<a class="dropdown-item" href="javascript:void(0)" onclick="openDetailCallback(`' . $callback . '`)">Callback</a>';
+                } else {
+                    $return .= '';
+                }
+
+                $return .= '</div>
+                </div>';
+                return $return;
             })
             // ->addColumn('State', function($data) {
 
             // })
             ->editColumn('ras_id', function ($data) {
-                // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {
                     return $this->status['message'][$data->ras_id];
                 } else {

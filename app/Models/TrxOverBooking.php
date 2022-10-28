@@ -94,10 +94,16 @@ class TrxOverBooking extends Model
         SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
-    public static function countTransaksi()
+    public static function countTransaksi($today = false)
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
+
+        if ($today) {
+            // $date = date('Y-m-d', time() - 86400);
+            $date = date('Y-m-d');
+            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+        }
 
         $whereDev = $where != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
 
@@ -105,11 +111,16 @@ class TrxOverBooking extends Model
         return DB::SELECT($query)[0]->total;
     }
 
-    public static function jmlTransaksi()
+    public static function jmlTransaksi($today = false)
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "AND ($where)" : '';
 
+        if ($today) {
+            $date = date('Y-m-d');
+            $where .= "AND tbk_created = '$date'";
+        }
+        
         $whereDev = "AND state = '".env('STATE_DATA')."'";
 
         return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
