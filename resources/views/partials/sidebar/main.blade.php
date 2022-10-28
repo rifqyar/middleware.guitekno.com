@@ -7,10 +7,14 @@
                  alt="user-img"
                  class="rounded-circle img-thumbnail img-responsive">
         </div>
-        <h5 class="my-3">
+        <h5 class="mt-3">
             <a href="{{ route('profile') }}">{{ auth()->user()->present()->nameOrEmail }}</a>
         </h5>
-
+        <h6 class="mb-3 text-white"> 
+            @if(Session::has('lokasi') && Session::get('lokasi') != '')
+                <i class="fa fa-map-marker text-info" aria-hidden="true"></i> {{Session::get('lokasi')}}
+            @endif
+        </h6>
         <ul class="list-inline mb-2">
             <li class="list-inline-item">
                 <a href="{{ route('profile') }}" title="@lang('My Profile')">

@@ -120,26 +120,6 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-2 col md-2">
-                <h1>6</h1>
-            </div>
-            <div class="col-10 col-md-10">
-                <div class="col-12 col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label for="endpoint_type">Endpoint Type</label>
-                        <strong>Callback SIPD</strong>
-                        <input name="endpoint_type" class="form-control required" readonly value="uoUGmzzoDHjL4V1" style="display: none"/>
-                    </div>
-                </div>
-                <div class="col-12 col-md-12 col-sm-12">
-                    <div class="form-group">
-                        <label for="endpoint">Endpoint</label>
-                        <input type="text" class="form-control required" name="endpoint">
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-12 col-md-12">
