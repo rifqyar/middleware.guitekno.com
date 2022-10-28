@@ -97,8 +97,6 @@ class OverbookingController extends Controller
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
 
-
-
         return view('Overbooking.indexnew', $data);
     }
 
