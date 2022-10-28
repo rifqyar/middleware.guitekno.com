@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
 use Illuminate\Support\Arr;
+use Vanguard\Models\Province;
 
 class OverbookingController extends Controller
 {
@@ -95,6 +96,12 @@ class OverbookingController extends Controller
         $data['states'] = RefRunState::get();
         $data['lsType'] = '';
         $data['today'] = '';
+        if (auth()->user()->present()->role_id < 4) {
+            $data['provinsi'] = Province::all();
+        } else {
+            $data['provinsi'] = Province::where('prop_id', auth()->user()->present()->province_id)->get();
+        }
+
         if (session('today')) {
 
             $data['today'] = date('Y-m-d');
@@ -337,6 +344,8 @@ class OverbookingController extends Controller
             if ($request->state) $overBooking->where('state', $request->state);
         }
 
+        if ($request->prop_id) $overBooking->where('prop_id', $request->prop_id);
+        if ($request->dati2) $overBooking->where('dati2_id', $request->dati2);
 
         /** Filter by user */
         $this->role = auth()->user()->present()->role_id;

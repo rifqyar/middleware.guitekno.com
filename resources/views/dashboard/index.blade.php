@@ -13,17 +13,21 @@
         .hai {
             background-color: #feffdf
         }
+
         .Blink {
             animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
         }
+
         @keyframes blinker {
             from {
                 opacity: 1;
             }
+
             to {
                 opacity: 0;
             }
         }
+
         .caption-trx {
             font-size: 12px !important
         }
@@ -34,16 +38,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -73,7 +77,9 @@
                             </div>
                             <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['jumlahTransaksi'] }}</h2>
-                                <span class="text-muted  text-right"><p>Total Transaksi Berhasil</p></span>
+                                <span class="text-muted  text-right">
+                                    <p>Total Transaksi Berhasil</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -88,7 +94,9 @@
                             </div>
                             <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['countBank']->total_prop }}</h2>
-                                <span class="text-muted  text-right"><p>Jumlah Provinsi</p></span>
+                                <span class="text-muted  text-right">
+                                    <p>Jumlah Provinsi</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -107,7 +115,9 @@
                                 @else
                                     <h2 class="text-right"> - </h2>
                                 @endif
-                                <span class="text-muted  text-right"><p>Jumlah Kabupaten</p></span>
+                                <span class="text-muted  text-right">
+                                    <p>Jumlah Kabupaten</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -128,18 +138,19 @@
                                     <p>Transaksi Bulan Lalu</p>
                                 </span>
                                 <div class="d-flex align-items-center" style="margin-top: -20px !important">
-                                    <hr style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
-                                    <span class="
-                                        @if($data['percentageMonth'] > 0)
-                                        text-success
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageMonth'] > 0) text-success
                                         @else
-                                        text-danger
-                                        @endif
-                                    "> {{$data['percentageMonth']}}% </span>
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['percentageMonth'] }}% </span>
                                 </div>
                                 <h5 class="text-right mb-0">{{ $data['thisMontTrans'] }}
-                                    @if ((int)$data['thisMontTrans'] - (int)$data['lastMontTrans'] > 0)
-                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i> 
+                                    @if ((int) $data['thisMontTrans'] - (int) $data['lastMontTrans'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
                                     @else
                                         <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
                                     @endif
@@ -165,18 +176,19 @@
                                     <p>Transaksi Tahun Lalu</p>
                                 </span>
                                 <div class="d-flex align-items-center" style="margin-top: -20px !important">
-                                    <hr style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
-                                    <span class="
-                                        @if($data['percentageYear'] > 0)
-                                        text-success
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageYear'] > 0) text-success
                                         @else
-                                        text-danger
-                                        @endif
-                                    "> {{$data['percentageYear']}}% </span>
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['percentageYear'] }}% </span>
                                 </div>
                                 <h5 class="text-right mb-0">{{ $data['thisYearTrans'] }}
-                                    @if ((int)$data['thisYearTrans'] - (int)$data['lastYearTrans'] > 0)
-                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i> 
+                                    @if ((int) $data['thisYearTrans'] - (int) $data['lastYearTrans'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
                                     @else
                                         <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
                                     @endif
@@ -295,7 +307,7 @@
                             <h6 class="card-header">Data Transaksi Menunggu</h6>
                         </div>
                         <div class="card-header">
-                            <a href="{{ route('transaksi-today') }}">
+                            <a href="{{ route('transaksi-today', ['set_id' => 'today']) }}">
                                 <button class="btn btn-success ">
                                     Lihat Semua
                                 </button>

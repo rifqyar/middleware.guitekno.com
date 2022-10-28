@@ -315,6 +315,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
     Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
+    Route::get('dati/{prop_id}', 'Overbooking\OverbookingController@exportToFile');
 
     Route::get('stream-log', function () {
         return view('stream_log/index');
