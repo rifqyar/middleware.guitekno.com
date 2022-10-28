@@ -24,11 +24,18 @@ class DashboardController extends Controller
         }
 
         $data['countBank'] = DatBankSecret::countBank();
+        // dd($data['countBank']);
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
+        $data['countTransaksiToday'] = TrxOverBooking::countTransaksi(true);
         $rawDataJmlTransaksi = TrxOverBooking::jmlTransaksi();
+        $rawDataJmlTransaksiToday = TrxOverBooking::jmlTransaksi(true);
         $data['jumlahTransaksi'] = Library::convertCurrency((int)$rawDataJmlTransaksi);
+        $data['jumlahTransaksiToday'] = Library::convertCurrency((int)$rawDataJmlTransaksiToday);
         $data['countDati2'] = TrxOverBooking::CountDati2();
-        // var_dump($data['countDati2']);
+        // var_dump([
+        //     'jumlahTransaksi' => $data['jumlahTransaksi'],
+        //     'jumlahTransaksiToday' => $data['jumlahTransaksiToday'],
+        // ]);
         // die();
         $data['trxOverbooking'] = TrxOverBooking::where('ras_id', '100')
             ->limit(10)

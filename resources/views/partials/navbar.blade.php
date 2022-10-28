@@ -1,9 +1,11 @@
-<nav class="navbar fixed-top align-items-start navbar-expand-lg pl-0 pr-0 py-0" >
+<nav class="navbar fixed-top align-items-start navbar-expand-lg pl-0 pr-0 py-0 hai">
 
     <div class="navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand mr-0" href="{{ url('/') }}">
-            <img src="{{ url('assets/img/vanguard-logo.png') }}" class="logo-lg" height="35" alt="{{ setting('app_name') }}">
-            <img src="{{ url('assets/img/vanguard-logo-no-text.png') }}" class="logo-sm" height="35" alt="{{ setting('app_name') }}">
+            <img src="{{ url('assets/img/vanguard-logo.png') }}" class="logo-lg" height="35"
+                alt="{{ setting('app_name') }}">
+            <img src="{{ url('assets/img/vanguard-logo-no-text.png') }}" class="logo-sm" height="35"
+                alt="{{ setting('app_name') }}">
         </a>
     </div>
 
@@ -18,13 +20,8 @@
             <i class="fas fa-align-right text-muted"></i>
         </button>
 
-        <button class="navbar-toggler mr-3"
-                type="button"
-                data-toggle="collapse"
-                data-target="#top-navigation"
-                aria-controls="top-navigation"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+        <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#top-navigation"
+            aria-controls="top-navigation" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-bars text-muted"></i>
         </button>
     </div>
@@ -61,17 +58,10 @@
             @hook('navbar:items')
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"
-                   href="#"
-                   id="navbarDropdown"
-                   role="button"
-                   data-toggle="dropdown"
-                   aria-haspopup="true"
-                   aria-expanded="false">
-                    <img src="{{ auth()->user()->present()->avatar }}"
-                         width="50"
-                         height="50"
-                         class="rounded-circle img-thumbnail img-responsive">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ auth()->user()->present()->avatar }}" width="50" height="50"
+                        class="rounded-circle img-thumbnail img-responsive">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right position-absolute p-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item py-2" href="{{ route('profile') }}">
