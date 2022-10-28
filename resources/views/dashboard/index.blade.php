@@ -17,32 +17,8 @@
 @endsection
 @section('content')
 
-    @include('partials.messages')
 
-    <!-- <div class="row">
-                                                                <<<<<<< HEAD
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
-    @if ($widget->width)
-    <div class="col-md-{{ $widget->width }}">
-    @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
-    </div>
-    @endif
-    @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div> -->
-    =======
-    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
-        @if ($widget->width)
-            <div class="col-md-{{ $widget->width }}">
-        @endif
-        {!! app()->call([$widget, 'render']) !!}
-        @if ($widget->width)
-            </div>
-        @endif
-    @endforeach
-    </div> -->
-    >>>>>>> 6fd0e719ea6bcee55be567dadf7e3bab266f363c
+
 
     <div class="container-fluid">
         <div class="row">
