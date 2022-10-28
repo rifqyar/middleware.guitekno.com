@@ -8,23 +8,27 @@
         @lang('Dashboard')
     </li>
 @stop
-@section('styles')
-    <style>
-        .hai {
-            background-color: #feffdf
-        }
-    </style>
-@endsection
 @section('content')
 
+    @include('partials.messages')
 
-
+    <!-- <div class="row">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+    @if ($widget->width)
+    <div class="col-md-{{ $widget->width }}">
+    @endif
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+    </div>
+    @endif
+    @endforeach
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
                 <div class="card widget">
-                    <div class="card-body hai">
+                    <div class="card-body">
                         <div class="row">
                             <div class="p-3 text-primary flex-1">
                                 <i class="fa fa-exchange fa-3x"></i>
@@ -60,7 +64,7 @@
                                 <i class="fa fa-university fa-3x"></i>
                             </div>
                             <div class="pr-3">
-                                <h2 class="text-right">{{ $data['countBank'] }}</h2>
+                                <h2 class="text-right">{{ $data['countBank']->total_prop }}</h2>
                                 <div class="text-muted">Jumlah Provinsi</div>
                             </div>
                         </div>
@@ -84,6 +88,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="card p-2">
+                    <span>Total Transaksi Hari ini : {{ $data['countTransaksiToday'] }}</span>
+                    <span>Nilai Transaksi Hari ini : {{ $data['jumlahTransaksiToday'] }}</span>
                 </div>
             </div>
         </div>
@@ -260,29 +272,6 @@
         </div>
     </div>
     <script>
-        $('#transaksi_terkini').on('click', function(e) {
-            // if (e) {
-            //     const year = new Date().getFullYear()
-            //     const month = ("0" + (new Date().getMonth() + 1)).slice(-2)
-            //     const date = ("0" + new Date().getDate()).slice(-2)
-            //     const tanggal = `${year}-${month}-${date}`
-            //     console.log(tanggal)
-            //     localStorage.setItem('tanggal', tanggal)
-            //     window.location = '/transaksi'
-            // } else {
-            //     window.localStorage.removeItem('tanggal')
-            // }
-            const year = new Date().getFullYear()
-            const month = ("0" + (new Date().getMonth() + 1)).slice(-2)
-            const date = ("0" + new Date().getDate()).slice(-2)
-            const tanggal = `${year}-${month}-${date}`
-            console.log(tanggal)
-
-            // localStorage.setItem('tanggal', tanggal)
-            // window.location = '/transaksi'
-
-        })
-
         function chartTxDaily() {
             $.ajaxSetup({
                 headers: {
