@@ -310,6 +310,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Overbooking New
     Route::get('transaksi', 'Overbooking\OverbookingController@index')->name('transaksi-overbooking');
+    Route::get('transaksi/regency', 'Overbooking\OverbookingController@getRegency')->name('trx.regency');
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
     Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');

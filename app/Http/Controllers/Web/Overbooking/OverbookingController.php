@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Vanguard\Models\DatBankSecret;
 use Vanguard\Models\RefRunState;
 use Vanguard\Models\TrxOverBooking;
+use Vanguard\Province;
+use Vanguard\Dati2 as Regency;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
@@ -87,13 +89,29 @@ class OverbookingController extends Controller
     public function index()
     {
         $data['banks'] = DatBankSecret::get();
+        $data['province'] = Province::get();
+        $data['regency'] = Regency::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
 
+
+
         return view('Overbooking.indexnew', $data);
+    }
+
+    public function getRegency(Request $request)
+    {
+        $id = $request->provID;
+        // dd($id);
+        $regencies = Regency::where('prop_id', $id)->get();
+        $option = "<option value='0'>All</option>";
+        foreach ($regencies as $regency) {
+            $option .= '<option value="' . $regency->dati2_id . '">' . $regency->dati2_nama . '</option>';
+        }
+        return $option;
     }
 
     public function data(Request $request)
@@ -291,6 +309,16 @@ class OverbookingController extends Controller
             $overBooking->orderBy('tbk_created', 'desc');
         }else{
             $overBooking->where('tbk_created', '=', $request->tanggal);
+        }
+
+        if($request->province || $request->regency == '0')
+        {
+            $overBooking->where('prop_id', $request->province)->get();
+        }
+
+        if($request->regency)
+        {
+            $overBooking->where('prop_id', $request->province)->where('dati2_id', $request->regency);
         }
 
 

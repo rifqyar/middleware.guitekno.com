@@ -121,8 +121,8 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <p>State</p>
-                                <input type="date" class="form-control filter datatable-input" name="end_date"
-                                    id="end_date">
+                                <input type="date" class="form-control filter datatable-input" name="state"
+                                    id="state">
                             </div>
                             @if (env('APP_ENV') == 'development')
                                 <div class="col-md-3 mt-2">
@@ -136,13 +136,37 @@
                                     </select>
                                 </div>
                             @endif
+                            <div class="col-md-3 mt-2">
+                                <p>Province</p>
+                                <select class="form-control filter datatable-input" data-col-index=1 name="province"
+                                    id="province">
+                                    <option value="">All</option>
+
+                                    @foreach ($province as $p)
+                                        <option value="{{ $p->prop_id }}">{{ $p->prop_nama }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <p>Regency</p>
+                                <select class="form-control filter datatable-input" data-col-index=1 name="regency"
+                                    id="regency">
+
+
+                                    {{-- @foreach ($regency as $r)
+                                        <option value="{{ $r->dati2_id }}">{{ $r->dati2_nama }}</option>
+                                    @endforeach --}}
+
+                                </select>
+                            </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
                                 <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
                                 <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
-                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Export
                                 </button>
                                 <div class="dropdown-menu">
@@ -282,6 +306,21 @@
     <script>
         $(document).ready(function() {
             console.log("ready!");
+            // const tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : '';
+            // console.log(tanggal, 'test2')
+            // $('#state').val(tanggal)
+            $('#province').on('change', function() {
+                var provID = $(this).val();
+
+                if (provID === '0') {
+
+                } else {
+                    $.get("{{ route('trx.regency') }}?provID=" + provID, function(data) {
+                        console.log(data, 'data')
+                        $('#regency').html(data)
+                    })
+                }
+            })
             render()
             $('#exportExcel').on('click', function(e) {
                 // window.location.replace('/transaksi/export/excel')
@@ -289,6 +328,8 @@
                 // $(location).href('/transaksi/export/excel')
 
             })
+
+
             var recepientName = `{{ $name }}`;
             console.log(recepientName, 'rn')
             $("#tbk_recipient_name").autocomplete({
@@ -298,6 +339,8 @@
 
         function render() {
             // const tanggal = localStorage.getItem('tanggal')
+            const tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : '';
+            console.log(tanggal, 'tanggal')
             var table = $('.table').DataTable({
                 responsive: true,
                 lengthMenu: [
@@ -331,7 +374,9 @@
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
                         data.state = $('#state').val()
-                        // data.tanggal = tanggal
+                        data.province = $('#province').val()
+                        data.regency = $('#regency').val()
+                        data.tanggal = tanggal
 
                     }
                 },
