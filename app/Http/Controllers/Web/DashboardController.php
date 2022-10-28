@@ -96,7 +96,8 @@ class DashboardController extends Controller
         $log = TrxOverBooking::with('senderBank')
             ->with('receiverBank')
             ->with('ras')
-            ->with('logCallback');
+            ->with('logCallback')->limit(5);
+            // dd($log);
         if (env('APP_ENV') == 'production') {
             $log->where('state', '01');
         }
@@ -104,21 +105,21 @@ class DashboardController extends Controller
             ->editColumn('tbk_amount', function ($data) {
                 return Helper::getRupiah($data->tbk_amount);
             })
-            ->addColumn('Actions', function ($data) {
-                if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
-                } else {
-                    return '-';
-                }
-            })
+            // ->addColumn('Actions', function ($data) {
+            //     if ($data->request_data) {
+            //         $res = base64_encode($data->request_data);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
-                if (in_array($data->ras_id,  $this->status['code'])) {
-                    return $this->status['message'][$data->ras_id];
-                } else {
+                // if (in_array($data->ras_id,  $this->status['code'])) {
+                //     return $this->status['message'][$data->ras_id];
+                // } else {
                     return '<span class="badge badge-pill bg-danger text-white">Failed</span>';
-                }
+                // }
             })
             ->rawColumns(['Callback', 'Actions', 'ras_id'])
             ->make(true);
@@ -139,14 +140,14 @@ class DashboardController extends Controller
             ->editColumn('tbk_amount', function ($data) {
                 return Helper::getRupiah($data->tbk_amount);
             })
-            ->addColumn('Actions', function ($data) {
-                if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
-                } else {
-                    return '-';
-                }
-            })
+            // ->addColumn('Actions', function ($data) {
+            //     if ($data->request_data) {
+            //         $res = base64_encode($data->request_data);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->editColumn('ras_id', function ($data) {
                 // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {

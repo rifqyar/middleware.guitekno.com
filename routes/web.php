@@ -340,7 +340,6 @@ Route::group(['prefix' => 'install'], function () {
 Route::get('/await-trx-log', [DashboardController::class, 'awaitLogTrx']);
 Route::get('/trx-log', [DashboardController::class, 'LogTrx']);
 
-
 Route::prefix('chart')->group(function () {
     Route::post('/tx-type', [ChartController::class, 'chartTxType']);
     Route::post('/tx-bank', [ChartController::class, 'chartTxBank']);

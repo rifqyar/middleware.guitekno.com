@@ -92,10 +92,42 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="card p-2">
-                    <span>Total Transaksi Hari ini : {{ $data['countTransaksiToday'] }}</span>
-                    <span>Nilai Transaksi Hari ini : {{ $data['jumlahTransaksiToday'] }}</span>
+            <div class="col-md-3 col-sm-12">
+                <div class="card widget">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="p-3 text-primary flex-1">
+                                <i class="fa fa-exchange fa-3x"></i>
+                            </div>
+                            <div class="pr-3">
+                                {{-- @if ($data['countDati2']) --}}
+                                    <h2 class="text-right"> {{ $data['countTransaksiToday'] }} </h2>
+                                {{-- @else --}}
+                                    {{-- <h2 class="text-right"> - </h2>
+                                @endif --}}
+                                <div class="text-muted float-right">Total Transaksi Hari ini</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="card widget">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="p-3 text-primary flex-1">
+                                <i class="fa fa-exchange fa-3x"></i>
+                            </div>
+                            <div class="pr-3">
+                                {{-- @if ($data['countDati2']) --}}
+                                    <h2 class="text-right"> {{ $data['jumlahTransaksiToday'] }} </h2>
+                                {{-- @else --}}
+                                    {{-- <h2 class="text-right"> - </h2>
+                                @endif --}}
+                                <div class="text-muted float-right">Nilai Transaksi Hari ini</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -191,33 +223,37 @@
             </div>
             <div class="col-md-12">
                 <div class="card">
-                    <div style="display: flex;justify-content:space-between">
-                        <div>
-                            <h6 class="card-header">Data Transaksi Menunggu</h6>
-                        </div>
-                        <div class="card-header">
-                            <a href="/history-overbooking">
-                                <button class="btn btn-success ">
+                    {{-- <div style="display: flex;justify-content:space-between"> --}}
+                        <div style="display: flex;justify-content:space-between">
+                            <h6>Data Transaksi Menunggu</h6>
+                        {{-- </div>
+                        <div class="card-header"> --}}
+                            <a class="btn btn-success" href="/history-overbooking">
+                                {{-- <button class="btn btn-success"> --}}
                                     Lihat Semua
-                                </button>
+                                {{-- </button> --}}
                             </a>
-
-                        </div>
+                        {{-- </div> --}}
                     </div>
                     <div class="card-body table-responsive">
-                        <table class="table" id="lastOverBooking">
+                        <table class="table" id="table-log">
                             <thead>
                                 <tr>
-                                    <th>Partner Id</th>
-                                    <th>Nama Bank</th>
-                                    <th>Tanggal pengiriman</th>
-                                    <th>Jumlah</th>
+                                    <th>#</th>
+                                    <th>Bank Pengirim</th>
+                                    <th>Bank Penerima</th>
+                                    <th>Nama Penerima</th>
+                                    <th>Rekening Penerima</th>
+                                    <th>Total Transfer</th>
+                                    <th>NO SP2D</th>
                                     <th>Tipe</th>
+                                    <th>Tanggal Request</th>
+                                    <th>Tanggal Pengiriman</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['trxOverbooking'] as $value)
+                                {{-- @foreach ($data['trxOverbooking'] as $value)
                                     <tr>
                                         <td>{{ $value->tbk_partnerid }}</td>
                                         <td>{{ $value->senderBank->bank_name }}</td>
@@ -232,7 +268,7 @@
                                             <td><span class="badge badge-danger">Failed</span></td>
                                         @endif
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -332,20 +368,137 @@
                 }
             })
         }
+        function log() {
+            alert('ok')
+            var table = $('#table-log').DataTable({
+                responsive: true,
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    ['10', '25', '50']
+                ],
 
+                // pageLength: 10,
+
+                language: {
+                    'lengthMenu': 'Display _MENU_',
+                },
+                searchDelay: 500,
+
+                processing: true,
+                serverSide: true,
+                searching: false,
+                ajax: {
+                    url: '/trx-log',
+                    method: 'get',
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        responsivePriority: -1
+                    },
+                    // {
+                    //     data: 'tbk_partnerid'
+                    // },
+                    {
+                        data: 'sender_bank.bank_name',
+                        orderable: false,
+                    },
+                    {
+                        data: 'receiver_bank.bank_name',
+                        orderable: false,
+                    },
+                    {
+                        data: 'tbk_recipient_name',
+                        responsivePriority: -1
+                    },
+
+                    {
+                        data: 'tbk_recipient_account',
+                        responsivePriority: -1
+
+                    },
+                    {
+                        data: 'tbk_amount'
+                    },
+                    {
+                        data: 'tbk_sp2d_no',
+                        responsivePriority: -1
+                    },
+                    {
+                        data: 'tbk_type'
+                    },
+                    {
+                        name: 'tbk_created.display',
+                        data: {
+                            _: 'tbk_created.display',
+                            sort: 'tbk_created.timestamp'
+                        },
+                    },
+                    {
+                        name: 'tbk_execution_time.display',
+                        data: {
+                            _: 'tbk_execution_time.display',
+                            sort: 'tbk_execution_time.timestamp'
+                        },
+                    },
+                    // {
+                        // data: 'ras_id',
+                    //     responsivePriority: -1
+                        // orderable: false,
+                    // },
+                    // {
+                    //     data: 'Callback',
+
+                    // },
+                    {
+                        data: 'Actions',
+                        responsivePriority: -1
+                    },
+                ],
+            });
+
+            $('#kt_search').on('click', function(e) {
+                e.preventDefault();
+                table.table().draw();
+            });
+
+            // $('.datatable-input').on('change', function(e) {
+            //     console.log(e)
+            //     e.preventDefault();
+            //     table.table().draw();
+            // window.location.replace('/transaksi/export/excel')
+
+            // $(location).href('/transaksi/export/excel')
+
+            // })
+
+            $('#kt_reset').on('click', function(e) {
+                console.log(e)
+                e.preventDefault();
+                $('.datatable-input').each(function() {
+                    $(this).val('');
+                    table.column($(this).data('col-index')).search('', false, false);
+                });
+                table.table().draw();
+            });
+
+            $
+        }
         $(document).ready(function() {
             chartTxDaily();
             chartTxType();
             chartTxBank();
             chartTxStatus();
+            log();
         });
     </script>
 @stop
 
 @section('scripts')
-    <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
-    @if (method_exists($widget, 'scripts'))
-    {!! app()->call([$widget, 'scripts']) !!}
-    @endif
-    @endforeach -->
+    // <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+    // @if (method_exists($widget, 'scripts'))
+    // {!! app()->call([$widget, 'scripts']) !!}
+    // @endif
+    // @endforeach -->
 @stop
