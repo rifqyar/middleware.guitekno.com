@@ -45,11 +45,13 @@ class TrxOverBooking extends Model
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
+        $whereDev = $where != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
+
         return DB::SELECT("SELECT
                         CASE tbk_type
                         WHEN 'LS|NONGAJI' THEN 'Non Gaji'
                         ELSE 'Gaji' END as type,
-                    count(tbk_type) as amount from trx_overbooking $where group by tbk_type");
+                    count(tbk_type) as amount from trx_overbooking $where $whereDev group by tbk_type");
     }
 
     public static function trxChart()
@@ -58,11 +60,14 @@ class TrxOverBooking extends Model
         $where2 = $where != '' ? "WHERE $where" : '';
         $where = $where != '' ? "and ($where)" : '';
 
-        $query = DB::SELECT("SELECT to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
+        $whereDev = $where2 != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
+        $whereDev2 = "AND state = '".env('STATE_DATA')."'";
+
+        $query = DB::SELECT("SELECT to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 $whereDev group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
         $bank = [];
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
-            $value->data = DB::select("SELECT ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') $where group by ref_bank.bank_name");
+            $value->data = DB::select("SELECT ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') $where $whereDev2 group by ref_bank.bank_name");
             if (!empty($value->data)) {
                 foreach ($value->data as $bankName) {
                     $bank[] = $bankName->bank_name;
@@ -83,7 +88,9 @@ class TrxOverBooking extends Model
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
-        return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking $where)
+        $whereDev = $where != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking $where $whereDev)
         SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
@@ -91,12 +98,16 @@ class TrxOverBooking extends Model
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
+
         if ($today) {
             // $date = date('Y-m-d', time() - 86400);
             $date = date('Y-m-d');
-            $where .= "WHERE tbk_created = '$date'";
+            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
         }
-        $query = "SELECT COUNT(1) as total from trx_overbooking $where";
+
+        $whereDev = $where != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
+
+        $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";
         return DB::SELECT($query)[0]->total;
     }
 
@@ -104,11 +115,15 @@ class TrxOverBooking extends Model
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "AND ($where)" : '';
+
         if ($today) {
             $date = date('Y-m-d');
             $where .= "AND tbk_created = '$date'";
         }
-        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where")[0]->jumlah;
+        
+        $whereDev = "AND state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
     }
 
     public static function CountDati2()
@@ -127,7 +142,63 @@ class TrxOverBooking extends Model
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
+        
+        $whereDev = $where != '' ? "AND state = '".env('STATE_DATA')."'" : "WHERE state = '".env('STATE_DATA')."'";
 
-        return DB::SELECT("SELECT sender_bank_name as name, tbk_sender_bank_id as bank_id, count(tbk_id) as value from vw_overbooking_h $where group by sender_bank_name, tbk_sender_bank_id");
+        return DB::SELECT("SELECT sender_bank_name as name, tbk_sender_bank_id as bank_id, count(tbk_id) as value from vw_overbooking_h $where $whereDev group by sender_bank_name, tbk_sender_bank_id");
+    }
+
+    public static function lastMonthTrx()
+    {
+        $lastMonth = date('Y-m', strtotime(date('Y-m')." -1 month"));
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
+
+        $whereDev = "AND state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("SELECT count(1) as total from (
+            select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY-MM') as yearMonth from trx_overbooking to2
+        ) as data where yearmonth = '$lastMonth' $whereRole $whereDev")[0]->total;
+    }
+
+    public static function thisMonthTrx()
+    {
+        $lastMonth = date('Y-m');
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
+
+        $whereDev = "AND state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("SELECT count(1) as total from (
+            select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY-MM') as yearMonth from trx_overbooking to2
+        ) as data where yearmonth = '$lastMonth' $whereRole $whereDev")[0]->total;
+    }
+
+    public static function lastYearTrx()
+    {
+        $lastYear = date('Y', strtotime(date('Y')." -1 year"));
+
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
+
+        $whereDev = "AND state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("SELECT count(1) as total from (
+            select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY') as tahun from trx_overbooking to2
+        ) as data where tahun = '$lastYear' $whereRole $whereDev")[0]->total;
+    }
+
+    public static function thisYearTrx()
+    {
+        $lastYear = date('Y');
+
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
+
+        $whereDev = "AND state = '".env('STATE_DATA')."'";
+
+        return DB::SELECT("SELECT count(1) as total from (
+            select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY') as tahun from trx_overbooking to2
+        ) as data where tahun = '$lastYear' $whereRole $whereDev")[0]->total;
     }
 }

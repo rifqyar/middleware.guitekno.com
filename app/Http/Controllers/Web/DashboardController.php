@@ -2,6 +2,7 @@
 
 namespace Vanguard\Http\Controllers\Web;
 
+use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Vanguard\Http\Controllers\Controller;
@@ -11,6 +12,8 @@ use Vanguard\Models\DatBankSecret;
 use Vanguard\Models\LogCallback;
 use Yajra\Datatables\Datatables;
 use App\Helpers\Helper;
+use Vanguard\Models\Province;
+use Vanguard\Models\RefDati;
 
 class DashboardController extends Controller
 {
@@ -52,7 +55,13 @@ class DashboardController extends Controller
 
         $data['bank'] = TrxOverBooking::countTrxBank();
 
-        // dd($data['transaksi']);
+        $data['lastMontTrans'] = TrxOverBooking::lastMonthTrx();
+        $data['thisMontTrans'] = TrxOverBooking::thisMonthTrx();
+        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans']-(int)$data['lastMontTrans'])/(int)$data['lastMontTrans'] *100,2) : 100;
+
+        $data['lastYearTrans'] = TrxOverBooking::lastYearTrx();
+        $data['thisYearTrans'] = TrxOverBooking::thisYearTrx();
+        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans']-(int)$data['lastYearTrans'])/(int)$data['lastYearTrans'] *100 ,2) : 100;
 
         return view('dashboard.index', compact('data'));
     }

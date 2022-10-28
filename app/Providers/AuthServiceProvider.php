@@ -2,6 +2,7 @@
 
 namespace Vanguard\Providers;
 
+use Auth;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Vanguard\User;
@@ -46,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             return (int) $user->id === (int) $session->user_id;
+        });
+
+        \Blade::if('isExecutive', function(){
+            return Auth::check() && Auth::user()->role_id == '3';
         });
     }
 }

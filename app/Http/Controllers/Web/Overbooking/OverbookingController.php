@@ -84,16 +84,35 @@ class OverbookingController extends Controller
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        // dd(session());
         $data['banks'] = DatBankSecret::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
+        $data['lsType'] = '';
+        $data['today'] = '';
+        if (session('today')) {
+
+            $data['today'] = date('Y-m-d');
+        }
+        if (session('gaji')) {
+            $data['lsType'] = 'LS|GAJI';
+        }
+        if (session('nongaji')) {
+            $data['lsType'] = 'LS|NONGAJI';
+        }
 
         return view('Overbooking.indexnew', $data);
+    }
+
+    public function indexToday(Request $request)
+    {
+        // dd($request->all());
+        return redirect('/transaksi')->with($request->set_id, true);
     }
 
     public function data(Request $request)
@@ -278,6 +297,8 @@ class OverbookingController extends Controller
             ->with('logCallback');
 
         if ($request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
+
+        if ($request->date_request) $overBooking->where('tbk_created', $request->parameter_date_request, $request->date_request);
 
         if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
 
