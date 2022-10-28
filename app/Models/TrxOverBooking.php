@@ -82,7 +82,7 @@ class TrxOverBooking extends Model
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
-        
+
         return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking $where)
         SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
@@ -102,10 +102,16 @@ class TrxOverBooking extends Model
         return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where")[0]->jumlah;
     }
 
-    public static function mostActiveBank()
+    public static function CountDati2()
     {
-        $data = DB::SELECT("SELECT * FROM vw_MostActiveBank");
-        return count($data) > 0 ? $data[0] : '-';
+        return DB::SELECT("SELECT count(1) as total_dati from (
+            select distinct dati2_id
+            from trx_overbooking to2
+            where dati2_id is not null
+                and dati2_id not like '%|'
+                and dati2_id not like '|%'
+            group by dati2_id
+        ) as data")[0];
     }
 
     public static function countTrxBank()
