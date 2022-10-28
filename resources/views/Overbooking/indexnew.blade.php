@@ -120,9 +120,9 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mt-2">
-                                <p>State</p>
-                                <input type="date" class="form-control filter datatable-input" name="state"
-                                    id="state">
+                                <p>Tanggal Transaksi</p>
+                                <input type="date" class="form-control filter datatable-input" name="created"
+                                    id="created">
                             </div>
                             @if (env('APP_ENV') == 'development')
                                 <div class="col-md-3 mt-2">
@@ -136,30 +136,38 @@
                                     </select>
                                 </div>
                             @endif
-                            <div class="col-md-3 mt-2">
-                                <p>Province</p>
-                                <select class="form-control filter datatable-input" data-col-index=1 name="province"
-                                    id="province">
-                                    <option value="">All</option>
 
-                                    @foreach ($province as $p)
-                                        <option value="{{ $p->prop_id }}">{{ $p->prop_nama }}</option>
-                                    @endforeach
+                            @if (auth()->user()->present()->role_id == '1' ||
+                                auth()->user()->present()->role_id == '3' ||
+                                auth()->user()->present()->role_id == '4')
+                                <div class="col-md-3 mt-2">
+                                    <p>Province</p>
+                                    <select class="form-control filter datatable-input" data-col-index=1 name="province"
+                                        id="province">
+                                        <option value="">All</option>
 
-                                </select>
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                <p>Regency</p>
-                                <select class="form-control filter datatable-input" data-col-index=1 name="regency"
-                                    id="regency">
+                                        @foreach ($province as $p)
+                                            <option value="{{ $p->prop_id }}">{{ $p->prop_nama }}</option>
+                                        @endforeach
 
+                                    </select>
+                                </div>
+                            @endif
+                            @if (auth()->user()->present()->role_id == '1' ||
+                                auth()->user()->present()->role_id == '3' ||
+                                auth()->user()->present()->role_id == '5')
+                                <div class="col-md-3 mt-2">
+                                    <p>Regency</p>
+                                    <select class="form-control filter datatable-input" data-col-index=1 name="regency"
+                                        id="regency">
 
-                                    {{-- @foreach ($regency as $r)
-                                        <option value="{{ $r->dati2_id }}">{{ $r->dati2_nama }}</option>
-                                    @endforeach --}}
+                                        {{-- @foreach ($regency as $r)
+                                            <option value="{{ $r->dati2_id }}">{{ $r->dati2_nama }}</option>
+                                        @endforeach --}}
 
-                                </select>
-                            </div>
+                                    </select>
+                                </div>
+                            @endif
                         </div>
                         <div class="row mt-4">
                             <div class="col">
@@ -309,6 +317,7 @@
             // const tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : '';
             // console.log(tanggal, 'test2')
             // $('#state').val(tanggal)
+
             $('#province').on('change', function() {
                 var provID = $(this).val();
 
@@ -321,6 +330,7 @@
                     })
                 }
             })
+
             render()
             $('#exportExcel').on('click', function(e) {
                 // window.location.replace('/transaksi/export/excel')
@@ -376,6 +386,7 @@
                         data.state = $('#state').val()
                         data.province = $('#province').val()
                         data.regency = $('#regency').val()
+                        data.created = $('#created').val()
                         data.tanggal = tanggal
 
                     }

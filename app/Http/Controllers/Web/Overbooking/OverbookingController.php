@@ -89,13 +89,41 @@ class OverbookingController extends Controller
     public function index()
     {
         $data['banks'] = DatBankSecret::get();
-        $data['province'] = Province::get();
-        $data['regency'] = Regency::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
+        $data['province'] = Province::get();
+        $data['regency'] = Regency::get();
+
+        $this->role = auth()->user()->present()->role_id;
+        $this->province_id = auth()->user()->present()->province_id;
+        $this->dati_id = auth()->user()->present()->dati_id;
+
+        // switch ($this->role) {
+        //     case 4:
+        //         $province = Province::where('prop_id', $this->province_id)->get();
+        //         // dd($province);
+        //         break;
+        //     case 5:
+        //         // $data['regency']->where(function($query) {
+        //         //     $query->where('prop_id', $this->province_id);
+        //         //     $query->where('dati2_id', $this->dati_id);
+        //         // });
+        //         $regency = Regency::where(function($query) {
+        //             $query->where('prop_id', $this->province_id);
+        //             $query->where('dati2_id', $this->dati_id);
+        //         });
+        //         // dd($regency);
+        //     default:
+        //         break;
+        // }
+
+
+        // $data['province'] = $province;
+        // $data['regency'] = $regency;
+
 
         return view('Overbooking.indexnew', $data);
     }
@@ -303,20 +331,25 @@ class OverbookingController extends Controller
             if ($request->state) $overBooking->where('state', $request->state);
         }
 
-        if($request->tanggal == ''){
-            $overBooking->orderBy('tbk_created', 'desc');
-        }else{
-            $overBooking->where('tbk_created', '=', $request->tanggal);
-        }
+        // if($request->tanggal == ''){
+        //     $overBooking->orderBy('tbk_created', 'desc');
+        // }else{
+        //     $overBooking->where('tbk_created', '=', $request->tanggal);
+        // }
 
         if($request->province || $request->regency == '0')
         {
-            $overBooking->where('prop_id', $request->province)->get();
+            $overBooking->where('prop_id', $request->province);
         }
 
         if($request->regency)
         {
             $overBooking->where('prop_id', $request->province)->where('dati2_id', $request->regency);
+        }
+
+        if($request->created)
+        {
+            $overBooking->where('tbk_created', $request->created);
         }
 
 
