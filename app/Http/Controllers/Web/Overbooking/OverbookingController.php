@@ -103,7 +103,6 @@ class OverbookingController extends Controller
         }
 
         if (session('today')) {
-
             $data['today'] = date('Y-m-d');
         }
         if (session('gaji')) {
