@@ -90,7 +90,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="p-3 text-primary">
-                            <i class="fa fa-university fa-3x"></i>
+                            <i class="fa fa-globe fa-3x"></i>
                         </div>
                         <div class="pr-3 col-8">
                             <h2 class="text-right">{{ $data['countBank']->total_prop }}</h2>
@@ -107,7 +107,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="p-3 text-primary">
-                            <i class="fa fa-trophy fa-3x"></i>
+                            <i class="fa fa-building fa-3x"></i>
                         </div>
                         <div class="pr-3 col-8">
                             @if ($data['countDati2'])
@@ -222,7 +222,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="p-3 text-primary flex-1">
-                            <i class="fa fa-exchange fa-3x"></i>
+                            <i class="fa fa-money fa-3x"></i>
                         </div>
                         <div class="pr-3">
                             {{-- @if ($data['countDati2']) --}}
@@ -524,10 +524,10 @@
             })
         }
 
-        function trxLog() {
-            alert('ok')
-            var table = $('#table-log').DataTable({
+        function datatable({ras_status}){
+            return {
                 responsive: true,
+                dom: "lfrti",
                 lengthMenu: [
                     [10, 25, 50, 100, -1],
                     ['5', '10', '20']
@@ -544,8 +544,12 @@
                 serverSide: true,
                 searching: false,
                 ajax: {
-                    url: '/trx-log',
+                    url: '/transaksi/form',
                     method: 'post',
+                    data: function(data){
+                        data.ras_status = ras_status
+
+                    }
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -603,96 +607,23 @@
                         responsivePriority: -1
                     },
                 ],
-            });
+            }
+        }
+        function trxLog() {
+            var table2 = $('#table-log').DataTable(datatable({ras_status:''}))
         }
 
         function awaitTrxLog() {
-            var table = $('#table-await-log').DataTable({
-                responsive: true,
-                lengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    ['5', '10']
-                ],
-
-                pageLength: 10,
-
-                language: {
-                    'lengthMenu': 'Display _MENU_',
-                },
-                searchDelay: 500,
-
-                processing: true,
-                serverSide: true,
-                searching: false,
-                ajax: {
-                    url: '/await-trx-log',
-                    method: 'post',
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        responsivePriority: -1
-                    },
-                    // {
-                    //     data: 'tbk_partnerid'
-                    // },
-                    {
-                        data: 'sender_bank.bank_name',
-                        orderable: false,
-                    },
-                    {
-                        data: 'receiver_bank.bank_name',
-                        orderable: false,
-                    },
-                    {
-                        data: 'tbk_recipient_name',
-                        responsivePriority: -1
-                    },
-
-                    {
-                        data: 'tbk_recipient_account',
-                        responsivePriority: -1
-
-                    },
-                    {
-                        data: 'tbk_amount'
-                    },
-                    {
-                        data: 'tbk_sp2d_no',
-                        responsivePriority: -1
-                    },
-                    {
-                        data: 'tbk_type'
-                    },
-                    {
-                        name: 'tbk_created.display',
-                        data: {
-                            _: 'tbk_created.display',
-                            sort: 'tbk_created.timestamp'
-                        },
-                    },
-                    {
-                        name: 'tbk_execution_time.display',
-                        data: {
-                            _: 'tbk_execution_time.display',
-                            sort: 'tbk_execution_time.timestamp'
-                        },
-                    },
-                    {
-                        data: 'ras_id',
-                        responsivePriority: -1
-                    },
-                ],
-            });
+            var table = $('#table-await-log').DataTable(datatable({ras_status:'process'}))
         }
+
         $(document).ready(function() {
             chartTxDaily();
             chartTxType();
             chartTxBank();
             chartTxStatus();
-            trxLog();
             awaitTrxLog();
+            trxLog();
         });
     </script>
     @stop
