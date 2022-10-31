@@ -57,12 +57,12 @@ class DashboardController extends Controller
 
         $data['lastMontTrans'] = TrxOverBooking::lastMonthTrx();
         $data['thisMontTrans'] = TrxOverBooking::thisMonthTrx();
-        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans'] - (int)$data['lastMontTrans']) / (int)$data['lastMontTrans'] * 100, 2) : 100;
+        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans'] - (int)$data['lastMontTrans']) / (int)$data['lastMontTrans'] * 100, 2) : (int)$data['thisMontTrans'];
 
         $data['lastYearTrans'] = TrxOverBooking::lastYearTrx();
         // dd($data['lastYearTrans']);
         $data['thisYearTrans'] = TrxOverBooking::thisYearTrx();
-        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans'] - (int)$data['lastYearTrans']) / (int)$data['lastYearTrans'] * 100, 2) : 100;
+        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans'] - (int)$data['lastYearTrans']) / (int)$data['lastYearTrans'] * 100, 2) : (int)$data['thisYearTrans'];
 
         return view('dashboard.index', compact('data'));
     }
