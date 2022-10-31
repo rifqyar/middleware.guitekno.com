@@ -311,9 +311,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Overbooking New
     Route::get('transaksi', 'Overbooking\OverbookingController@index')->name('transaksi-overbooking');
+    Route::get('transaksi-today', 'Overbooking\OverbookingController@indexToday')->name('transaksi-today');
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
     Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
+    Route::get('dati/{prop_id}', 'Overbooking\OverbookingController@exportToFile');
 
     Route::get('stream-log', function () {
         return view('stream_log/index');
@@ -336,10 +338,6 @@ Route::group(['prefix' => 'install'], function () {
     Route::get('complete', 'InstallController@complete')->name('install.complete');
     Route::get('error', 'InstallController@error')->name('install.error');
 });
-
-Route::get('/await-trx-log', [DashboardController::class, 'awaitLogTrx']);
-Route::get('/trx-log', [DashboardController::class, 'LogTrx']);
-
 
 Route::prefix('chart')->group(function () {
     Route::post('/tx-type', [ChartController::class, 'chartTxType']);

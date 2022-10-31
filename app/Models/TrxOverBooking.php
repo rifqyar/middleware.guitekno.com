@@ -151,7 +151,7 @@ class TrxOverBooking extends Model
 
     public static function lastMonthTrx()
     {
-        $lastMonth = date('Y-m', strtotime(date('Y-m')." -1 month"));
+        $lastMonth = date('Y-m', strtotime(date('Y-m') . " -1 month"));
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
 
@@ -177,7 +177,7 @@ class TrxOverBooking extends Model
 
     public static function lastYearTrx()
     {
-        $lastYear = date('Y', strtotime(date('Y')." -1 year"));
+        $lastYear = date('Y', strtotime(date('Y') . " -1 year"));
 
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';

@@ -54,7 +54,6 @@
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
                                     <option value="">All</option>
-
                                     @foreach ($banks as $bank)
                                         <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
                                     @endforeach
@@ -79,7 +78,9 @@
                                     id="type">
                                     <option value="">All</option>
                                     @foreach ($types as $type)
-                                        <option value="{{ $type->tbk_type }}">{{ $type->tbk_type }}</option>
+                                        <option value="{{ $type->tbk_type }}"
+                                            {{ $lsType == $type->tbk_type ? 'selected' : '' }}>{{ $type->tbk_type }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -95,7 +96,7 @@
                                     {{-- @endforeach --}}
                                 </select>
                             </div>
-                            <div class="col-md-7 mt-2">
+                            <div class="col-md-6 mt-2">
                                 <p>Tanggal Pengiriman</p>
                                 <div class="row">
                                     <div class="col-4">
@@ -131,13 +132,56 @@
                                     </select>
                                 </div>
                             @endif
+                            @if (auth()->user()->present()->role_id < 5)
+                                <div class="col-md-3 mt-2">
+                                    <p>Provinsi</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="prop_id"
+                                        id="prop_id" onchange="getDati()"
+                                        {{ auth()->user()->present()->role_id == 4? 'disabled="true"': '' }}>
+                                        <option value="">All</option>
+                                        @foreach ($provinsi as $value)
+                                            <option value="{{ $value->prop_id }}"
+                                                {{ auth()->user()->present()->province_id == $value->prop_id? 'selected': '' }}>
+                                                {{ $value->prop_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Kabupaten</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="dati2"
+                                        id="dati2">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            @endif
+                            <div class="col-md-5 mt-2">
+                                <p>Tanggal Request</p>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <select class="form-control filter" name="parameter_date_request"
+                                            id="parameter_date_request">
+                                            <option value="">All</option>
+                                            <option value="=" {{ $today ? 'selected' : '' }}>=</option>
+                                            <option value="<=">
+                                                <= </option>
+                                            <option value=">="> >= </option>
+                                            <option value="between">Between</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control filter datatable-input"
+                                            name="date_request" id="date_request" value="{{ $today ?? '' }}">
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
                                 <button type="button" class="btn btn-primary mb-2" id="kt_search">Filter</button>
                                 <button type="button" class="btn btn-secondary mb-2" id="kt_reset">Reset</button>
-                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn btn-warning mb-2 dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Export
                                 </button>
                                 <div class="dropdown-menu">
@@ -276,13 +320,10 @@
     <script>
         $(document).ready(function() {
             console.log("ready!");
+            if ($('#prop_id').val() != '') {
+                getDati()
+            }
             render()
-            $('#exportExcel').on('click', function(e) {
-                // window.location.replace('/transaksi/export/excel')
-
-                // $(location).href('/transaksi/export/excel')
-
-            })
             var recepientName = `{{ $name }}`;
             console.log(recepientName, 'rn')
             $("#tbk_recipient_name").autocomplete({
@@ -324,6 +365,10 @@
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
                         data.state = $('#state').val()
+                        data.date_request = $('#date_request').val()
+                        data.parameter_date_request = $('#parameter_date_request').val()
+                        data.dati2 = $('#dati2').val()
+                        data.prop_id = $('#prop_id').val()
 
                     }
                 },
@@ -456,6 +501,21 @@
                 $('#end_date').attr("readonly", true);
                 $('#start_date').attr("readonly", true);
             }
+        }
+
+        function getDati() {
+            $.ajax({
+                method: 'get',
+                url: '/api/dati/' + $('#prop_id').val(),
+                success: function(res) {
+                    var data = res.data
+                    var html = '<option value="">All</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        html += `<option value="${data[i].dati2_id}">${data[i].dati2_nama}</option>`
+                    }
+                    $('#dati2').html(html)
+                }
+            })
         }
 
         // $(function() {
