@@ -5,7 +5,7 @@
     var data = <?= json_encode($transaksi, true) ?>;
     let chartData = []
     console.log(data, 'i')
-    var dataM = data.trx?.map(e => {
+    var dataM = data?.trx?.map(e => {
         var obj = {
             tanggal: e.tanggal
         }
@@ -36,7 +36,7 @@
         return series;
     }
 
-    for (i in data.bank) {
+    for (i in data?.bank) {
         console.log(data.bank[i]);
         createSeries(data.bank[i], data.bank[i]);
     }
