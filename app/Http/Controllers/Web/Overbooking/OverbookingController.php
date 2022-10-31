@@ -16,7 +16,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
 use Illuminate\Support\Arr;
-use Vanguard\Models\Province;
 
 class OverbookingController extends Controller
 {

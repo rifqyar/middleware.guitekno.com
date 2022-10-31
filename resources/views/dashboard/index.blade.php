@@ -38,16 +38,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -249,7 +249,9 @@
                         @if ($data['bank'])
                             <div id="chartTxBank" style="height: 100%"></div>
                         @else
-                            <h5 class="card-text" style="margin-top: 150px;">Data Tidak Tersedia</h5>
+                            <center>
+                                <h5 class="card-text" style="margin-top: 150px;">Data Tidak Tersedia</h5>
+                            </center>
                         @endif
                     </div>
                 </div>
@@ -263,7 +265,9 @@
                                 @if ($data['jenis'])
                                     <div id="chartTxType" style="height: 100%"></div>
                                 @else
-                                    <h5 class="card-text" style="margin-top: 80px;">Data Tidak Tersedia</h5>
+                                    <center>
+                                        <h5 class="card-text" style="margin-top: 50px;">Data Tidak Tersedia</h5>
+                                    </center>
                                 @endif
                             </div>
                         </div>
@@ -275,7 +279,9 @@
                                 @if ($data['jenis'])
                                     <div id="chartTxStatus" style="height: 100%"></div>
                                 @else
-                                    <h5 class="card-text" style="margin-top: 80px;">Data Tidak Tersedia</h5>
+                                    <center>
+                                        <h5 class="card-text" style="margin-top: 50px;">Data Tidak Tersedia</h5>
+                                    </center>
                                 @endif
                             </div>
                         </div>
@@ -286,7 +292,13 @@
                 <div class="card" style="height: 400px">
                     <h6 class="card-header"><b>Transaksi Harian</b></h6>
                     <div class="card-body p-0">
-                        <div id="chartTxDaily" style="height: 100%"></div>
+                        @if ($data['transaksi'])
+                            <div id="chartTxDaily" style="height: 100%"></div>
+                        @else
+                            <center>
+                                <h5 class="card-text" style="margin-top: 150px;">Data Tidak Tersedia</h5>
+                            </center>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -707,8 +719,8 @@
         <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     // @if (method_exists($widget, 'scripts'))
     // {!! app()->call([$widget, 'scripts']) !!}
-                                                                            //
+                                                                                                                    //
     @endif
-                                                                            //
+                                                                                                                    //
     @endforeach -->
     @stop
