@@ -38,16 +38,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-        @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-        {!! app()->call([$widget, 'render']) !!}
-        @if ($widget->width)
+            {!! app()->call([$widget, 'render']) !!}
+            @if ($widget->width)
     </div>
     @endif
     @endforeach
-        </div> -->
+            </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -321,135 +321,67 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card" style="height: 190px">
-                        <h6 class="card-header"><b>Status Transaksi</b></h6>
-                        <div class="card-body p-0">
-                            @if ($data['jenis'])
-                                <div id="chartTxStatus" style="height: 100%"></div>
-                            @else
-                                <center>
-                                    <h5 class="card-text" style="margin-top: 50px;">Data Tidak Tersedia</h5>
-                                </center>
-                            @endif
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="card" style="height: 400px">
-                <h6 class="card-header"><b>Transaksi Harian</b></h6>
-                <div class="card-body p-0">
-                    @if ($data['transaksi']['bank'] || $data['transaksi']['trx'])
+            <div class="col-lg-12">
+                <div class="card" style="height: 400px">
+                    <h6 class="card-header"><b>Transaksi Harian</b></h6>
+                    <div class="card-body p-0">
                         <div id="chartTxDaily" style="height: 100%"></div>
-                    @else
-                        <center>
-                            <h5 class="card-text" style="margin-top: 150px;">Data Tidak Tersedia</h5>
-                        </center>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" style="display: none">
-            <div class="card">
-                <div style="display: flex;justify-content:space-between">
-                    <div>
-                        <h6 class="card-header">10 Log Callback terakhir</h6>
-                    </div>
-                    <div class="card-header">
-                        <a href="/log-callback">
-                            <button class="btn btn-success ">
-                                Lihat Semua
-                            </button>
-                        </a>
-
-                    </div>
-                </div>
-                <div class="card-body table-responsive">
-                    <table class="table" id="lastOverBooking">
-                        <thead>
-                            <tr>
-                                <th>Partner Id</th>
-                                <th>Callback Pertama</th>
-                                <th>Callback Terakhir</th>
-                                <th>Sevice Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['logCallback'] as $value)
-                                <tr>
-                                    <td>{{ $value->lcb_partnerid }}</td>
-                                    <td>{{ Helper::getFormatWib($value->lcb_created) }} </td>
-                                    <td>{{ Helper::getFormatWib($value->lcb_last_updated) }} </td>
-                                    <td>{{ $value->rst->rst_name }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card">
-                <div>
-                    <div class="card-header" style="display: flex;justify-content:space-between">
+        <div class="row">
+            <div class="col-md-12" style="display: none">
+                <div class="card">
+                    <div style="display: flex;justify-content:space-between">
                         <div>
-                            <h5>Data 10 Transaksi Terakhir</h5>
+                            <h6 class="card-header">10 Log Callback terakhir</h6>
                         </div>
-                        <a href="{{ route('transaksi-today', ['set_id' => 'today']) }}">
-                            <button class="btn btn-success ">
-                                Lihat Semua</button>
-                        </a>
+                        <div class="card-header">
+                            <a href="/log-callback">
+                                <button class="btn btn-success ">
+                                    Lihat Semua
+                                </button>
+                            </a>
+
+                        </div>
                     </div>
                     <div class="card-body table-responsive">
-                        <table class="table" id="table-log">
+                        <table class="table" id="lastOverBooking">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Bank Pengirim</th>
-                                    <th>Bank Penerima</th>
-                                    <th>Nama Penerima</th>
-                                    <th>Rekening Penerima</th>
-                                    <th>Total Transfer</th>
-                                    <th>NO SP2D</th>
-                                    <th>Tipe</th>
-                                    <th>Tanggal Request</th>
-                                    <th>Tanggal Pengiriman</th>
-                                    <th>Status</th>
+                                    <th>Partner Id</th>
+                                    <th>Callback Pertama</th>
+                                    <th>Callback Terakhir</th>
+                                    <th>Sevice Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($data['trxOverbooking'] as $value)
+                                @foreach ($data['logCallback'] as $value)
                                     <tr>
-                                        <td>{{ $value->tbk_partnerid }}</td>
-                                <td>{{ $value->senderBank->bank_name }}</td>
-                                <td>{{ Helper::getFormatWib($value->tbk_execution_time) }} </td>
-                                <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
-                                <td> {{ $value->tbk_type }}</td>
-                                @if ($value->ras_id == '000')
-                                <td><span class="badge badge-success">Success</span></td>
-                                @elseif ($value->ras_id == '100')
-                                <td><span class="badge badge-warning">Process</span></td>
-                                @else
-                                <td><span class="badge badge-danger">Failed</span></td>
-                                @endif
-                                </tr>
-                                @endforeach --}}
+                                        <td>{{ $value->lcb_partnerid }}</td>
+                                        <td>{{ Helper::getFormatWib($value->lcb_created) }} </td>
+                                        <td>{{ Helper::getFormatWib($value->lcb_last_updated) }} </td>
+                                        <td>{{ $value->rst->rst_name }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card">
-                <div>
-                    <div class="card-header" style="display: flex;justify-content:space-between">
-                        <div>
-                            <h5>Data Transaksi Menunggu di Proses</h5>
+            <div class="col-md-12">
+                <div class="card">
+                    <div>
+                        <div class="card-header" style="display: flex;justify-content:space-between">
+                            <div>
+                                <h5>Data 10 Transaksi Terakhir</h5>
+                            </div>
+                            <a href="{{ route('transaksi-today', ['set_id' => 'today']) }}">
+                                <button class="btn btn-success ">
+                                    Lihat Semua</button>
+                            </a>
                         </div>
                         <div class="card-body table-responsive">
                             <table class="table" id="table-log">
@@ -653,94 +585,42 @@
                         data: 'tbk_recipient_name',
                         responsivePriority: -1
                     },
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex',
-                            orderable: false,
-                            responsivePriority: -1
-                        },
-                        // {
-                        //     data: 'tbk_partnerid'
-                        // },
-                        {
-                            data: 'sender_bank.bank_name',
-                            orderable: false,
-                        },
-                        {
-                            data: 'receiver_bank.bank_name',
-                            orderable: false,
-                        },
-                        {
-                            data: 'tbk_recipient_name',
-                            responsivePriority: -1
-                        },
 
-                        {
-                            data: 'tbk_recipient_account',
-                            responsivePriority: -1
+                    {
+                        data: 'tbk_recipient_account',
+                        responsivePriority: -1
 
+                    },
+                    {
+                        data: 'tbk_amount'
+                    },
+                    {
+                        data: 'tbk_sp2d_no',
+                        responsivePriority: -1
+                    },
+                    {
+                        data: 'tbk_type'
+                    },
+                    {
+                        name: 'tbk_created.display',
+                        data: {
+                            _: 'tbk_created.display',
+                            sort: 'tbk_created.timestamp'
                         },
-                        {
-                            data: 'tbk_amount'
+                    },
+                    {
+                        name: 'tbk_execution_time.display',
+                        data: {
+                            _: 'tbk_execution_time.display',
+                            sort: 'tbk_execution_time.timestamp'
                         },
-                        {
-                            data: 'tbk_sp2d_no',
-                            responsivePriority: -1
-                        },
-                        {
-                            data: 'tbk_type'
-                        },
-                        {
-                            name: 'tbk_created.display',
-                            data: {
-                                _: 'tbk_created.display',
-                                sort: 'tbk_created.timestamp'
-                            },
-                        },
-                        {
-                            name: 'tbk_execution_time.display',
-                            data: {
-                                _: 'tbk_execution_time.display',
-                                sort: 'tbk_execution_time.timestamp'
-                            },
-                        },
-                        {
-                            data: 'ras_id',
-                            responsivePriority: -1
-                        },
-                    ],
-                });
-        }
-        }
-
-        function trxLog() {
-            var table2 = $('#table-log').DataTable(datatable({
-                ras_status: ''
-            }))
-        }
-
-        function awaitTrxLog() {
-            var table = $('#table-await-log').DataTable(datatable({
-                ras_status: 'process'
-            }))
-        }
-
-        pageLength: 10,
-
-            language: {
-                'lengthMenu': 'Display _MENU_',
-            },
-            searchDelay: 500,
-
-            processing: true,
-            serverSide: true,
-            searching: false,
-            ajax: {
-                url: '/await-trx-log',
-                method: 'post',
-            },
-        ],
-        }
+                    },
+                    {
+                        data: 'ras_id',
+                        responsivePriority: -1
+                    },
+                ],
+            }
         }
 
         function trxLog() {
@@ -771,8 +651,8 @@
     <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     // @if (method_exists($widget, 'scripts'))
     // {!! app()->call([$widget, 'scripts']) !!}
-                                                                                                                                                                                                            //
+                                                                                                                                                                                                                //
     @endif
-                                                                                                                                                                                                            //
+                                                                                                                                                                                                                //
     @endforeach -->
 @stop
