@@ -23,9 +23,9 @@
 
     pieSeries.slices.template.events.on("hit", function(ev) {
         localStorage.setItem("tx-type", ev.target.dataItem.category);
-        window.location.href = '/history-overbooking'
+        window.location.href = '/transaksi-today?set_id=' + ev.target.dataItem.category
     }, this)
-    
+
     chart.legend = new am4charts.Legend();
     chart.legend.position = "right";
     var markerTemplate = chart.legend.markers.template;

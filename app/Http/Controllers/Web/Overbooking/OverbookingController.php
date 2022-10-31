@@ -106,10 +106,10 @@ class OverbookingController extends Controller
         if (session('today')) {
             $data['today'] = date('Y-m-d');
         }
-        if (session('gaji')) {
+        if (session('Gaji')) {
             $data['lsType'] = 'LS|GAJI';
         }
-        if (session('nongaji')) {
+        if (session('Non Gaji')) {
             $data['lsType'] = 'LS|NONGAJI';
         }
 
