@@ -12,6 +12,8 @@ use Vanguard\Events\User\LoggedIn;
 use Vanguard\Events\User\LoggedOut;
 use Vanguard\Http\Controllers\Controller;
 use Vanguard\Http\Requests\Auth\LoginRequest;
+use Vanguard\Models\Province;
+use Vanguard\Models\RefDati;
 use Vanguard\Repositories\User\UserRepository;
 use Vanguard\Services\Auth\ThrottlesLogins;
 use Vanguard\Services\Auth\TwoFactor\Contracts\Authenticatable;
@@ -106,6 +108,8 @@ class LoginController extends Controller
             return redirect()->to($request->get('to'));
         }
 
+        $this->storePropDati($request);
+
         return redirect()->intended();
     }
 
@@ -135,5 +139,17 @@ class LoginController extends Controller
         Auth::logout();
 
         return redirect('login');
+    }
+
+    /**
+     * Save User location to Session
+     */
+    protected function storePropDati(Request $req)
+    {
+        $prov = Province::where('prop_id', Auth::user()->province_id)->first();
+        $dati = RefDati::where('prop_id', Auth::user()->province_id)->where('dati2_id', Auth::user()->dati_id)->first();
+        $lokasi = $prov && $dati ? "$prov->prop_nama | $dati->dati2_nama" : ($prov ? "$prov->prop_nama" : '');
+        
+        $req->session()->put('lokasi', $lokasi);
     }
 }

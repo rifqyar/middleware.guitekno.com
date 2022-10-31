@@ -54,7 +54,6 @@
                                 <select class="form-control filter datatable-input" data-col-index=0 name="sender_bank"
                                     id="sender_bank">
                                     <option value="">All</option>
-
                                     @foreach ($banks as $bank)
                                         <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
                                     @endforeach
@@ -79,7 +78,9 @@
                                     id="type">
                                     <option value="">All</option>
                                     @foreach ($types as $type)
-                                        <option value="{{ $type->tbk_type }}">{{ $type->tbk_type }}</option>
+                                        <option value="{{ $type->tbk_type }}"
+                                            {{ $lsType == $type->tbk_type ? 'selected' : '' }}>{{ $type->tbk_type }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -136,38 +137,27 @@
                                     </select>
                                 </div>
                             @endif
-
-                            @if (auth()->user()->present()->role_id == '1' ||
-                                auth()->user()->present()->role_id == '3' ||
-                                auth()->user()->present()->role_id == '4')
-                                <div class="col-md-3 mt-2">
-                                    <p>Province</p>
-                                    <select class="form-control filter datatable-input" data-col-index=1 name="province"
-                                        id="province">
-                                        <option value="">All</option>
-
-                                        @foreach ($province as $p)
-                                            <option value="{{ $p->prop_id }}">{{ $p->prop_nama }}</option>
-                                        @endforeach
-
-                                    </select>
+                            <div class="col-md-5 mt-2">
+                                <p>Tanggal Request</p>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <select class="form-control filter" name="parameter_date_request"
+                                            id="parameter_date_request">
+                                            <option value="">All</option>
+                                            <option value="=" {{ $today ? 'selected' : '' }}>=</option>
+                                            <option value="<=">
+                                                <= </option>
+                                            <option value=">="> >= </option>
+                                            <option value="between">Between</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control filter datatable-input"
+                                            name="date_request" id="date_request" value="{{ $today ?? '' }}">
+                                    </div>
                                 </div>
-                            @endif
-                            @if (auth()->user()->present()->role_id == '1' ||
-                                auth()->user()->present()->role_id == '3' ||
-                                auth()->user()->present()->role_id == '5')
-                                <div class="col-md-3 mt-2">
-                                    <p>Regency</p>
-                                    <select class="form-control filter datatable-input" data-col-index=1 name="regency"
-                                        id="regency">
 
-                                        {{-- @foreach ($regency as $r)
-                                            <option value="{{ $r->dati2_id }}">{{ $r->dati2_nama }}</option>
-                                        @endforeach --}}
-
-                                    </select>
-                                </div>
-                            @endif
+                            </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col">
@@ -203,10 +193,9 @@
                                 <th>Total Transfer</th>
                                 <th>NO SP2D</th>
                                 <th>Tipe</th>
+                                <th>Tanggal Request</th>
                                 <th>Tanggal Pengiriman</th>
-                                <th>Keterangan</th>
                                 <th>Status</th>
-                                <th>Callback</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -314,23 +303,8 @@
     <script>
         $(document).ready(function() {
             console.log("ready!");
-            // const tanggal = localStorage.getItem('tanggal') ? localStorage.getItem('tanggal') : '';
-            // console.log(tanggal, 'test2')
-            // $('#state').val(tanggal)
-
-            $('#province').on('change', function() {
-                var provID = $(this).val();
-
-                if (provID === '0') {
-
-                } else {
-                    $.get("{{ route('trx.regency') }}?provID=" + provID, function(data) {
-                        console.log(data, 'data')
-                        $('#regency').html(data)
-                    })
-                }
-            })
-
+            // var today = "{{ date('Y-m-d') }}"
+            // $('#date_request').val(today)
             render()
             $('#exportExcel').on('click', function(e) {
                 // window.location.replace('/transaksi/export/excel')
@@ -384,10 +358,8 @@
                         data.start_date = $('#start_date').val()
                         data.end_date = $('#end_date').val()
                         data.state = $('#state').val()
-                        data.province = $('#province').val()
-                        data.regency = $('#regency').val()
-                        data.created = $('#created').val()
-                        data.tanggal = tanggal
+                        data.date_request = $('#date_request').val()
+                        data.parameter_date_request = $('#parameter_date_request').val()
 
                     }
                 },
@@ -429,26 +401,28 @@
                         data: 'tbk_type'
                     },
                     {
-                        data: 'tbk_execution_time'
+                        name: 'tbk_created.display',
+                        data: {
+                            _: 'tbk_created.display',
+                            sort: 'tbk_created.timestamp'
+                        },
                     },
                     {
-                        data: 'tbk_sp2d_desc',
-                        responsivePriority: -1
-
+                        name: 'tbk_execution_time.display',
+                        data: {
+                            _: 'tbk_execution_time.display',
+                            sort: 'tbk_execution_time.timestamp'
+                        },
                     },
                     {
                         data: 'ras_id',
-                        // data: {
-                        //     _: 'ras_id',
-                        //     sort: 'ras_id'
-                        // },
                         responsivePriority: -1
                         // orderable: false,
                     },
-                    {
-                        data: 'Callback',
+                    // {
+                    //     data: 'Callback',
 
-                    },
+                    // },
                     {
                         data: 'Actions',
                         responsivePriority: -1

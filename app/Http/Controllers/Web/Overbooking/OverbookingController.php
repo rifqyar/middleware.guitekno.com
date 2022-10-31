@@ -86,58 +86,35 @@ class OverbookingController extends Controller
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        // dd(session());
         $data['banks'] = DatBankSecret::get();
         $data['types'] = TrxOverBooking::select('tbk_type')->groupBy('tbk_type')->get();
         // $status = TrxOverBooking::select('ras_id')->with('ras')->groupBy('ras_id')->get();
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
-        $data['province'] = Province::get();
-        $data['regency'] = Regency::get();
+        $data['lsType'] = '';
+        $data['today'] = '';
+        if (session('today')) {
 
-        $this->role = auth()->user()->present()->role_id;
-        $this->province_id = auth()->user()->present()->province_id;
-        $this->dati_id = auth()->user()->present()->dati_id;
-
-        // switch ($this->role) {
-        //     case 4:
-        //         $province = Province::where('prop_id', $this->province_id)->get();
-        //         // dd($province);
-        //         break;
-        //     case 5:
-        //         // $data['regency']->where(function($query) {
-        //         //     $query->where('prop_id', $this->province_id);
-        //         //     $query->where('dati2_id', $this->dati_id);
-        //         // });
-        //         $regency = Regency::where(function($query) {
-        //             $query->where('prop_id', $this->province_id);
-        //             $query->where('dati2_id', $this->dati_id);
-        //         });
-        //         // dd($regency);
-        //     default:
-        //         break;
-        // }
-
-
-        // $data['province'] = $province;
-        // $data['regency'] = $regency;
-
+            $data['today'] = date('Y-m-d');
+        }
+        if (session('gaji')) {
+            $data['lsType'] = 'LS|GAJI';
+        }
+        if (session('nongaji')) {
+            $data['lsType'] = 'LS|NONGAJI';
+        }
 
         return view('Overbooking.indexnew', $data);
     }
 
-    public function getRegency(Request $request)
+    public function indexToday(Request $request)
     {
-        $id = $request->provID;
-        // dd($id);
-        $regencies = Regency::where('prop_id', $id)->get();
-        $option = "<option value='0'>All</option>";
-        foreach ($regencies as $regency) {
-            $option .= '<option value="' . $regency->dati2_id . '">' . $regency->dati2_nama . '</option>';
-        }
-        return $option;
+        // dd($request->all());
+        return redirect('/transaksi')->with($request->set_id, true);
     }
 
     public function data(Request $request)
@@ -152,29 +129,59 @@ class OverbookingController extends Controller
                 return Helper::getRupiah($data->tbk_amount);
             })
             ->editColumn('tbk_execution_time', function ($data) {
-                return Helper::getFormatWib($data->tbk_execution_time);
+                return [
+                    'display' => e(
+                        Helper::getFormatWib($data->tbk_execution_time)
+                    ),
+                    'timestamp' => strtotime(Helper::getFormatWib($data->tbk_execution_time))
+                ];
             })
-            ->addColumn('Callback', function ($data) {
-                if ($data->logCallback && $data->logCallback->lcb_request) {
-                    $res = base64_encode($data->logCallback->lcb_request);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $res . '`)">Open</button>';
-                } else {
-                    return '-';
-                }
+            ->editColumn('tbk_created', function ($data) {
+                return [
+                    'display' => e(
+                        Helper::getFormatWibTanggal($data->tbk_created)
+                    ),
+                    'timestamp' => strtotime(Helper::getFormatWibTanggal($data->tbk_created))
+                ];
             })
+            // ->addColumn('Callback', function ($data) {
+            //     if ($data->logCallback && $data->logCallback->lcb_request) {
+            //         $res = base64_encode($data->logCallback->lcb_request);
+            //         return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailCallback(`' . $res . '`)">Open</button>';
+            //     } else {
+            //         return '-';
+            //     }
+            // })
             ->addColumn('Actions', function ($data) {
+                $return = '<div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Action
+                </button>
+                <div class="dropdown-menu">';
+
+
                 if ($data->request_data) {
-                    $res = base64_encode($data->request_data);
-                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+                    $detail = base64_encode($data->request_data);
+                    $return .= '<a class="dropdown-item" href="javascript:void(0)" onclick="openDetailTransaksi(`' . $detail . '`)">Detail</a>';
                 } else {
-                    return '-';
+                    $return .= '';
                 }
+
+                if ($data->logCallback && $data->logCallback->lcb_request) {
+                    $callback = base64_encode($data->logCallback->lcb_request);
+                    return $return .= '<a class="dropdown-item" href="javascript:void(0)" onclick="openDetailCallback(`' . $callback . '`)">Callback</a>';
+                } else {
+                    $return .= '';
+                }
+
+                $return .= '</div>
+                </div>';
+                return $return;
             })
             // ->addColumn('State', function($data) {
 
             // })
             ->editColumn('ras_id', function ($data) {
-                // dd($data);
                 if (in_array($data->ras_id,  $this->status['code'])) {
                     return $this->status['message'][$data->ras_id];
                 } else {
@@ -293,6 +300,8 @@ class OverbookingController extends Controller
             ->with('logCallback');
 
         if ($request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
+
+        if ($request->date_request) $overBooking->where('tbk_created', $request->parameter_date_request, $request->date_request);
 
         if ($request->tbk_partnerid) $overBooking->where('tbk_partnerid', $request->tbk_partnerid);
 

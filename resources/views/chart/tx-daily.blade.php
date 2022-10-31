@@ -3,24 +3,18 @@
     am4core.useTheme(am4themes_animated);
     var chart = am4core.create("divTxDaily", am4charts.XYChart);
     var data = <?= json_encode($transaksi, true) ?>;
-    console.log(data.trx[5].data, 'ddd')
     let chartData = []
-    for (i in data.trx) {
-        // console.log(i, 'i')
-        var tempData = {
-            tanggal: data.trx[i].tanggal
+    console.log(data, 'i')
+    var dataM = data.trx.map(e => {
+        var obj = {
+            tanggal: e.tanggal
         }
-        for (j in data.trx[i].data) {
-            var valueName = `value${data.trx[i].data[j].bank_name}`
-            // console.log(valueName, 'value')
-            tempData[valueName] = data.trx[i].data[j].total
-        }
-        console.log(tempData, 'ooo')
-        chartData.push(tempData);
-    }
-    // console.log(chartData, 'result')
-    // Add data
-    chart.data = chartData;
+        e.data?.forEach(el => {
+            obj[`${el.bank_name}`] = el.total
+        })
+        return obj
+    })
+    chart.data = dataM;
     // Create axes
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -42,9 +36,10 @@
         return series;
     }
 
-    data.bank.forEach((e) => {
-        createSeries(`value${e}`, e);
-    })
+    for (i in data.bank) {
+        console.log(data.bank[i]);
+        createSeries(data.bank[i], data.bank[i]);
+    }
     chart.legend = new am4charts.Legend();
     chart.legend.position = "bottom";
     chart.legend.scrollable = true;

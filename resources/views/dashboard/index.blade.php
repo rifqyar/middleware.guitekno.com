@@ -8,21 +8,46 @@
         @lang('Dashboard')
     </li>
 @stop
+@section('styles')
+    <style>
+        .hai {
+            background-color: #feffdf
+        }
+
+        .Blink {
+            animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+        }
+
+        @keyframes blinker {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .caption-trx {
+            font-size: 12px !important
+        }
+    </style>
+@endsection
 @section('content')
 
     @include('partials.messages')
 
     <!-- <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {!! app()->call([$widget, 'render']) !!}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @if ($widget->width)
     </div>
     @endif
     @endforeach
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -30,12 +55,14 @@
                 <div class="card widget">
                     <div class="card-body">
                         <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                            <div class="p-3 text-primary">
                                 <i class="fa fa-exchange fa-3x"></i>
                             </div>
-                            <div class="pr-3">
+                            <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['countTransaksi'] }}</h2>
-                                <div class="text-muted">Jumlah Transaksi</div>
+                                <span class="text-muted  text-right">
+                                    <p>Jumlah Transaksi</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -45,12 +72,14 @@
                 <div class="card widget">
                     <div class="card-body">
                         <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                            <div class="p-3 text-primary">
                                 <i class="fa fa-money fa-3x"></i>
                             </div>
-                            <div class="pr-3">
+                            <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['jumlahTransaksi'] }}</h2>
-                                <div class="text-muted">Total Transaksi Berhasil</div>
+                                <span class="text-muted  text-right">
+                                    <p>Total Transaksi Berhasil</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -60,12 +89,14 @@
                 <div class="card widget">
                     <div class="card-body">
                         <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                            <div class="p-3 text-primary">
                                 <i class="fa fa-university fa-3x"></i>
                             </div>
-                            <div class="pr-3">
+                            <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['countBank']->total_prop }}</h2>
-                                <div class="text-muted">Jumlah Provinsi</div>
+                                <span class="text-muted  text-right">
+                                    <p>Jumlah Provinsi</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -75,16 +106,96 @@
                 <div class="card widget">
                     <div class="card-body">
                         <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                            <div class="p-3 text-primary">
                                 <i class="fa fa-trophy fa-3x"></i>
                             </div>
-                            <div class="pr-3">
+                            <div class="pr-3 col-8">
                                 @if ($data['countDati2'])
                                     <h2 class="text-right"> {{ $data['countDati2']->total_dati ?? '' }} </h2>
                                 @else
                                     <h2 class="text-right"> - </h2>
                                 @endif
-                                <div class="text-muted float-right">Jumlah Kabupaten</div>
+                                <span class="text-muted  text-right">
+                                    <p>Jumlah Kabupaten</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BARU EY -->
+            <div class="col-md-3">
+                <div class="card widget">
+                    <div class="card-body p-2">
+                        <div class="row align-items-center">
+                            <div class="p-3 text-primary mb-3 ml-2">
+                                <i class="fa fa-exchange fa-3x"></i>
+                            </div>
+                            <div class="pr-3 pb-0 col-8">
+                                <h5 class="text-right mb-0">{{ $data['lastMontTrans'] }}</h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Transaksi Bulan Lalu</p>
+                                </span>
+                                <div class="d-flex align-items-center" style="margin-top: -20px !important">
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageMonth'] > 0) text-success
+                                        @else
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['percentageMonth'] }}% </span>
+                                </div>
+                                <h5 class="text-right mb-0">{{ $data['thisMontTrans'] }}
+                                    @if ((int) $data['thisMontTrans'] - (int) $data['lastMontTrans'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
+                                    @else
+                                        <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
+                                    @endif
+                                </h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Transaksi Bulan ini</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card widget">
+                    <div class="card-body p-2">
+                        <div class="row align-items-center">
+                            <div class="p-3 text-primary mb-3 ml-2">
+                                <i class="fa fa-exchange fa-3x"></i>
+                            </div>
+                            <div class="pr-3 pb-0 col-8">
+                                <h5 class="text-right mb-0">{{ $data['lastYearTrans'] }}</h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Transaksi Tahun Lalu</p>
+                                </span>
+                                <div class="d-flex align-items-center" style="margin-top: -20px !important">
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageYear'] > 0) text-success
+                                        @else
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['percentageYear'] }}% </span>
+                                </div>
+                                <h5 class="text-right mb-0">{{ $data['thisYearTrans'] }}
+                                    @if ((int) $data['thisYearTrans'] - (int) $data['lastYearTrans'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
+                                    @else
+                                        <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
+                                    @endif
+                                </h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Transaksi Tahun ini</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -193,25 +304,10 @@
                 <div class="card">
                     <div style="display: flex;justify-content:space-between">
                         <div>
-                            <h6 class="card-header"><b>Transaksi Hari Ini</b></h6>
+                            <h6 class="card-header">Data Transaksi Menunggu</h6>
                         </div>
                         <div class="card-header">
-                            <button class="btn btn-success" id="transaksi_terkini">
-                                Lihat
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="card">
-                    <div style="display: flex;justify-content:space-between">
-                        <div>
-                            <h6 class="card-header"><b>Data Transaksi Dalam Proses Bank</b></h6>
-                        </div>
-                        <div class="card-header">
-                            <a href="/history-overbooking">
+                            <a href="{{ route('transaksi-today') }}">
                                 <button class="btn btn-success ">
                                     Lihat Semua
                                 </button>
@@ -232,7 +328,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data['trxOverbooking'] as $value)
+                                {{-- @foreach ($data['trxOverbooking'] as $value)
                                     <tr>
                                         @if ($value->ras_id == '000')
                                             <td><span class="badge badge-success">Success</span></td>
@@ -241,13 +337,8 @@
                                         @else
                                             <td><span class="badge badge-danger">Failed</span></td>
                                         @endif
-                                        {{-- <td>{{ $value->tbk_partnerid }}</td> --}}
-                                        <td>{{ $value->senderBank->bank_name }}</td>
-                                        <td>{{ Helper::getFormatWib($value->tbk_execution_time) }} </td>
-                                        <td> {{ Helper::getRupiah($value->tbk_amount) }}</td>
-                                        <td> {{ $value->tbk_type }}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>

@@ -17,6 +17,11 @@ class Helper
         return date('d-m-Y H:i', strtotime($tanggal . "+7 hour",)) . ' Wib';
     }
 
+    public static function getFormatWibTanggal($tanggal)
+    {
+        return date('d-m-Y', strtotime($tanggal));
+    }
+
     public static function cleanFormString($string)
     {
         $string = str_replace("/", " ", $string);
@@ -75,8 +80,9 @@ class Helper
         return $role[$user->role_id];
     }
 
-    public static function getRoleFilter($type, $query = null){
-        if ($type == 'query'){
+    public static function getRoleFilter($type, $query = null)
+    {
+        if ($type == 'query') {
             $role = Auth::user()->role_id;
             $prop = Auth::user()->province_id;
             $kabupaten = Auth::user()->dati_id;
@@ -96,19 +102,19 @@ class Helper
             }
 
             return $where;
-        } else if ($type == 'model'){
+        } else if ($type == 'model') {
             $role = Auth::user()->role_id;
             $prop = Auth::user()->province_id;
             $kabupaten = Auth::user()->dati_id;
 
-            $query->where(function($query) use ($role, $prop, $kabupaten) {
+            $query->where(function ($query) use ($role, $prop, $kabupaten) {
                 switch ($role) {
                     case 4:
                         $query->where('prop_id', $prop);
                         break;
-    
+
                     case 5:
-                        $query->where('prop_id', $prop); 
+                        $query->where('prop_id', $prop);
                         $query->where('dati2_id', $kabupaten);
                         break;
                     default:

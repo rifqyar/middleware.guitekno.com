@@ -7,6 +7,7 @@
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Vanguard\Http\Controllers\ChartController;
+use Vanguard\Http\Controllers\Web\DashboardController;
 use Vanguard\Models\LogCallback;
 use Vanguard\Models\RefApiStatus;
 
@@ -310,12 +311,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Overbooking New
     Route::get('transaksi', 'Overbooking\OverbookingController@index')->name('transaksi-overbooking');
-    Route::get('transaksi/regency', 'Overbooking\OverbookingController@getRegency')->name('trx.regency');
+    Route::get('transaksi-today', 'Overbooking\OverbookingController@indexToday')->name('transaksi-today');
     Route::get('transaksi/callback/{id}', 'Overbooking\OverbookingController@getCallbackLast');
     Route::post('transaksi/form', 'Overbooking\OverbookingController@data');
     Route::post('transaksi/export/file', 'Overbooking\OverbookingController@exportToFile');
 
-    Route::get('stream-log', function() {
+    Route::get('stream-log', function () {
         return view('stream_log/index');
     })->name('stream-log');
 });
@@ -336,6 +337,10 @@ Route::group(['prefix' => 'install'], function () {
     Route::get('complete', 'InstallController@complete')->name('install.complete');
     Route::get('error', 'InstallController@error')->name('install.error');
 });
+
+Route::get('/await-trx-log', [DashboardController::class, 'awaitLogTrx']);
+Route::get('/trx-log', [DashboardController::class, 'LogTrx']);
+
 
 Route::prefix('chart')->group(function () {
     Route::post('/tx-type', [ChartController::class, 'chartTxType']);

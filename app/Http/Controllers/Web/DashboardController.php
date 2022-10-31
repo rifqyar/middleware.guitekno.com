@@ -2,6 +2,7 @@
 
 namespace Vanguard\Http\Controllers\Web;
 
+use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Vanguard\Http\Controllers\Controller;
@@ -9,6 +10,10 @@ use Vanguard\Http\Controllers\Library;
 use Vanguard\Models\TrxOverBooking;
 use Vanguard\Models\DatBankSecret;
 use Vanguard\Models\LogCallback;
+use Yajra\Datatables\Datatables;
+use App\Helpers\Helper;
+use Vanguard\Models\Province;
+use Vanguard\Models\RefDati;
 
 class DashboardController extends Controller
 {
@@ -37,10 +42,6 @@ class DashboardController extends Controller
         //     'jumlahTransaksiToday' => $data['jumlahTransaksiToday'],
         // ]);
         // die();
-        $data['trxOverbooking'] = TrxOverBooking::where('ras_id', '100')
-            ->limit(10)
-            ->orderBy('tbk_created', 'desc')
-            ->get();
 
         $data['logCallback'] = LogCallback::orderBy('lcb_last_updated', 'desc')
             ->limit(10)->get();
@@ -54,7 +55,13 @@ class DashboardController extends Controller
 
         $data['bank'] = TrxOverBooking::countTrxBank();
 
-        // dd($data['transaksi']);
+        $data['lastMontTrans'] = TrxOverBooking::lastMonthTrx();
+        $data['thisMontTrans'] = TrxOverBooking::thisMonthTrx();
+        $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans']-(int)$data['lastMontTrans'])/(int)$data['lastMontTrans'] *100,2) : 100;
+
+        $data['lastYearTrans'] = TrxOverBooking::lastYearTrx();
+        $data['thisYearTrans'] = TrxOverBooking::thisYearTrx();
+        $data['percentageYear'] = (int)$data['lastYearTrans'] != 0 ? round(((int)$data['thisYearTrans']-(int)$data['lastYearTrans'])/(int)$data['lastYearTrans'] *100 ,2) : 100;
 
         return view('dashboard.index', compact('data'));
     }
@@ -92,5 +99,72 @@ class DashboardController extends Controller
         } else {
             echo $response;
         }
+    }
+    function logTrx()
+    {
+        $log = TrxOverBooking::with('senderBank')
+            ->with('receiverBank')
+            ->with('ras')
+            ->with('logCallback');
+        if (env('APP_ENV') == 'production') {
+            $log->where('state', '01');
+        }
+        return DataTables::of($log)->addIndexColumn()
+            ->editColumn('tbk_amount', function ($data) {
+                return Helper::getRupiah($data->tbk_amount);
+            })
+            ->addColumn('Actions', function ($data) {
+                if ($data->request_data) {
+                    $res = base64_encode($data->request_data);
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+                } else {
+                    return '-';
+                }
+            })
+            ->editColumn('ras_id', function ($data) {
+                // dd($data);
+                if (in_array($data->ras_id,  $this->status['code'])) {
+                    return $this->status['message'][$data->ras_id];
+                } else {
+                    return '<span class="badge badge-pill bg-danger text-white">Failed</span>';
+                }
+            })
+            ->rawColumns(['Callback', 'Actions', 'ras_id'])
+            ->make(true);
+    }
+    function awaitLogTrx()
+    {
+        $log = TrxOverBooking::where('ras_id', '100')
+            ->limit(10)
+            ->orderBy('tbk_created', 'desc')
+            ->get();
+
+        if (env('APP_ENV') == 'production') {
+            $log->where('state', '01');
+        } else {
+            $log->where('state', '!=', '01');
+        }
+        return DataTables::of($log)->addIndexColumn()
+            ->editColumn('tbk_amount', function ($data) {
+                return Helper::getRupiah($data->tbk_amount);
+            })
+            ->addColumn('Actions', function ($data) {
+                if ($data->request_data) {
+                    $res = base64_encode($data->request_data);
+                    return '<button type="button" class="btn btn-primary btn-sm" onclick="openDetailTransaksi(`' . $res . '`)">Detail</button>';
+                } else {
+                    return '-';
+                }
+            })
+            ->editColumn('ras_id', function ($data) {
+                // dd($data);
+                if (in_array($data->ras_id,  $this->status['code'])) {
+                    return $this->status['message'][$data->ras_id];
+                } else {
+                    return '<span class="badge badge-pill bg-danger text-white">Failed</span>';
+                }
+            })
+            ->rawColumns(['Callback', 'Actions', 'ras_id'])
+            ->make(true);
     }
 }
