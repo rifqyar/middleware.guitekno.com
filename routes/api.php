@@ -1,5 +1,9 @@
 <?php
 
+
+
+Route::get('dati/{prop_id}', 'Dati\DatiController@get');
+
 Route::post('login', 'Auth\AuthController@token');
 Route::post('login/social', 'Auth\SocialLoginController@index');
 Route::post('logout', 'Auth\AuthController@logout');

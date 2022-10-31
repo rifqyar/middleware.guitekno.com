@@ -5,7 +5,7 @@
     var data = <?= json_encode($transaksi, true) ?>;
     let chartData = []
     console.log(data, 'i')
-    var dataM = data.trx.map(e => {
+    var dataM = data.trx?.map(e => {
         var obj = {
             tanggal: e.tanggal
         }

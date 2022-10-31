@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Vanguard\Models\LogCallback;
 use Illuminate\Support\Arr;
+use Vanguard\Models\Province;
 
 class OverbookingController extends Controller
 {
@@ -97,8 +98,13 @@ class OverbookingController extends Controller
         $data['states'] = RefRunState::get();
         $data['lsType'] = '';
         $data['today'] = '';
-        if (session('today')) {
+        if (auth()->user()->present()->role_id < 4) {
+            $data['provinsi'] = Province::all();
+        } else {
+            $data['provinsi'] = Province::where('prop_id', auth()->user()->present()->province_id)->get();
+        }
 
+        if (session('today')) {
             $data['today'] = date('Y-m-d');
         }
         if (session('gaji')) {
@@ -340,27 +346,8 @@ class OverbookingController extends Controller
             if ($request->state) $overBooking->where('state', $request->state);
         }
 
-        // if($request->tanggal == ''){
-        //     $overBooking->orderBy('tbk_created', 'desc');
-        // }else{
-        //     $overBooking->where('tbk_created', '=', $request->tanggal);
-        // }
-
-        if($request->province || $request->regency == '0')
-        {
-            $overBooking->where('prop_id', $request->province);
-        }
-
-        if($request->regency)
-        {
-            $overBooking->where('prop_id', $request->province)->where('dati2_id', $request->regency);
-        }
-
-        if($request->created)
-        {
-            $overBooking->where('tbk_created', $request->created);
-        }
-
+        if ($request->prop_id) $overBooking->where('prop_id', $request->prop_id);
+        if ($request->dati2) $overBooking->where('dati2_id', $request->dati2);
 
         /** Filter by user */
         $this->role = auth()->user()->present()->role_id;

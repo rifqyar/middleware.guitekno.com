@@ -96,7 +96,7 @@
                                     {{-- @endforeach --}}
                                 </select>
                             </div>
-                            <div class="col-md-7 mt-2">
+                            <div class="col-md-6 mt-2">
                                 <p>Tanggal Pengiriman</p>
                                 <div class="row">
                                     <div class="col-4">
@@ -134,6 +134,28 @@
                                         @foreach ($states as $state)
                                             <option value="{{ $state->rrs_id }}">{{ $state->rrs_desc }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                            @if (auth()->user()->present()->role_id < 5)
+                                <div class="col-md-3 mt-2">
+                                    <p>Provinsi</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="prop_id"
+                                        id="prop_id" onchange="getDati()"
+                                        {{ auth()->user()->present()->role_id == 4? 'disabled="true"': '' }}>
+                                        <option value="">All</option>
+                                        @foreach ($provinsi as $value)
+                                            <option value="{{ $value->prop_id }}"
+                                                {{ auth()->user()->present()->province_id == $value->prop_id? 'selected': '' }}>
+                                                {{ $value->prop_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <p>Kabupaten</p>
+                                    <select class="form-control filter datatable-input" data-col-index=2 name="dati2"
+                                        id="dati2">
+                                        <option value="">All</option>
                                     </select>
                                 </div>
                             @endif
@@ -303,17 +325,10 @@
     <script>
         $(document).ready(function() {
             console.log("ready!");
-            // var today = "{{ date('Y-m-d') }}"
-            // $('#date_request').val(today)
+            if ($('#prop_id').val() != '') {
+                getDati()
+            }
             render()
-            $('#exportExcel').on('click', function(e) {
-                // window.location.replace('/transaksi/export/excel')
-
-                // $(location).href('/transaksi/export/excel')
-
-            })
-
-
             var recepientName = `{{ $name }}`;
             console.log(recepientName, 'rn')
             $("#tbk_recipient_name").autocomplete({
@@ -360,6 +375,8 @@
                         data.state = $('#state').val()
                         data.date_request = $('#date_request').val()
                         data.parameter_date_request = $('#parameter_date_request').val()
+                        data.dati2 = $('#dati2').val()
+                        data.prop_id = $('#prop_id').val()
 
                     }
                 },
@@ -495,6 +512,21 @@
                 $('#end_date').attr("readonly", true);
                 $('#start_date').attr("readonly", true);
             }
+        }
+
+        function getDati() {
+            $.ajax({
+                method: 'get',
+                url: '/api/dati/' + $('#prop_id').val(),
+                success: function(res) {
+                    var data = res.data
+                    var html = '<option value="">All</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        html += `<option value="${data[i].dati2_id}">${data[i].dati2_nama}</option>`
+                    }
+                    $('#dati2').html(html)
+                }
+            })
         }
 
         // $(function() {

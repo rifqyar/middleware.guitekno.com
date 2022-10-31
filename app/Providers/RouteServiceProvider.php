@@ -59,7 +59,7 @@ class RouteServiceProvider extends ServiceProvider
         if ($this->app['config']->get('auth.expose_api')) {
             $this->mapApiRoutes();
         }
-
+        $this->mapApiRoutes();
         $this->mapWebRoutes();
     }
 
