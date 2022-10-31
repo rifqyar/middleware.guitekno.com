@@ -94,17 +94,20 @@ class TrxOverBooking extends Model
         SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
-    public static function countTransaksi($today = false)
+    public static function countTransaksi($day = '')
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
-        if ($today) {
+        if ($day == 'today') {
             // $date = date('Y-m-d', time() - 86400);
             $date = date('Y-m-d');
             $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+        } else if ($day == 'yesterday') {
+            $date = date('Y-m-d', time() - 86400);
+            // dd($date);
+            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
         }
-
         $whereDev = $where != '' ? "AND state = '" . env('STATE_DATA') . "'" : "WHERE state = '" . env('STATE_DATA') . "'";
 
         $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";

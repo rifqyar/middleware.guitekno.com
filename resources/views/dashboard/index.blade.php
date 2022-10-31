@@ -204,18 +204,38 @@
 
             <div class="col-md-3 col-sm-12">
                 <div class="card widget">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                    <div class="card-body p-2">
+                        <div class="row align-items-center">
+                            <div class="p-3 text-primary mb-3 ml-2">
                                 <i class="fa fa-exchange fa-3x"></i>
                             </div>
-                            <div class="pr-3">
-                                {{-- @if ($data['countDati2']) --}}
-                                <h2 class="text-right"> {{ $data['countTransaksiToday'] }} </h2>
-                                {{-- @else --}}
-                                {{-- <h2 class="text-right"> - </h2>
-                                @endif --}}
-                                <div class="text-muted float-right">Total Transaksi Hari ini</div>
+                            <div class="pr-3 pb-0 col-8">
+                                <h5 class="text-right mb-0">{{ $data['countTransaksiYesterday'] }}</h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Total Transaksi Kemarin</p>
+                                </span>
+                                <div class="d-flex align-items-center" style="margin-top: -20px !important">
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageYear'] > 0) text-success
+                                        @else
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['countTransaksiYesterday'] != 0 ? round((((int) $data['countTransaksiToday'] - (int) $data['countTransaksiYesterday']) / (int) $data['countTransaksiYesterday']) * 100, 2) : 100 }}%
+                                    </span>
+                                </div>
+                                <h5 class="text-right mb-0">{{ $data['countTransaksiToday'] }}
+                                    @if ((int) $data['countTransaksiToday'] - (int) $data['countTransaksiYesterday'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
+                                    @else
+                                        <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
+                                    @endif
+                                </h5>
+                                <span class="text-muted text-right caption-trx">
+                                    <p>Total Transaksi Hari ini</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -223,18 +243,38 @@
             </div>
             <div class="col-md-3 col-sm-12">
                 <div class="card widget">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="p-3 text-primary flex-1">
+                    <div class="card-body p-2">
+                        <div class="row align-items-center">
+                            <div class="p-3 text-primary mb-3 ml-2">
                                 <i class="fa fa-money fa-3x"></i>
                             </div>
-                            <div class="pr-3">
-                                {{-- @if ($data['countDati2']) --}}
-                                <h2 class="text-right"> {{ $data['jumlahTransaksiToday'] }} </h2>
-                                {{-- @else --}}
-                                {{-- <h2 class="text-right"> - </h2>
-                                @endif --}}
-                                <div class="text-muted float-right">Nilai Transaksi Hari ini</div>
+                            <div class="pr-3 pb-0 col-8">
+                                <h5 class="text-right mb-0">{{ $data['jumlahTransaksiYesterday'] }}</h5>
+                                <span class="text-muted  text-right caption-trx">
+                                    <p>Nilai Transaksi Berhasil Kemarin</p>
+                                </span>
+                                <div class="d-flex align-items-center" style="margin-top: -20px !important">
+                                    <hr
+                                        style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
+                                    <span
+                                        class="
+                                        @if ($data['percentageYear'] > 0) text-success
+                                        @else
+                                        text-danger @endif
+                                    ">
+                                        {{ $data['jumlahTransaksiYesterday'] != 0 ? round((((int) $data['jumlahTransaksiToday'] - (int) $data['jumlahTransaksiYesterday']) / (int) $data['jumlahTransaksiYesterday']) * 100, 2) : 100 }}%
+                                    </span>
+                                </div>
+                                <h5 class="text-right mb-0">{{ $data['jumlahTransaksiToday'] }}
+                                    @if ((int) $data['jumlahTransaksiToday'] - (int) $data['jumlahTransaksiYesterday'] > 0)
+                                        <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
+                                    @else
+                                        <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
+                                    @endif
+                                </h5>
+                                <span class="text-muted text-right caption-trx">
+                                    <p>Nilai Transaksi Berhasil Hari ini</p>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -611,8 +651,8 @@
     <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     // @if (method_exists($widget, 'scripts'))
     // {!! app()->call([$widget, 'scripts']) !!}
-                                                                                                                                //
+                                                                                                                                                                                                        //
     @endif
-                                                                                                                                //
+                                                                                                                                                                                                        //
     @endforeach -->
 @stop

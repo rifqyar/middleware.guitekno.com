@@ -31,18 +31,18 @@ class DashboardController extends Controller
         $data['countBank'] = DatBankSecret::countBank();
         // dd($data['countBank']);
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
-        $data['countTransaksiToday'] = TrxOverBooking::countTransaksi(true);
+        $data['countTransaksiToday'] = TrxOverBooking::countTransaksi('today');
+        $data['countTransaksiYesterday'] = TrxOverBooking::countTransaksi('yesterday');
+        // dd($data['countTransaksiToday']);
+        // dd($data['countTransaksiYesterday']);
         $rawDataJmlTransaksi = TrxOverBooking::jmlTransaksi();
-        $rawDataJmlTransaksiToday = TrxOverBooking::jmlTransaksi(true);
+        $rawDataJmlTransaksiToday = TrxOverBooking::jmlTransaksi('today');
+        $rawDataJmlTransaksiYesterday = TrxOverBooking::jmlTransaksi('yesterday');
         $data['jumlahTransaksi'] = Library::convertCurrency((int)$rawDataJmlTransaksi);
         $data['jumlahTransaksiToday'] = Library::convertCurrency((int)$rawDataJmlTransaksiToday);
+        $data['jumlahTransaksiYesterday'] = Library::convertCurrency((int)$rawDataJmlTransaksiYesterday);
         $data['countDati2'] = TrxOverBooking::CountDati2();
-        // var_dump([
-        //     'jumlahTransaksi' => $data['jumlahTransaksi'],
-        //     'jumlahTransaksiToday' => $data['jumlahTransaksiToday'],
-        // ]);
-        // die();
-        // dd(env('APP_ENV'));
+
         $data['logCallback'] = LogCallback::orderBy('lcb_last_updated', 'desc')
             ->limit(10)->get();
         // dd($data['logCallback']);
