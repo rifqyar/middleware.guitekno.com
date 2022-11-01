@@ -49,7 +49,7 @@
         console.log(ev.target.dataItem.bank);
         window.location.href = '/transaksi-today?bankcode=' + ev.target.dataItem.bank
     }, this)
-
+    columnTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer;
     columnTemplate.adapter.add("fill", function(fill, target) {
         return chart.colors.getIndex(target.dataItem.index);
     })
