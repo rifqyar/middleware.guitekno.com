@@ -129,56 +129,124 @@ function removeFilter(el){
 function getValueColumn(el){
     const selectComponent = $(el).parentsUntil('.form-container').parent().find('.select-value')
     if ($(el).val() != ''){
-        var column = window.btoa($(el).val())
-        let url = `history-overbooking/column-data/${column}`
-        apiCall(url, 'GET', '',null, null, () => {}, (res) => {
-            swal.close()
-            column = column.toLowerCase()
-            var option = '<option><option>'
-            $.each(res.data, (k, v) => {
-                option += `<option value="${Object.values(v)[0]}">${Object.values(v)[0]}</option>`
-            })
-    
-            selectComponent.html(option)
-        }, true)
+        if($(el).val() != 'tbk_created'){
+            var column = window.btoa($(el).val())
+            let url = `history-overbooking/column-data/${column}`
+            apiCall(url, 'GET', '',null, null, () => {}, (res) => {
+                swal.close()
+                column = column.toLowerCase()
+                var option = '<option><option>'
+                $.each(res.data, (k, v) => {
+                    option += `<option value="${Object.values(v)[0]}">${Object.values(v)[0]}</option>`
+                })
+        
+                selectComponent.html(option)
+            }, true)
+
+            $(el).parentsUntil('.form-container').parent().find("#value").fadeIn()
+            $(el).parentsUntil('.form-container').parent().find("select[name='value']").fadeIn()
+            $(el).parentsUntil('.form-container').parent().find("#date-value").fadeOut()
+            $(el).parentsUntil('.form-container').parent().find("input[name='tgl']").fadeOut()
+            $(el).parentsUntil('.form-container').parent().find(".select-operator").find('option[value="between"]').fadeOut()
+        } else {
+            $(el).parentsUntil('.form-container').parent().find("#value").fadeOut()
+            $(el).parentsUntil('.form-container').parent().find("select[name='value']").fadeOut()
+            $(el).parentsUntil('.form-container').parent().find("#date-value").fadeIn()
+            $(el).parentsUntil('.form-container').parent().find("input[name='tgl']").fadeIn()
+            $(el).parentsUntil('.form-container').parent().find(".select-operator").find('option[value="between"]').fadeIn()
+
+        }
     } else {
         selectComponent.html('<option></option>')
     }
 }
 
-function setFilter(){
+function changeOperator(el){
+    if ($(el).val() == 'between'){
+        $(el).parentsUntil('.form-container').parent().find('.date-end').fadeIn()
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').fadeIn()
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').removeAttr('readonly')
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').addClass('required')
+    } else {
+        $(el).parentsUntil('.form-container').parent().find('.date-end').fadeOut()
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').fadeOut()
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').prop('readonly', true)
+        $(el).parentsUntil('.form-container').parent().find('input[name="tgl2"]').removeClass('required')
+    }
+}
+
+function setFilter(type = 'table'){
     const formContainer = mainComponent.find("#form-filter").find('.form-container')
     var required = mainComponent.find(formContainer).find('.required')
     var canInput = true
 
     required.removeClass('is-invalid')
     
-    for(var i = 0; i < required.length; i++){
-        if (required[i].value == ''){
-            canInput = false
-            mainComponent.find(formContainer).find(`input[name="${required[i].name}"]`).addClass('is-invalid')
-            var form_name = required[i].name.replace('_', ' ').toUpperCase()
-            $.toast({
-                heading: 'Warning',
-                text: `Form ${form_name} is Required`,
-                icon: 'warning',
-                loader: true,       
-                loaderBg: '#9EC600', 
-                position: 'top-right',
-            })
+    if (type == 'table'){
+        for(var i = 0; i < required.length; i++){
+            console.log($(required[i]).css('display'))
+            console.log($(required[i]))
+            if($(required[i]).css('display') != 'none'){
+                if (required[i].value == ''){
+                    canInput = false
+                    mainComponent.find(formContainer).find(`input[name="${required[i].name}"]`).addClass('is-invalid')
+                    var form_name = required[i].name.replace('_', ' ').toUpperCase()
+                    $.toast({
+                        heading: 'Warning',
+                        text: `Form ${form_name} is Required`,
+                        icon: 'warning',
+                        loader: true,       
+                        loaderBg: '#9EC600', 
+                        position: 'top-right',
+                    })
+                }
+            }
         }
     }
 
-    if (required){
+    if (canInput){
         var filter = ''
         formContainer.find('.form-control').each((k, v) => {
             if ($(v).css('display') != 'none'){
-                filter += $(v).attr('name') != 'value' ? `${$(v).val()} ` : `'${$(v).val()}' `
+                if ($(v).attr('name') != 'value' && $(v).attr('name') != 'tgl' && $(v).attr('name') != 'tgl2'){
+                    filter += `${$(v).val()} `
+                } else {
+                    if ($(v).attr('name') == 'tgl2'){
+                        filter += `and '${$(v).val()}' `
+                    } else {
+                        filter += `'${$(v).val()}' `
+                    }
+                }
             }
         })
 
-        filter = window.btoa(filter)
-        showData(filter)
+        filter = filter == '' ? window.btoa('all') :  window.btoa(filter)
+        if (type == 'table'){
+            showData(filter)
+        } else {
+            swal({
+                title: 'Now loading',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                content: {
+                    element: "i",
+                    attributes: {
+                        className: "fas fa-spinner fa-spin text-large",
+                    },
+                },
+                buttons: !1,
+                closeOnClickOutside: !1,
+                closeOnEsc: !1,
+                onOpen: () => {
+                    swal.showLoading();
+                }
+            })
+
+            window.open(
+                '/overbooking-pdf/' + filter,
+                '_blank'
+            )
+        }
     }
 }
 
