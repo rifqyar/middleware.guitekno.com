@@ -28,6 +28,8 @@ class DashboardController extends Controller
             session()->flash('success', __('E-Mail verified successfully.'));
         }
 
+        // dd(auth()->user()->present()->role_id);
+
         $data['countBank'] = DatBankSecret::countBank();
         // dd($data['countBank']);
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
