@@ -55,7 +55,9 @@
                                     id="sender_bank">
                                     <option value="">All</option>
                                     @foreach ($banks as $bank)
-                                        <option value="{{ $bank->code_bank }}">{{ $bank->bank->bank_name }}</option>
+                                        <option value="{{ $bank->code_bank }}"
+                                            {{ $sender_bank == $bank->code_bank ? 'selected' : '' }}>
+                                            {{ $bank->bank->bank_name }}</option>
                                     @endforeach
 
                                 </select>

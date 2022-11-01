@@ -97,6 +97,7 @@ class OverbookingController extends Controller
         $data['statusMessages'] = TrxOverbooking::select('ras_id')->groupBy('ras_id')->get();
         $data['lsType'] = '';
         $data['today'] = '';
+        $data['sender_bank'] = '';
         if (auth()->user()->present()->role_id < 4) {
             $data['provinsi'] = Province::all();
         } else {
@@ -113,7 +114,7 @@ class OverbookingController extends Controller
             $data['lsType'] = 'LS|NONGAJI';
         }
         if ($request->session()->has('bankcode')) {
-            // $data['lsType'] = $request->session()->get('bankcode');
+            $data['sender_bank'] = $request->session()->get('bankcode');
         }
 
         return view('Overbooking.indexnew', $data);

@@ -19,7 +19,7 @@ class Helper
 
     public static function getFormatWibTanggal($tanggal)
     {
-        return date('d-m-Y', strtotime($tanggal));
+        return date('d-m-Y H:i', strtotime($tanggal));
     }
 
     public static function cleanFormString($string)
