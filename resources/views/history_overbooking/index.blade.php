@@ -25,7 +25,7 @@
                         Filter</button>
                     <button class="btn btn-success ml-4" onclick="showData()"> <i class="fas fa-database"></i> Show All
                         Data</button>
-                    <button class="btn btn-danger ml-4" onclick="pdfByFilter()"> <i class="fas fa-download"></i> Export to
+                    <button class="btn btn-danger ml-4" onclick="setFilter('pdf')"> <i class="fas fa-download"></i> Export to
                         PDF</button>
 
                     <button class="btn btn-sm btn-warning ml-auto" onclick="cutoffData()">
@@ -41,7 +41,7 @@
                 </div>
 
                 <button class="btn btn-outline-primary btn-sm m-5 float-right" id="setFilter" style="display: none"
-                    onclick="setFilter()">
+                    onclick="setFilter('table')">
                     Show Filtered Data
                 </button>
             </div>
@@ -52,73 +52,77 @@
     </div>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script>
-    {{-- <script src="{{url('assets/dev/history_overbooking/main.js')}}"></script> --}}
+    {{-- <script src="{{ url('vendor/plugins/history_overbooking/main.min.js') }}"></script> --}}
+    <script src="{{url('assets/dev/history_overbooking/main.js')}}"></script>
 
 @stop
 
 @section('scripts')
 
     <script>
-        function pdfByFilter() {
+        /**
+         * padahal bisa pake function gw, gausah capek" ngoding
+         */
+        
+        // function pdfByFilter() {
 
-            const mainComponent = $("#overbooking-component");
-            var e = mainComponent.find("#form-filter").find(".form-container");
-            var n = mainComponent.find(e).find(".required");
-            var filter_data = "";
+        //     const mainComponent = $("#overbooking-component");
+        //     var e = mainComponent.find("#form-filter").find(".form-container");
+        //     var n = mainComponent.find(e).find(".required");
+        //     var filter_data = "";
 
-            e.find(".form-control").each((e, n) => {
-                "none" != $(n).css("display") &&
-                    (filter_data +=
-                        "value" != $(n).attr("name") ?
-                        `${$(n).val()} ` :
-                        `'${$(n).val()}' `);
-            })
-            if (filter_data == "" || filter_data == " = 'null' " || filter_data == " = '' ") {
-                var filter = btoa('all')
-                swal({
-                    title: "Success",
-                    text: "Please Waiting for PDF Page",
-                    icon: "success",
-                    timer: 3000,
-                    allowEscapeKey: false,
-                    allowOutsideClick: false,
-                    buttons: !1,
-                    closeOnClickOutside: !1,
-                    closeOnEsc: !1,
-                })
-                window.location = '/overbooking-pdf/' + filter
-            }
-            // else if (filter_data == " <> 'null' " || filter_data == " > 'null' " || filter_data == " < 'null' " ||
-            //     filter_data == " >= 'null' " || filter_data == " <= 'null' ") {
-            //     swal({
-            //         title: "Failed",
-            //         text: "Please insert the filter",
-            //         icon: "error",
-            //     });
-            // }
-            else {
-                var filter = btoa(`${filter_data}`)
-                swal({
-                    title: 'Now loading',
-                    allowEscapeKey: false,
-                    allowOutsideClick: false,
-                    timer: 2000,
-                    content: {
-                        element: "i",
-                        attributes: {
-                            className: "fas fa-spinner fa-spin text-large",
-                        },
-                    },
-                    buttons: !1,
-                    closeOnClickOutside: !1,
-                    closeOnEsc: !1,
-                    onOpen: () => {
-                        swal.showLoading();
-                    }
-                })
-                window.location = '/overbooking-pdf/' + filter
-            }
-        }
+        //     e.find(".form-control").each((e, n) => {
+        //         "none" != $(n).css("display") &&
+        //             (filter_data +=
+        //                 "value" != $(n).attr("name") ?
+        //                 `${$(n).val()} ` :
+        //                 `'${$(n).val()}' `);
+        //     })
+        //     if (filter_data == "" || filter_data == " = 'null' " || filter_data == " = '' ") {
+        //         var filter = btoa('all')
+                // swal({
+                //     title: "Success",
+                //     text: "Please Waiting for PDF Page",
+                //     icon: "success",
+                //     timer: 3000,
+                //     allowEscapeKey: false,
+                //     allowOutsideClick: false,
+                //     buttons: !1,
+                //     closeOnClickOutside: !1,
+                //     closeOnEsc: !1,
+                // })
+        //         window.location = '/overbooking-pdf/' + filter
+        //     }
+        //     // else if (filter_data == " <> 'null' " || filter_data == " > 'null' " || filter_data == " < 'null' " ||
+        //     //     filter_data == " >= 'null' " || filter_data == " <= 'null' ") {
+        //     //     swal({
+        //     //         title: "Failed",
+        //     //         text: "Please insert the filter",
+        //     //         icon: "error",
+        //     //     });
+        //     // }
+        //     else {
+        //         var filter = btoa(`${filter_data}`)
+                // swal({
+                //     title: 'Now loading',
+                //     allowEscapeKey: false,
+                //     allowOutsideClick: false,
+                //     timer: 2000,
+                //     content: {
+                //         element: "i",
+                //         attributes: {
+                //             className: "fas fa-spinner fa-spin text-large",
+                //         },
+                //     },
+                //     buttons: !1,
+                //     closeOnClickOutside: !1,
+                //     closeOnEsc: !1,
+                //     onOpen: () => {
+                //         swal.showLoading();
+                //     }
+                // })
+        //         window.location = '/overbooking-pdf/' + filter
+        //     }
+        // }
     </script>
 @stop
