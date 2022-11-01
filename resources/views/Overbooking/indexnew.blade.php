@@ -426,14 +426,14 @@
                         data: 'tbk_type'
                     },
                     {
-                        name: 'tbk_created.display',
+                        name: 'tbk_created',
                         data: {
                             _: 'tbk_created.display',
                             sort: 'tbk_created.timestamp'
                         },
                     },
                     {
-                        name: 'tbk_execution_time.display',
+                        name: 'tbk_execution_time',
                         data: {
                             _: 'tbk_execution_time.display',
                             sort: 'tbk_execution_time.timestamp'

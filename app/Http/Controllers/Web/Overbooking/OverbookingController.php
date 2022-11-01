@@ -3,6 +3,7 @@
 namespace Vanguard\Http\Controllers\Web\Overbooking;
 
 use App\Helpers\Helper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
@@ -139,19 +140,21 @@ class OverbookingController extends Controller
                 return Helper::getRupiah($data->tbk_amount);
             })
             ->editColumn('tbk_execution_time', function ($data) {
+                $time = Carbon::parse($data->tbk_execution_time);
                 return [
                     'display' => e(
                         Helper::getFormatWib($data->tbk_execution_time)
                     ),
-                    'timestamp' => strtotime(Helper::getFormatWib($data->tbk_execution_time))
+                    'timestamp' => strtotime($time)
                 ];
             })
             ->editColumn('tbk_created', function ($data) {
+                $time = Carbon::parse($data->tbk_created);
                 return [
                     'display' => e(
                         Helper::getFormatWibTanggal($data->tbk_created)
                     ),
-                    'timestamp' => strtotime(Helper::getFormatWibTanggal($data->tbk_created))
+                    'timestamp' => strtotime($time)
                 ];
             })
             // ->addColumn('Callback', function ($data) {
