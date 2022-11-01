@@ -45,7 +45,7 @@ class TrxOverBooking extends Model
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
-        $whereDev = $where != '' ? "AND state in ".env('STATE_DATA')."" : "WHERE state in ".env('STATE_DATA')."";
+        $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT
                         CASE tbk_type
@@ -60,8 +60,8 @@ class TrxOverBooking extends Model
         $where2 = $where != '' ? "WHERE $where" : '';
         $where = $where != '' ? "and ($where)" : '';
 
-        $whereDev = $where2 != '' ? "AND state in ".env('STATE_DATA')."" : "WHERE state in ".env('STATE_DATA')."";
-        $whereDev2 = "AND state in ".env('STATE_DATA')."";
+        $whereDev = $where2 != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
+        $whereDev2 = "AND state in " . env('STATE_DATA') . "";
 
         $query = DB::SELECT("SELECT to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 $whereDev group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
         $bank = [];
@@ -88,41 +88,48 @@ class TrxOverBooking extends Model
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
-        $whereDev = $where != '' ? "AND state in ".env('STATE_DATA')."" : "WHERE state in ".env('STATE_DATA')."";
+        $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("WITH st as (select CASE ras_id WHEN '000' THEN 'Success' WHEN '100' THEN 'Process' ELSE 'Failed' END AS name from trx_overbooking $where $whereDev)
         SELECT x.name as keterangan, (select count(1) from st where name=x.name) as value from (select distinct(name) from st) as x order by x.name");
     }
 
-    public static function countTransaksi($today = false)
+    public static function countTransaksi($day = '')
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
 
-        if ($today) {
+        if ($day == 'today') {
             // $date = date('Y-m-d', time() - 86400);
             $date = date('Y-m-d');
             $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+        } else if ($day == 'yesterday') {
+            $date = date('Y-m-d', time() - 86400);
+            // dd($date);
+            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
         }
 
-        $whereDev = $where != '' ? "AND state in ".env('STATE_DATA')."" : "WHERE state in ".env('STATE_DATA')."";
-    
+        $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
+
         $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";
 
         return DB::SELECT($query)[0]->total;
     }
 
-    public static function jmlTransaksi($today = false)
+    public static function jmlTransaksi($day = '')
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "AND ($where)" : '';
 
-        if ($today) {
+        if ($day == 'today') {
             $date = date('Y-m-d');
             $where .= "AND tbk_created = '$date'";
+        } else if ($day == 'yesterday') {
+            $date = date('Y-m-d', time() - 86400);
+            $where .= "AND tbk_created = '$date'";
         }
-        
-        $whereDev = "AND state in ".env('STATE_DATA')."" ;
+
+        $whereDev = "AND state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
     }
@@ -143,8 +150,8 @@ class TrxOverBooking extends Model
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "WHERE $where" : '';
-        
-        $whereDev = $where != '' ? "AND state in ".env('STATE_DATA')."" : "WHERE state in ".env('STATE_DATA')."";
+
+        $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT sender_bank_name as name, tbk_sender_bank_id as bank_id, count(tbk_id) as value from vw_overbooking_h $where $whereDev group by sender_bank_name, tbk_sender_bank_id");
     }
@@ -155,7 +162,7 @@ class TrxOverBooking extends Model
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
 
-        $whereDev = "AND state in ".env('STATE_DATA')."" ;
+        $whereDev = "AND state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT count(1) as total from (
             select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY-MM') as yearMonth from trx_overbooking to2
@@ -168,7 +175,7 @@ class TrxOverBooking extends Model
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
 
-        $whereDev = "AND state in ".env('STATE_DATA')."" ;
+        $whereDev = "AND state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT count(1) as total from (
             select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY-MM') as yearMonth from trx_overbooking to2
@@ -182,7 +189,7 @@ class TrxOverBooking extends Model
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
 
-        $whereDev = "AND state in ".env('STATE_DATA')."" ;
+        $whereDev = "AND state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT count(1) as total from (
             select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY') as tahun from trx_overbooking to2
@@ -196,7 +203,7 @@ class TrxOverBooking extends Model
         $whereRole = Helper::getRoleFilter('query');
         $whereRole = $whereRole != '' ? "AND($whereRole)" : '';
 
-        $whereDev = "AND state in ".env('STATE_DATA')."" ;
+        $whereDev = "AND state in " . env('STATE_DATA') . "";
 
         return DB::SELECT("SELECT count(1) as total from (
             select prop_id, dati2_id, state, to_char(tbk_created, 'YYYY') as tahun from trx_overbooking to2

@@ -3,6 +3,7 @@
 namespace Vanguard\Http\Controllers\Web\Overbooking;
 
 use App\Helpers\Helper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vanguard\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
@@ -94,8 +95,10 @@ class OverbookingController extends Controller
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
+        $data['statusMessages'] = TrxOverbooking::select('ras_id')->groupBy('ras_id')->get();
         $data['lsType'] = '';
         $data['today'] = '';
+        $data['sender_bank'] = '';
         if (auth()->user()->present()->role_id < 4) {
             $data['provinsi'] = Province::all();
         } else {
@@ -111,6 +114,9 @@ class OverbookingController extends Controller
         if (session('Non Gaji')) {
             $data['lsType'] = 'LS|NONGAJI';
         }
+        if ($request->session()->has('bankcode')) {
+            $data['sender_bank'] = $request->session()->get('bankcode');
+        }
 
         return view('Overbooking.indexnew', $data);
     }
@@ -118,6 +124,7 @@ class OverbookingController extends Controller
     public function indexToday(Request $request)
     {
         // dd($request->all());
+        if ($request->bankcode) return redirect('/transaksi')->with('bankcode', $request->bankcode);
         return redirect('/transaksi')->with($request->set_id, true);
     }
 
@@ -133,19 +140,21 @@ class OverbookingController extends Controller
                 return Helper::getRupiah($data->tbk_amount);
             })
             ->editColumn('tbk_execution_time', function ($data) {
+                $time = Carbon::parse($data->tbk_execution_time);
                 return [
                     'display' => e(
                         Helper::getFormatWib($data->tbk_execution_time)
                     ),
-                    'timestamp' => strtotime(Helper::getFormatWib($data->tbk_execution_time))
+                    'timestamp' => strtotime($time)
                 ];
             })
             ->editColumn('tbk_created', function ($data) {
+                $time = Carbon::parse($data->tbk_created);
                 return [
                     'display' => e(
                         Helper::getFormatWibTanggal($data->tbk_created)
                     ),
-                    'timestamp' => strtotime(Helper::getFormatWibTanggal($data->tbk_created))
+                    'timestamp' => strtotime($time)
                 ];
             })
             // ->addColumn('Callback', function ($data) {
@@ -337,7 +346,12 @@ class OverbookingController extends Controller
                 $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
             }
         }
-        if (env('APP_ENV') == 'production') {
+
+        if ($request->ras_message) {
+            $overBooking->where('ras_id', $request->ras_message);
+        }
+
+        if (auth()->user()->present()->role_id != 1) {
             $overBooking->where('state', '01');
         } else {
             if ($request->state) $overBooking->where('state', $request->state);
