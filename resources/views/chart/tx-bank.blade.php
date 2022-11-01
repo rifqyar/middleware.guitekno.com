@@ -7,9 +7,9 @@
     var chart = am4core.create("divTxBank", am4charts.XYChart3D);
 
     var data = <?= json_encode($data, true) ?>;
-    // console.log(data, "bank");
 
     chart.data = data;
+    console.log(chart.data, "bank");
 
     // Create axes
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
@@ -25,6 +25,7 @@
     categoryAxis.tooltip.label.verticalCenter = "middle";
     categoryAxis.renderer.labels.template.disabled = true;
 
+
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = "Bank";
     valueAxis.title.fontWeight = "bold";
@@ -33,14 +34,21 @@
     var series = chart.series.push(new am4charts.ColumnSeries3D());
     series.dataFields.valueY = "value";
     series.dataFields.categoryX = "name";
+    series.dataFields.bank = "bank_id";
     series.name = "Value";
     series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
     series.columns.template.fillOpacity = .8;
     series.columns.template.width = 80
+
+
     var columnTemplate = series.columns.template;
     columnTemplate.strokeWidth = 2;
     columnTemplate.strokeOpacity = 1;
     columnTemplate.stroke = am4core.color("#FFFFFF");
+    columnTemplate.events.on("hit", function(ev) {
+        console.log(ev.target.dataItem.bank);
+        window.location.href = '/transaksi-today?bankcode=' + ev.target.dataItem.bank
+    }, this)
 
     columnTemplate.adapter.add("fill", function(fill, target) {
         return chart.colors.getIndex(target.dataItem.index);

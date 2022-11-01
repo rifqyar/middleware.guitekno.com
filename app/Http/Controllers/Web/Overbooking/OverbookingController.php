@@ -111,6 +111,9 @@ class OverbookingController extends Controller
         if (session('Non Gaji')) {
             $data['lsType'] = 'LS|NONGAJI';
         }
+        if ($request->session()->has('bankcode')) {
+            // $data['lsType'] = $request->session()->get('bankcode');
+        }
 
         return view('Overbooking.indexnew', $data);
     }
@@ -118,6 +121,7 @@ class OverbookingController extends Controller
     public function indexToday(Request $request)
     {
         // dd($request->all());
+        if ($request->bankcode) return redirect('/transaksi')->with('bankcode', $request->bankcode);
         return redirect('/transaksi')->with($request->set_id, true);
     }
 
