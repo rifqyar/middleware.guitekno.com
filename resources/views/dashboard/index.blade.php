@@ -38,16 +38,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-            @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                    @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-            {!! app()->call([$widget, 'render']) !!}
-            @if ($widget->width)
+                    {!! app()->call([$widget, 'render']) !!}
+                    @if ($widget->width)
     </div>
     @endif
     @endforeach
-            </div> -->
+                    </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -223,7 +223,7 @@
                                         @else
                                         text-danger @endif
                                     ">
-                                        {{ $data['countTransaksiYesterday'] != 0 ? round((((int) $data['countTransaksiToday'] - (int) $data['countTransaksiYesterday']) / (int) $data['countTransaksiYesterday']) * 100, 2) : 100 }}%
+                                        {{ $data['countTransaksiYesterday'] != 0 ? round((((int) $data['countTransaksiToday'] - (int) $data['countTransaksiYesterday']) / (int) $data['countTransaksiYesterday']) * 100, 2) : (int) $data['countTransaksiToday'] }}%
                                     </span>
                                 </div>
                                 <h5 class="text-right mb-0">{{ $data['countTransaksiToday'] }}
@@ -262,11 +262,11 @@
                                         @else
                                         text-danger @endif
                                     ">
-                                        {{ $data['jumlahTransaksiYesterday'] != 0 ? round((((int) $data['jumlahTransaksiToday'] - (int) $data['jumlahTransaksiYesterday']) / (int) $data['jumlahTransaksiYesterday']) * 100, 2) : 100 }}%
+                                        {{ $data['percentageTrxToday'] }}%
                                     </span>
                                 </div>
                                 <h5 class="text-right mb-0">{{ $data['jumlahTransaksiToday'] }}
-                                    @if ((int) $data['jumlahTransaksiToday'] - (int) $data['jumlahTransaksiYesterday'] > 0)
+                                    @if ((int) $data['percentageTrxToday'] > 0)
                                         <i class="fa fa-angle-double-up text-success Blink" aria-hidden="true"></i>
                                     @else
                                         <i class="fa fa-angle-double-down text-danger Blink" aria-hidden="true"></i>
@@ -651,8 +651,8 @@
     <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     // @if (method_exists($widget, 'scripts'))
     // {!! app()->call([$widget, 'scripts']) !!}
-                                                                                                                                                                                                                //
+                                                                                                                                                                                                                        //
     @endif
-                                                                                                                                                                                                                //
+                                                                                                                                                                                                                        //
     @endforeach -->
 @stop

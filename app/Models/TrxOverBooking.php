@@ -116,13 +116,16 @@ class TrxOverBooking extends Model
         return DB::SELECT($query)[0]->total;
     }
 
-    public static function jmlTransaksi($today = false)
+    public static function jmlTransaksi($day = '')
     {
         $where = Helper::getRoleFilter('query');
         $where = $where != '' ? "AND ($where)" : '';
 
-        if ($today) {
+        if ($day == 'today') {
             $date = date('Y-m-d');
+            $where .= "AND tbk_created = '$date'";
+        } else if ($day == 'yesterday') {
+            $date = date('Y-m-d', time() - 86400);
             $where .= "AND tbk_created = '$date'";
         }
 

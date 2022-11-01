@@ -33,9 +33,9 @@ class DashboardController extends Controller
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
         $data['countTransaksiToday'] = TrxOverBooking::countTransaksi('today');
         $data['countTransaksiYesterday'] = TrxOverBooking::countTransaksi('yesterday');
-        // dd($data['countTransaksiToday']);
-        // dd($data['countTransaksiYesterday']);
+
         $rawDataJmlTransaksi = TrxOverBooking::jmlTransaksi();
+        // dd($data['jumlahTransaksiToday']);
         $rawDataJmlTransaksiToday = TrxOverBooking::jmlTransaksi('today');
         $rawDataJmlTransaksiYesterday = TrxOverBooking::jmlTransaksi('yesterday');
         $data['jumlahTransaksi'] = Library::convertCurrency((int)$rawDataJmlTransaksi);
@@ -57,6 +57,8 @@ class DashboardController extends Controller
 
         $data['lastMontTrans'] = TrxOverBooking::lastMonthTrx();
         $data['thisMontTrans'] = TrxOverBooking::thisMonthTrx();
+        $data['percentageTrxToday'] = (int)$rawDataJmlTransaksiYesterday != 0 ? round(((int)$rawDataJmlTransaksiToday - (int)$rawDataJmlTransaksiYesterday) / (int)$rawDataJmlTransaksiYesterday * 100, 2) : (int)$rawDataJmlTransaksiToday;
+        // dd($data['percentageTrxToday']);
         $data['percentageMonth'] = (int)$data['lastMontTrans'] != 0 ? round(((int)$data['thisMontTrans'] - (int)$data['lastMontTrans']) / (int)$data['lastMontTrans'] * 100, 2) : (int)$data['thisMontTrans'];
 
         $data['lastYearTrans'] = TrxOverBooking::lastYearTrx();
