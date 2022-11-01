@@ -20,6 +20,7 @@
     pieSeries.slices.template.strokeModifier = rgm;
     pieSeries.slices.template.strokeOpacity = 0.4;
     pieSeries.slices.template.strokeWidth = 0;
+    pieSeries.slices.template.cursorOverStyle = am4core.MouseCursorStyle.pointer;
 
     pieSeries.slices.template.events.on("hit", function(ev) {
         localStorage.setItem("tx-type", ev.target.dataItem.category);
