@@ -27,7 +27,7 @@
                     <form class="form-group" method="post" action="/transaksi/export/file">
                         @csrf
                         <div class="row">
-                            @if (env('APP_ENV') == 'development')
+                            @if (auth()->user()->present()->role_id == 1)
                                 <div class="col-md-3">
                                     <p>Transaksi ID</p>
                                     <input class="form-control filter datatable-input" placeholder="Invoice ID"
@@ -60,7 +60,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-3 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <p>Bank Penerima</p>
                                 <select class="form-control filter datatable-input" data-col-index=1 name="recipient_bank"
                                     id="recipient_bank">
@@ -72,7 +72,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-md-3 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <p>Type</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="type"
                                     id="type">
@@ -84,7 +84,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <p>Status</p>
                                 <select class="form-control filter datatable-input" data-col-index=2 name="ras_status"
                                     id="ras_status">
@@ -94,6 +94,16 @@
                                     <option value="process">Process</option>
                                     <option value="failed">Failed</option>
                                     {{-- @endforeach --}}
+                                </select>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <p>Status Message</p>
+                                <select class="form-control filter datatable-input" data-col-index=2 name="ras_message"
+                                    id="ras_message">
+                                    <option value="">All</option>
+                                    @foreach ($statusMessages as $list)
+                                        <option value="{{ $list->ras_id }}">{{ $list->ras->ras_message }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 mt-2">
@@ -120,14 +130,16 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (env('APP_ENV') == 'development')
+                            @if (auth()->user()->present()->role_id == 1)
                                 <div class="col-md-3 mt-2">
                                     <p>State</p>
                                     <select class="form-control filter datatable-input" data-col-index=2 name="state"
                                         id="state">
                                         <option value="">All</option>
                                         @foreach ($states as $state)
-                                            <option value="{{ $state->rrs_id }}">{{ $state->rrs_desc }}</option>
+                                            <option value="{{ $state->rrs_id }}"
+                                                {{ $state->rrs_id == '01' ? 'selected' : '' }}>{{ $state->rrs_desc }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -212,6 +224,7 @@
                                 <th>Tipe</th>
                                 <th>Tanggal Request</th>
                                 <th>Tanggal Pengiriman</th>
+                                <th>Status Message</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -335,8 +348,8 @@
             var table = $('.table').DataTable({
                 responsive: true,
                 lengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    ['10', '25', '50', '100', 'All']
+                    [10, 25, 50, 100],
+                    ['10', '25', '50', '100']
                 ],
 
                 pageLength: 10,
@@ -369,6 +382,7 @@
                         data.parameter_date_request = $('#parameter_date_request').val()
                         data.dati2 = $('#dati2').val()
                         data.prop_id = $('#prop_id').val()
+                        data.ras_message = $('#ras_message').val()
 
                     }
                 },
@@ -422,6 +436,11 @@
                             _: 'tbk_execution_time.display',
                             sort: 'tbk_execution_time.timestamp'
                         },
+                    },
+                    {
+                        data: 'ras.ras_message',
+                        responsivePriority: -1
+                        // orderable: false,
                     },
                     {
                         data: 'ras_id',

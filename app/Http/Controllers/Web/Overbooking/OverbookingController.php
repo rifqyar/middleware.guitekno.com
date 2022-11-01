@@ -94,6 +94,7 @@ class OverbookingController extends Controller
         $data['recipient_name'] = TrxOverBooking::select('tbk_recipient_name')->whereNotNull('tbk_recipient_name')->distinct()->pluck('tbk_recipient_name')->toArray();
         $data['name'] = implode(',', $data['recipient_name']);
         $data['states'] = RefRunState::get();
+        $data['statusMessages'] = TrxOverbooking::select('ras_id')->groupBy('ras_id')->get();
         $data['lsType'] = '';
         $data['today'] = '';
         if (auth()->user()->present()->role_id < 4) {
@@ -337,7 +338,12 @@ class OverbookingController extends Controller
                 $overBooking->where('tbk_execution_time', $request->parameter, $request->start_date);
             }
         }
-        if (env('APP_ENV') == 'production') {
+
+        if ($request->ras_message) {
+            $overBooking->where('ras_id', $request->ras_message);
+        }
+
+        if (auth()->user()->present()->role_id != 1) {
             $overBooking->where('state', '01');
         } else {
             if ($request->state) $overBooking->where('state', $request->state);
