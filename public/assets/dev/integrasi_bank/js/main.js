@@ -42,7 +42,6 @@ $(document).ready(function(){
                     $('#konfirm').find('#endpoint_overbooking').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[2].value)
                     $('#konfirm').find('#endpoint_checkstatus').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[3].value)
                     $('#konfirm').find('#endpoint_getHistory').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[4].value)
-                    $('#konfirm').find('#endpoint_callbackSIPD').html($('#bEndpoint_res_data').find('input[name="endpoint"]')[5].value)
                 }
 
                 return true;
