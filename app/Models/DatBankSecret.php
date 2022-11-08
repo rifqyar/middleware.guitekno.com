@@ -18,11 +18,11 @@ class DatBankSecret extends Model
     public static function countBank()
     {
         return DB::SELECT("SELECT count(1) as total_prop from (
-            SELECT distinct prop_id
+            SELECT distinct prop_id::text
             from trx_overbooking to2
-            where prop_id is not null
-                and prop_id not like '%|'
-                and prop_id not like '|%'
+            where prop_id::text is not null
+                and prop_id::text not like '%|'
+                and prop_id::text not like '|%'
             group by prop_id
         ) as data")[0];
     }
