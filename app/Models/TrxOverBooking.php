@@ -137,11 +137,11 @@ class TrxOverBooking extends Model
     public static function CountDati2()
     {
         return DB::SELECT("SELECT count(1) as total_dati from (
-            select distinct dati2_id
+            select distinct dati2_id::text
             from trx_overbooking to2
-            where dati2_id is not null
-                and dati2_id not like '%|'
-                and dati2_id not like '|%'
+            where dati2_id::text is not null
+                and dati2_id::text not like '%|'
+                and dati2_id::text not like '|%'
             group by dati2_id
         ) as data")[0];
     }
