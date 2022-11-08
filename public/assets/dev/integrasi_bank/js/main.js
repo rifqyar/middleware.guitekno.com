@@ -23,9 +23,9 @@ $(document).ready(function(){
                         fillResData2(form[i].name, form[i].value, form_name)
                     }
                 }
-
                 if(formID == '#data-bank'){
                     $('#endpoint-bank').find('form').find('input[name="bank_secret_show"]').val(bank_name)
+                    renderFormEndpoint()
                 }
 
                 if (formID == '#endpoint-bank'){
@@ -45,28 +45,6 @@ $(document).ready(function(){
                 }
 
                 return true;
-
-
-                // var method = $(formID).find('form').attr('method')
-                // postData(formID, form_name, method, (res) => {
-                //     if (res){
-                //         if (formID == '#data-bank'){
-                //             var selectedBankId = $(formID).find('form').find('select[name="bank_id"] option:selected').val()
-                //             $('input[name="bank_id"]').val(selectedBankId).fadeIn()
-                //             $('input[name="id"]').parent().parent().fadeIn()
-                //             $('input[name="id"]').val(res).fadeIn()
-
-                //             $(formID).find('form').find('#select_bank').hide()
-                //             $(formID).find('form').find('select[name="bank_id"]').hide()
-
-                //             $('#bank_res_data').html('')
-                //         }
-
-                //         $(formID).find('form').attr('method', 'PUT')
-                //         $(tab).removeClass('active')
-                //         $(tab).children().children().addClass('checked')
-                //     }
-                // })
             } else {
                 return false;
             }
@@ -139,6 +117,15 @@ function getAvailBank(formID){
         })
 
         selectComponent.append(option)
+    }, true);
+}
+
+function renderFormEndpoint(){
+    var form = $('#endpoint-bank').find('#formContainer')
+    form.html('')
+    apiCall('master-data/bank-endpoint/renderForm', 'GET', '', null, null, null, (res) => {
+        swal.close()
+        form.html(res.view)
     }, true);
 }
 
