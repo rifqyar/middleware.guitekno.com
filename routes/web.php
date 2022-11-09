@@ -276,6 +276,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
                 Route::post('/add-wizard', 'MasterData\BankEndpoint\MainController@postWizard');
                 Route::get('{dbs_id}/{id}/delete', 'MasterData\BankEndpoint\MainController@delete');
                 Route::put('/', 'MasterData\BankEndpoint\MainController@put');
+                Route::get('renderForm', 'MasterData\BankEndpoint\MainController@renderForm');
             });
         });
 

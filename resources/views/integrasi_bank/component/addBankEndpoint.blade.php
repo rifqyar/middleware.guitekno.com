@@ -20,27 +20,10 @@
             </div>
         </div>
 
-        <div class="row mt-4 mb-4">
-            <div class="col-2 col md-2">
-                <h1>1</h1>
-            </div>
-            <div class="col-10 col-md-10">
-                <div class="col-12 col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label for="endpoint_type">Endpoint Type</label>
-                        <strong>Get Token</strong>
-                        <input name="endpoint_type" class="form-control required" readonly value="RKeWQlXpJxSIYD9" style="display: none"/>
-                    </div>
-                </div>
-                <div class="col-12 col-md-12 col-sm-12">
-                    <div class="form-group">
-                        <label for="endpoint">Endpoint</label>
-                        <input type="text" class="form-control required" name="endpoint">
-                    </div>
-                </div>
-            </div>
+        <div id="formContainer">
+            
         </div>
-        <div class="row mb-4">
+        {{-- <div class="row mb-4">
             <div class="col-2 col md-2">
                 <h1>2</h1>
             </div>
@@ -119,7 +102,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-12 col-md-12">

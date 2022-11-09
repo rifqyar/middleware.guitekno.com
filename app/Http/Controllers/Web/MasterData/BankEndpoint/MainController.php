@@ -36,6 +36,18 @@ class MainController extends Controller
         ], 200);
     }
 
+    public function renderForm(){
+        $data = Model::getRET();
+        $blade = view('integrasi_bank/component/formAdd', compact('data'))->render();
+
+        return response()->json([
+            'status' => [
+                'code' => 200,
+                'msg' => 'OK'
+            ], 'view' => $blade
+        ], 200);
+    }
+
     public function post(Request $req){
         $rawData = $req->post('resData');
         $arrData = [];

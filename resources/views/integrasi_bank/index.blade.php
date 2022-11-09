@@ -174,7 +174,8 @@
     </div>
 </div>
 
-    {{-- <script src="{{ url('assets/js/masterAPI.min.js') }}"></script> --}}
-    <script src="{{ url('assets/dev/masterAPI.js') }}"></script>
-    <script src="{{url('assets/dev/integrasi_bank/js/main.js')}}"></script>
+    <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
+    {{-- <script src="{{ url('assets/dev/masterAPI.js') }}"></script> --}}
+    <script src="{{url('vendor/plugins/integrasi_bank/main.min.js')}}"></script>
+    {{-- <script src="{{url('assets/dev/integrasi_bank/js/main.js')}}"></script> --}}
 @stop
