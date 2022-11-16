@@ -311,7 +311,7 @@ class OverbookingController extends Controller
             ->with('ras')
             ->with('logCallback');
 
-        if ($request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
+        if (!$request->order || $request->order[0]['column'] == 0) $overBooking->orderBy('tbk_created', 'desc');
 
         if ($request->date_request) $overBooking->where('tbk_created', $request->parameter_date_request, $request->date_request);
 
