@@ -16,4 +16,19 @@ class TrxOverbookingCutoff extends Model
         'TBK_RECIPIENT_AMOUNT', 'TBK_INTERNA_STATUS', 'TBK_SP2D_NO', 'TBK_SP2D_DESC', 'TBK_EXCETUIN_TIME', 'TBK_BILLING_ID', 'TBK_NTPN', 'TBK_NTPN_DATE',
         'TBK_NTB', 'TBK_TYPE', 'RAS_ID', 'PROP_ID', 'DATI2_ID', 'REQUEST_DATA', 'TBK_RECIPIENT_NAME', 'TBK_RECIPIENT_NIK', 'TBK_RECIPIENT_ADDRESS', 'STATE'
     ];
+
+    public function senderBank()
+    {
+        return $this->hasOne(RefBank::class, 'bank_id', 'tbk_sender_bank_id');
+    }
+
+    public function receiverBank()
+    {
+        return $this->hasOne(RefBank::class, 'bank_id', 'tbk_recipient_bank_id');
+    }
+
+    public function ras()
+    {
+        return $this->hasOne(RefApiStatus::class, 'ras_id', 'ras_id');
+    }
 }

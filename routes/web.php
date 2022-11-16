@@ -236,6 +236,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::middleware(['auth'])->group(function () {
         Route::prefix('history-overbooking')->group(function () {
             Route::get('/', 'history_overbooking\MainController@index')->name('historyOverbooking.index');
+            Route::post('/', 'history_overbooking\MainController@index');
             Route::get('/column-header', 'history_overbooking\MainController@columnHeader');
             Route::get('/column-data/{column_name}', 'history_overbooking\MainController@columnData');
             Route::get('/render-filter', 'history_overbooking\MainController@renderFilterForm');
@@ -321,6 +322,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('stream-log', function () {
         return view('stream_log/index');
     })->name('stream-log');
+
+    Route::get('network-log', function () {
+        return view('network_log/index');
+    })->name('network-log');
 });
 
 

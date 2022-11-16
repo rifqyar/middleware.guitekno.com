@@ -15,8 +15,10 @@ class MainController extends Controller
     public function index(Req $req)
     {
         if($req->ajax()){
-            $filter = isset($req->filter) ? $req->filter : '';
-            $data = Model::getAll($filter);
+            // $filter = isset($req->filter) ? $req->filter : '';
+            // $data = Model::getAll($filter);
+
+            $data = Model::getAllNew($req);
 
             return Datatables::of($data)
             ->addColumn('status', function($data) {

@@ -5,6 +5,9 @@
     }
 </style>
 <div class="card-body">
+    <div id="formFilter">
+
+    </div>
     <div class="table-responsive">
         <table class="table t-overbooking" style="width: 100%">
             <thead>

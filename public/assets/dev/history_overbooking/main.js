@@ -6,15 +6,19 @@ $(document).ready(function(){
     })
 
     var tx_type = localStorage.getItem('tx-type') == 'Gaji' ? 'LS|GAJI' : 'LS|NONGAJI' 
-    var filter = localStorage.getItem('tx-type') ? `tbk_type = '${tx_type}'` : ''
 
-    filter = window.btoa(filter)
-    showData(filter)
+    if (localStorage.getItem('tx-type')){    
+        $('#formFilter').html(`<input type='hidden' name='field_name' value='tbk_type'>`)
+        $('#formFilter').html(`<input type='hidden' name='operator' value='='>`)
+        $('#formFilter').html(`<input type='hidden' name='value' value='${tx_type}'>`)
+    }
+    
+    showData()
     
     localStorage.removeItem('tx-type')
 })
 
-function showData(filter = ''){
+function showData(){
     mainComponent.find('#form-filter').fadeOut()
 
     if(mainComponent.find('#list-data').css('display') == 'none'){
@@ -26,35 +30,52 @@ function showData(filter = ''){
         mainComponent.find('#filter').find('#setFilter').fadeOut()
     } 
 
-    if(filter == ''){
-        const url = `${$('meta[name="baseurl"]').attr('content')}history-overbooking`
-        $('.t-overbooking').DataTable().destroy();
-        getData(url)
-    } else if (filter != ''){
-        const url = `${$('meta[name="baseurl"]').attr('content')}history-overbooking?filter=${filter}`
-        $('.t-overbooking').DataTable().destroy();
-        getData(url)
-    }
+    $('.t-overbooking').DataTable().destroy();
+    const url = `${$('meta[name="baseurl"]').attr('content')}history-overbooking`
+    getData(url)
 
     function getData(url){
         $('.t-overbooking').DataTable({
             processing: true,
             serverSide: true,
-            ajax: url,
+            ajax: {
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+                url: url,
+                method: 'post',
+                data: function(d){
+                    var filterVal = new Array()
+                    var name = $('#formFilter').find('input[name="field_name"]')
+                    var operator = $('#formFilter').find('input[name="operator"]')
+                    var value = $('#formFilter').find('input[name="value"]')
+                    var separator = $('#formFilter').find('input[name="separator"]')
+
+                    for (let i = 0; i < $("#formFilter").find('input').length; i++) {
+                        filterVal.push({
+                            'separator' : $(separator[i-1]).val(),
+                            'name' : $(name[i]).val(),
+                            'operator' : $(operator[i]).val(),
+                            'value' : $(value[i]).val(),
+                        })
+                    }
+                    d.filter = filterVal
+                }
+            },
             columns: [
                 // { data: 'action', name: 'action' },
-                { data: 'status', name: 'status' },
-                { data: 'tbk_partnerid', name: 'tbk_partnerid' },
-                { data: 'sender_bank_name', name: 'sender_bank_name' },
-                { data: 'tbk_sender_account', name: 'tbk_sender_account' },
-                { data: 'sender_amount', name: 'sender_amount'},
-                { data: 'tbk_notes', name: 'tbk_notes' },
-                { data: 'recipient_bank_name', name: 'recipient_bank_name' },
-                { data: 'tbk_recipient_account', name: 'tbk_recipient_account' },
-                { data: 'recipient_amount', name: 'recipient_amount'},
-                { data: 'tbk_execution_time', name: 'tbk_execution_time' },
-                { data: 'tbk_sp2d_desc', name: 'tbk_sp2d_desc' },
-                { data: 'status_message', name: 'status_message' }
+                { data: 'status' },
+                { data: 'tbk_partnerid' },
+                { data: 'sender_bank_name' },
+                { data: 'tbk_sender_account' },
+                { data: 'sender_amount'},
+                { data: 'tbk_notes' },
+                { data: 'recipient_bank_name' },
+                { data: 'tbk_recipient_account' },
+                { data: 'recipient_amount'},
+                { data: 'tbk_execution_time' },
+                { data: 'tbk_sp2d_desc' },
+                { data: 'status_message' }
             ],
             columnDefs: [
                 { className: "text-center align-middle", targets: "_all" },
@@ -184,8 +205,6 @@ function setFilter(type = 'table'){
     
     if (type == 'table'){
         for(var i = 0; i < required.length; i++){
-            console.log($(required[i]).css('display'))
-            console.log($(required[i]))
             if($(required[i]).css('display') != 'none'){
                 if (required[i].value == ''){
                     canInput = false
@@ -206,8 +225,12 @@ function setFilter(type = 'table'){
 
     if (canInput){
         var filter = ''
+        $('#formFilter').html('')
         formContainer.find('.form-control').each((k, v) => {
             if ($(v).css('display') != 'none'){
+                fillResData2($(v).attr('name'), $(v).val(), 'formFilter')
+
+                // Buat punya si daniel, males ngerubah
                 if ($(v).attr('name') != 'value' && $(v).attr('name') != 'tgl' && $(v).attr('name') != 'tgl2'){
                     filter += `${$(v).val()} `
                 } else {
@@ -219,10 +242,8 @@ function setFilter(type = 'table'){
                 }
             }
         })
-
-        filter = filter == '' ? window.btoa('all') :  window.btoa(filter)
         if (type == 'table'){
-            showData(filter)
+            showData()
         } else {
             swal({
                 title: 'Now loading',
