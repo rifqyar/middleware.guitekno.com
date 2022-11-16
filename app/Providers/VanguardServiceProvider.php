@@ -33,6 +33,7 @@ class VanguardServiceProvider extends BaseVanguardServiceProvider
             \Vanguard\Support\Plugins\TrxLog::class,
             // \Vanguard\Support\Plugins\Settings::class,
             \Vanguard\Support\Plugins\StreamLog::class,
+            \Vanguard\Support\Plugins\NetworkLog::class,
             \Vanguard\Support\Plugins\Users::class,
             \Vanguard\UserActivity\UserActivity::class,
             \Vanguard\Support\Plugins\RolesAndPermissions::class,
