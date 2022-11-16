@@ -63,10 +63,11 @@ class TrxOverBooking extends Model
         $whereDev = $where2 != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
         $whereDev2 = "AND state in " . env('STATE_DATA') . "";
 
-        $query = DB::SELECT("SELECT to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 $whereDev group by to_date(trim(to_char(tbk_created, 'YYYY-MM-DD')), 'YYYY-MM-DD') ORDER BY tanggal DESC LIMIT 10");
+        $query = DB::SELECT("SELECT distinct to_char(tbk_created, 'YYYY-MM-DD') as tanggal from trx_overbooking $where2 $whereDev ORDER BY tanggal DESC LIMIT 10");
         $bank = [];
         foreach ($query as $value) {
             $value->tanggal =  substr($value->tanggal, 0, 10);
+
             $value->data = DB::select("SELECT ref_bank.bank_name, sum(tbk_amount) as total from trx_overbooking join ref_bank on(trx_overbooking.tbk_sender_bank_id=ref_bank.bank_id) where date(tbk_created) = '{$value->tanggal}' and ras_id in('000', '001', '002') $where $whereDev2 group by ref_bank.bank_name");
             if (!empty($value->data)) {
                 foreach ($value->data as $bankName) {
@@ -79,7 +80,6 @@ class TrxOverBooking extends Model
         }
         $result['trx'] = $query;
         $result['bank'] = $bank;
-        // dd($result);
         return $result;
     }
 
@@ -131,7 +131,7 @@ class TrxOverBooking extends Model
 
         $whereDev = "AND state in " . env('STATE_DATA') . "";
 
-        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from vw_Overbooking_H where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
+        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from trx_overbooking where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
     }
 
     public static function CountDati2()
@@ -153,7 +153,16 @@ class TrxOverBooking extends Model
 
         $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
 
-        return DB::SELECT("SELECT sender_bank_name as name, tbk_sender_bank_id as bank_id, count(tbk_id) as value from vw_overbooking_h $where $whereDev group by sender_bank_name, tbk_sender_bank_id");
+        return DB::SELECT("SELECT 	
+                                rb.bank_name as name
+                                , to2.tbk_sender_bank_id as bank_id
+                                , count(to2.tbk_id) as value
+                            from trx_overbooking to2 
+                                left join ref_bank rb
+                            on to2.tbk_sender_bank_id = rb.bank_id
+                            $where $whereDev 
+                            group by rb.bank_name, to2.tbk_sender_bank_id"
+        );
     }
 
     public static function lastMonthTrx()
