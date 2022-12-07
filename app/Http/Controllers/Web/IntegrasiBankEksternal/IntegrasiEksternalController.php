@@ -11,10 +11,9 @@ use Vanguard\Models\RefEndpointType;
 
 class IntegrasiEksternalController extends Controller
 {
-    public function index($id = null){
+    public function index(){
 
-        $msg = $id == null ? "Harap masukan kode bank" : "";
-        return view('integrasi_eksternal/index', compact('msg', 'id'));
+        return view('integrasi_eksternal/index');
     }
 
     public function getBank($id){
@@ -23,10 +22,10 @@ class IntegrasiEksternalController extends Controller
             if($isBankExist){
                 return response()->json([
                     'status' => [
-                        'code' => 210,
+                        'code' => 400,
                         'msg' => "Bank Sudah pernah terintegrasi!! \nharap hubungi tim teknik untuk informasi lebih lanjut"
                     ]
-                ], 210);
+                ], 400);
             }
 
             $databank = RefBank::where('bank_id', $id)->get();

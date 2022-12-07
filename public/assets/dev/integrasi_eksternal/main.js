@@ -98,8 +98,35 @@ $(document).ready(function(){
             $(tab).children().children().addClass('checked')
         },
     });
+
+    swalInputCodeBank()
 })
 
+function swalInputCodeBank(){
+    let msg = document.createElement('input')
+    msg.placeholder = `Masukan Kode Bank`
+    msg.classList.add('form-control')
+    msg.classList.add('required')
+    msg.type = 'text'
+    msg.name = 'bank_code'
+    msg.required = true
+    swal({
+        title: 'Info!!',
+        text: `Harap Masukan Kode Bank`,
+        content: msg,
+        icon: 'warning',
+        closeModal : false,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+    }).then((val) => {
+        let bank_code = $('input[name="bank_code"]').val()
+        if(bank_code != ''){
+            getBank(bank_code)
+        } else {
+            swalInputCodeBank()
+        }
+    })
+}
 
 function validation(formID){
     var required = $(formID).find('form').find('.required')
@@ -136,29 +163,15 @@ function getBank(bank_id){
                 title: err.statusText,
                 text: err.responseJSON.status.msg != '' ? err.responseJSON.status.msg : 'Terjadi Kesalahan, Harap Coba Lagi',
                 icon: 'error'
+            }).then(() => {
+                swalInputCodeBank()
             })
         }, null, (res) => {
             swal.close()
             $(form_id).find('form').find('input[name="bank_id"]').val(`${res.data.bank_id} - ${res.data.bank_name}`)
 
             if(res.status.code != 200){
-                let msg = document.createElement('input')
-                msg.placeholder = `Masukan Kode Bank`
-                msg.classList.add('form-control')
-                msg.type = 'text'
-                msg.name = 'bank_code'
-                swal({
-                    title: 'Info!!',
-                    text: `{{$msg}}`,
-                    content: msg,
-                    icon: 'warning',
-                    closeModal : false,
-                    closeOnClickOutside: false,
-                    closeOnEsc: false,
-                }).then(name => {
-                    let bank_code = $('input[name="bank_code"]').val()
-                    getBank(bank_code)
-                })
+                swalInputCodeBank()
             }
         },true)
     }

@@ -332,7 +332,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
  * Integrasi Bank Eksternal
  */
 Route::prefix('form-integrasi')->group(function(){
-    Route::get('bank/{kode_bank?}', 'IntegrasiBankEksternal\IntegrasiEksternalController@index');
+    Route::get('bank', 'IntegrasiBankEksternal\IntegrasiEksternalController@index');
     Route::get('/get-bank/{id}', 'IntegrasiBankEksternal\IntegrasiEksternalController@getBank');
     Route::get('render-form-endpoint', 'IntegrasiBankEksternal\IntegrasiEksternalController@renderFormEndpoint');
 

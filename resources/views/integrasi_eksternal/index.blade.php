@@ -190,32 +190,6 @@
     </div>
     <!-- /.Content -->
 
-    <!-- Page Script -->
-    <script>
-        $(function(){
-            if(`{{$msg}}` != ''){
-                let msg = document.createElement('input')
-                msg.placeholder = `Masukan Kode Bank`
-                msg.classList.add('form-control')
-                msg.type = 'text'
-                msg.name = 'bank_code'
-                swal({
-                    title: 'Info!!',
-                    text: `{{$msg}}`,
-                    content: msg,
-                    icon: 'warning',
-                    closeModal : false,
-                    closeOnClickOutside: false,
-                    closeOnEsc: false,
-                }).then(name => {
-                    let bank_code = $('input[name="bank_code"]').val()
-                    getBank(bank_code)
-                })
-            }
-        })
-    </script>
-    <!-- /.Page Script -->
-
     <script src="{{ url(mix('assets/js/vendor.js')) }}"></script>
     <script src="{{ url('assets/js/as/app.js') }}"></script>
 
@@ -236,4 +210,4 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
     <script src="{{ url('assets/js/masterAPI.min.js') }}"></script>
-    <script src="{{url('assets/dev/integrasi_eksternal/main.js')}}"></script>
+    <script src="{{ url('vendor/plugins/integrasi_eksternal/main.min.js')}}"></script>
