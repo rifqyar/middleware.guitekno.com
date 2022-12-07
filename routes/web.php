@@ -328,6 +328,17 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     })->name('network-log');
 });
 
+/**
+ * Integrasi Bank Eksternal
+ */
+Route::prefix('form-integrasi')->group(function(){
+    Route::get('bank/{kode_bank?}', 'IntegrasiBankEksternal\IntegrasiEksternalController@index');
+    Route::get('/get-bank/{id}', 'IntegrasiBankEksternal\IntegrasiEksternalController@getBank');
+    Route::get('render-form-endpoint', 'IntegrasiBankEksternal\IntegrasiEksternalController@renderFormEndpoint');
+
+    Route::post('bank-secret', 'MasterData\BankSecret\MainController@post');
+    Route::post('bank-endpoint', 'MasterData\BankEndpoint\MainController@postWizard');
+});
 
 /**
  * Installation
