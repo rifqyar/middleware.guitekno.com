@@ -99,18 +99,6 @@
                                 </span>
                             </div>
                         </div>
-
-                        <div class="card" id="showProp" style="display: none">
-                            <div class="card-body">
-                                <ul>
-                                    @foreach ($data['prop'] as $dt)
-                                        <li>
-                                            {{$dt->prop_nama}}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -130,18 +118,6 @@
                                 <span class="text-muted  text-right">
                                     <p>Jumlah Kabupaten Kota Terkoneksi</p>
                                 </span>
-                            </div>
-                        </div>
-
-                        <div class="card" id="showDati2" style="display: none">
-                            <div class="card-body">
-                                <ul>
-                                    @foreach ($data['dati2'] as $dt)
-                                        <li>
-                                            {{$dt->dati2_nama}}
-                                        </li>
-                                    @endforeach
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -484,6 +460,8 @@
             </div>
         </div>
     </div>
+
+    @include('dashboard.modal')
     <script>
         function chartTxDaily() {
             $.ajaxSetup({
@@ -670,18 +648,20 @@
         });
 
         function showConnectedProvince(){
-            if($('#showProp').css('display') == 'none'){
-                $('#showProp').slideDown()
-            } else {
-                $('#showProp').slideUp()
-            }
+            $("#detail-connected").modal('show')
         }
 
         function showConnectedCity(){
-            if($('#showDati2').css('display') == 'none'){
-                $('#showDati2').slideDown()
+            $("#detail-connected").modal('show')
+        }
+
+        function showDaerah(id){
+            if ($('#detail-connected').find(`#daerah-${id}`).css('display') == 'none'){
+                $('#detail-connected').find(`#daerah-${id}`).slideDown()
+                $('#detail-connected').find(`#icon-header-${id}`).addClass('fa-rotate-180')
             } else {
-                $('#showDati2').slideUp()
+                $('#detail-connected').find(`#daerah-${id}`).slideUp()
+                $('#detail-connected').find(`#icon-header-${id}`).removeClass('fa-rotate-180')
             }
         }
     </script>

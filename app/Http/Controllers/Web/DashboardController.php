@@ -28,9 +28,9 @@ class DashboardController extends Controller
             session()->flash('success', __('E-Mail verified successfully.'));
         }
 
-        $data['prop'] = DatBankSecret::countBank();
+        $data['prop'] = Province::getConnectedProp();
         $data['countBank'] = count($data['prop']);
-        
+
         // dd($data['countBank']);
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
         $data['countTransaksiToday'] = TrxOverBooking::countTransaksi('today');
@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $data['jumlahTransaksiYesterday'] = Library::convertCurrency((int)$rawDataJmlTransaksiYesterday);
         $data['percentageTrxToday'] = (int)$rawDataJmlTransaksiYesterday != 0 ? round(((int)$rawDataJmlTransaksiToday - (int)$rawDataJmlTransaksiYesterday) / (int)$rawDataJmlTransaksiYesterday * 100, 2) : (int)$rawDataJmlTransaksiToday;
        
-        $data['dati2'] = TrxOverBooking::CountDati2();
+        $data['dati2'] = RefDati::getConnectedDati();
         $data['countDati2'] = count($data['dati2']);
 
         $data['logCallback'] = LogCallback::orderBy('lcb_last_updated', 'desc')

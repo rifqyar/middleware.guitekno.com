@@ -15,32 +15,6 @@ class DatBankSecret extends Model
         'id', 'code_bank', 'client_id', 'client_secret', 'username', 'password', 'token', 'expired_time'
     ];
 
-    public static function countBank()
-    {
-        /** BARU */
-        return DB::SELECT("
-            select
-                to2.prop_id
-                , rp.prop_nama 
-            from trx_overbooking to2 
-                join ref_propinsi rp on to2.prop_id::text = rp.prop_id 
-                where to2.prop_id ::text is not null
-                    and to2.prop_id ::text not like '%|'
-                    and to2.prop_id ::text not like '|%'
-                group by to2.prop_id, rp.prop_nama 
-        ");
-
-        /** LAMA */
-        // return DB::SELECT("SELECT count(1) as total_prop from (
-        //     SELECT distinct prop_id::text
-        //     from trx_overbooking to2
-        //     where prop_id::text is not null
-        //         and prop_id::text not like '%|'
-        //         and prop_id::text not like '|%'
-        //     group by prop_id
-        // ) as data")[0];
-    }
-
     public function bank()
     {
         return $this->hasOne(RefBank::class, 'bank_id', 'code_bank');

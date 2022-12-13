@@ -192,37 +192,6 @@ class TrxOverBooking extends Model
         // return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from trx_overbooking where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
     }
 
-    public static function CountDati2()
-    {
-        /** BARU */
-        return DB::select("
-        SELECT ref.prop_id, ref.dati_id, rd.dati2_nama from (
-            SELECT
-                to2.prop_id
-                , case 
-                    when char_length(to2.dati2_id::text) = 1
-                        then '0' || to2.dati2_id::text
-                    else to2.dati2_id::text
-                end as dati_id
-            from trx_overbooking to2
-            where to2.dati2_id::text is not null
-                and to2.dati2_id::text not like '%|'
-                and to2.dati2_id::text not like '|%'
-            group by to2.dati2_id, to2.prop_id
-            ) as ref join ref_dati2 rd on ref.prop_id::text = rd.prop_id and ref.dati_id = rd.dati2_id 
-        ");
-
-        /** LAMA */
-        // return DB::SELECT("SELECT count(1) as total_dati from (
-        //     select distinct dati2_id::text
-        //     from trx_overbooking to2
-        //     where dati2_id::text is not null
-        //         and dati2_id::text not like '%|'
-        //         and dati2_id::text not like '|%'
-        //     group by dati2_id
-        // ) as data")[0];
-    }
-
     public static function countTrxBank()
     {
         $where = Helper::getRoleFilter('query');
