@@ -96,54 +96,131 @@ class TrxOverBooking extends Model
 
     public static function countTransaksi($day = '')
     {
-        $where = Helper::getRoleFilter('query');
-        $where = $where != '' ? "WHERE $where" : '';
-
-        if ($day == 'today') {
-            // $date = date('Y-m-d', time() - 86400);
+        /** BARU */
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "WHERE $whereRole" : '' ;
+        
+        if ($day == 'today'){
             $date = date('Y-m-d');
-            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
-        } else if ($day == 'yesterday') {
+            $whereDate = "WHERE tanggal = '$date'";
+        } else if ($day == 'yesterday'){
             $date = date('Y-m-d', time() - 86400);
-            // dd($date);
-            $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+            $whereDate = "WHERE tanggal = '$date'";
+        } else {
+            $whereDate = '';
         }
 
-        $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
+        $whereDev = $whereRole != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "" ;
 
-        $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";
-
+        $query = "
+            SELECT count(1) as total from (
+                SELECT 
+                    *, 
+                    to_char(tbk_created, 'YYYY-MM-DD') as tanggal
+                from trx_overbooking
+                $whereRole $whereDev
+            ) as x $whereDate
+        ";
+        
         return DB::SELECT($query)[0]->total;
+
+        /** LAMA */
+        // $where = Helper::getRoleFilter('query');
+        // $where = $where != '' ? "WHERE $where" : '';
+
+        // if ($day == 'today') {
+        //     // $date = date('Y-m-d', time() - 86400);
+        //     $date = date('Y-m-d');
+        //     $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+        // } else if ($day == 'yesterday') {
+        //     $date = date('Y-m-d', time() - 86400);
+        //     // dd($date);
+        //     $where .= $where != '' ? "AND tbk_created = '$date'" : "WHERE tbk_created = '$date'";
+        // }
+        
+        // $whereDev = $where != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "";
+
+        // $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";
+
+        // return DB::SELECT($query)[0]->total;
     }
 
     public static function jmlTransaksi($day = '')
     {
-        $where = Helper::getRoleFilter('query');
-        $where = $where != '' ? "AND ($where)" : '';
-
-        if ($day == 'today') {
+        /** BARU */
+        $whereRole = Helper::getRoleFilter('query');
+        $whereRole = $whereRole != '' ? "WHERE $whereRole" : '' ;
+        
+        if ($day == 'today'){
             $date = date('Y-m-d');
-            $where .= "AND tbk_created = '$date'";
-        } else if ($day == 'yesterday') {
+            $whereDate = "WHERE tanggal = '$date'";
+        } else if ($day == 'yesterday'){
             $date = date('Y-m-d', time() - 86400);
-            $where .= "AND tbk_created = '$date'";
+            $whereDate = "WHERE tanggal = '$date'";
+        } else {
+            $whereDate = '';
         }
 
-        $whereDev = "AND state in " . env('STATE_DATA') . "";
+        $whereDev = $whereRole != '' ? "AND state in " . env('STATE_DATA') . "" : "WHERE state in " . env('STATE_DATA') . "" ;
 
-        return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from trx_overbooking where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
+        $query = "
+            SELECT SUM(tbk_amount) as jumlah from (
+                SELECT 
+                    *, 
+                    to_char(tbk_created, 'YYYY-MM-DD') as tanggal
+                from trx_overbooking
+                $whereRole $whereDev AND ras_id in ('000', '001', '002')
+            ) as x $whereDate
+        ";
+        
+        return DB::SELECT($query)[0]->jumlah;
+
+        /** LAMA */
+        // $where = Helper::getRoleFilter('query');
+        // $where = $where != '' ? "AND ($where)" : '';
+
+        // if ($day == 'today') {
+        //     $date = date('Y-m-d');
+        //     $where .= "AND tbk_created = '$date'";
+        // } else if ($day == 'yesterday') {
+        //     $date = date('Y-m-d', time() - 86400);
+        //     $where .= "AND tbk_created = '$date'";
+        // }
+
+        // $whereDev = "AND state in " . env('STATE_DATA') . "";
+
+        // return DB::SELECT("SELECT SUM(tbk_amount) as jumlah from trx_overbooking where ras_id in ('000', '001', '002') $where $whereDev")[0]->jumlah;
     }
 
     public static function CountDati2()
     {
-        return DB::SELECT("SELECT count(1) as total_dati from (
-            select distinct dati2_id::text
+        /** BARU */
+        return DB::select("
+        SELECT ref.prop_id, ref.dati_id, rd.dati2_nama from (
+            SELECT
+                to2.prop_id
+                , case 
+                    when char_length(to2.dati2_id::text) = 1
+                        then '0' || to2.dati2_id::text
+                    else to2.dati2_id::text
+                end as dati_id
             from trx_overbooking to2
-            where dati2_id::text is not null
-                and dati2_id::text not like '%|'
-                and dati2_id::text not like '|%'
-            group by dati2_id
-        ) as data")[0];
+            where to2.dati2_id::text is not null
+                and to2.dati2_id::text not like '%|'
+                and to2.dati2_id::text not like '|%'
+            group by to2.dati2_id, to2.prop_id
+            ) as ref join ref_dati2 rd on ref.prop_id::text = rd.prop_id and ref.dati_id = rd.dati2_id 
+        ");
+
+        /** LAMA */
+        // return DB::SELECT("SELECT count(1) as total_dati from (
+        //     select distinct dati2_id::text
+        //     from trx_overbooking to2
+        //     where dati2_id::text is not null
+        //         and dati2_id::text not like '%|'
+        //         and dati2_id::text not like '|%'
+        //     group by dati2_id
+        // ) as data")[0];
     }
 
     public static function countTrxBank()

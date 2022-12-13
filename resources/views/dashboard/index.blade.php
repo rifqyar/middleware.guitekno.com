@@ -86,24 +86,36 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card widget">
+                <div class="card widget" style="cursor: pointer" onclick="showConnectedProvince()">
                     <div class="card-body">
                         <div class="row">
                             <div class="p-3 text-primary">
                                 <i class="fa fa-globe fa-3x"></i>
                             </div>
                             <div class="pr-3 col-8">
-                                <h2 class="text-right">{{ $data['countBank']->total_prop }}</h2>
+                                <h2 class="text-right">{{ $data['countBank'] }}</h2>
                                 <span class="text-muted  text-right">
-                                    <p>Jumlah Provinsi</p>
+                                    <p>Jumlah Provinsi Terkoneksi</p>
                                 </span>
+                            </div>
+                        </div>
+
+                        <div class="card" id="showProp" style="display: none">
+                            <div class="card-body">
+                                <ul>
+                                    @foreach ($data['prop'] as $dt)
+                                        <li>
+                                            {{$dt->prop_nama}}
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card widget">
+                <div class="card widget" style="cursor: pointer" onclick="showConnectedCity()">
                     <div class="card-body">
                         <div class="row">
                             <div class="p-3 text-primary">
@@ -111,13 +123,25 @@
                             </div>
                             <div class="pr-3 col-8">
                                 @if ($data['countDati2'])
-                                    <h2 class="text-right"> {{ $data['countDati2']->total_dati ?? '' }} </h2>
+                                    <h2 class="text-right"> {{ $data['countDati2']}} </h2>
                                 @else
                                     <h2 class="text-right"> - </h2>
                                 @endif
                                 <span class="text-muted  text-right">
-                                    <p>Jumlah Kabupaten</p>
+                                    <p>Jumlah Kabupaten Kota Terkoneksi</p>
                                 </span>
+                            </div>
+                        </div>
+
+                        <div class="card" id="showDati2" style="display: none">
+                            <div class="card-body">
+                                <ul>
+                                    @foreach ($data['dati2'] as $dt)
+                                        <li>
+                                            {{$dt->dati2_nama}}
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -219,11 +243,11 @@
                                         style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
                                     <span
                                         class="
-                                        @if ($data['percentageYear'] > 0) text-success
+                                        @if ($data['percentageCountTrx'] > 0) text-success
                                         @else
                                         text-danger @endif
                                     ">
-                                        {{ $data['countTransaksiYesterday'] != 0 ? round((((int) $data['countTransaksiToday'] - (int) $data['countTransaksiYesterday']) / (int) $data['countTransaksiYesterday']) * 100, 2) : (int) $data['countTransaksiToday'] }}%
+                                        {{ $data['percentageCountTrx'] }}%
                                     </span>
                                 </div>
                                 <h5 class="text-right mb-0">{{ $data['countTransaksiToday'] }}
@@ -241,6 +265,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-3 col-sm-12">
                 <div class="card widget">
                     <div class="card-body p-2">
@@ -258,7 +283,7 @@
                                         style="border-bottom: 2px solid rgb(113, 113, 113) !important; flex: 1; margin-right: 10px">
                                     <span
                                         class="
-                                        @if ($data['percentageYear'] > 0) text-success
+                                        @if ($data['percentageTrxToday'] > 0) text-success
                                         @else
                                         text-danger @endif
                                     ">
@@ -643,6 +668,22 @@
             awaitTrxLog();
             trxLog();
         });
+
+        function showConnectedProvince(){
+            if($('#showProp').css('display') == 'none'){
+                $('#showProp').slideDown()
+            } else {
+                $('#showProp').slideUp()
+            }
+        }
+
+        function showConnectedCity(){
+            if($('#showDati2').css('display') == 'none'){
+                $('#showDati2').slideDown()
+            } else {
+                $('#showDati2').slideUp()
+            }
+        }
     </script>
 @stop
 
