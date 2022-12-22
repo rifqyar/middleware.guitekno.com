@@ -30,8 +30,9 @@
 
     var value = chart.xAxes.push(new am4charts.ValueAxis());
     value.min = 0;
+    value.renderer.labels.template.disabled = true;
     value.renderer.grid.template.opacity = 0;
-    value.renderer.ticks.template.strokeOpacity = 0.5;
+    value.renderer.ticks.template.strokeOpacity = 0;
     value.renderer.ticks.template.stroke = am4core.color("#495C43");
     value.renderer.ticks.template.length = 10;
     value.renderer.line.strokeOpacity = 0.5;
