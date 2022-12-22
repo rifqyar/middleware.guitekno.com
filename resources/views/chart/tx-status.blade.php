@@ -29,14 +29,15 @@
     category.renderer.grid.template.opacity = 0;
 
     var value = chart.xAxes.push(new am4charts.ValueAxis());
-    value.min = 0;
-    value.renderer.grid.template.opacity = 0;
-    value.renderer.ticks.template.strokeOpacity = 0.5;
-    value.renderer.ticks.template.stroke = am4core.color("#495C43");
-    value.renderer.ticks.template.length = 10;
-    value.renderer.line.strokeOpacity = 0.5;
-    value.renderer.baseGrid.disabled = true;
-    value.renderer.minGridDistance = 40;
+    value.renderer.labels.template.disabled = true;
+    // value.min = 0;
+    // value.renderer.grid.template.opacity = 0;
+    // value.renderer.ticks.template.strokeOpacity = 0.5;
+    // value.renderer.ticks.template.stroke = am4core.color("#495C43");
+    // value.renderer.ticks.template.length = 10;
+    // value.renderer.line.strokeOpacity = 0.5;
+    // value.renderer.baseGrid.disabled = true;
+    // value.renderer.minGridDistance = 40;
 
     // Create series
     function createSeries(field, name) {

@@ -38,16 +38,16 @@
     @include('partials.messages')
 
     <!-- <div class="row">
-                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
+                                                                                @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     @if ($widget->width)
     <div class="col-md-{{ $widget->width }}">
     @endif
-                {!! app()->call([$widget, 'render']) !!}
-                @if ($widget->width)
+                                                                                {!! app()->call([$widget, 'render']) !!}
+                                                                                @if ($widget->width)
     </div>
     @endif
     @endforeach
-                </div> -->
+                                                                                </div> -->
 
     <div class="container-fluid">
         <div class="row">
@@ -73,7 +73,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="p-3 text-primary">
-                                <i class="fa fa-money fa-3x"></i>
+                                <img width="50" src="{{ asset('/assets/img/indonesian-rupiah.png') }}" alt="">
                             </div>
                             <div class="pr-3 col-8">
                                 <h2 class="text-right">{{ $data['jumlahTransaksi'] }}</h2>
@@ -111,7 +111,7 @@
                             </div>
                             <div class="pr-3 col-8">
                                 @if ($data['countDati2'])
-                                    <h2 class="text-right"> {{ $data['countDati2']}} </h2>
+                                    <h2 class="text-right"> {{ $data['countDati2'] }} </h2>
                                 @else
                                     <h2 class="text-right"> - </h2>
                                 @endif
@@ -135,7 +135,7 @@
                             <div class="pr-3 pb-0 col-8">
                                 <h5 class="text-right mb-0">{{ $data['lastMontTrans'] }}</h5>
                                 <span class="text-muted  text-right caption-trx">
-                                    <p>Transaksi Bulan Lalu</p>
+                                    <p>Total Transaksi {{ $data['lastMonth'] }}</p>
                                 </span>
                                 <div class="d-flex align-items-center" style="margin-top: -20px !important">
                                     <hr
@@ -156,7 +156,7 @@
                                     @endif
                                 </h5>
                                 <span class="text-muted  text-right caption-trx">
-                                    <p>Transaksi Bulan ini</p>
+                                    <p>Total Transaksi {{ $data['thisMonth'] }}</p>
                                 </span>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                             <div class="pr-3 pb-0 col-8">
                                 <h5 class="text-right mb-0">{{ $data['lastYearTrans'] }}</h5>
                                 <span class="text-muted  text-right caption-trx">
-                                    <p>Transaksi Tahun Lalu</p>
+                                    <p>Total Transaksi {{ $data['lastYear'] }}</p>
                                 </span>
                                 <div class="d-flex align-items-center" style="margin-top: -20px !important">
                                     <hr
@@ -194,7 +194,7 @@
                                     @endif
                                 </h5>
                                 <span class="text-muted  text-right caption-trx">
-                                    <p>Transaksi Tahun ini</p>
+                                    <p>Total Transaksi {{ $data['thisYear'] }}</p>
                                 </span>
                             </div>
                         </div>
@@ -241,13 +241,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-3 col-sm-12">
                 <div class="card widget">
                     <div class="card-body p-2">
                         <div class="row align-items-center">
                             <div class="p-3 text-primary mb-3 ml-2">
-                                <i class="fa fa-money fa-3x"></i>
+                                <img width="50" src="{{ asset('/assets/img/indonesian-rupiah.png') }}"
+                                    alt="">
                             </div>
                             <div class="pr-3 pb-0 col-8">
                                 <h5 class="text-right mb-0">{{ $data['jumlahTransaksiYesterday'] }}</h5>
@@ -647,16 +648,16 @@
             trxLog();
         });
 
-        function showConnectedProvince(){
+        function showConnectedProvince() {
             $("#detail-connected").modal('show')
         }
 
-        function showConnectedCity(){
+        function showConnectedCity() {
             $("#detail-connected").modal('show')
         }
 
-        function showDaerah(id){
-            if ($('#detail-connected').find(`#daerah-${id}`).css('display') == 'none'){
+        function showDaerah(id) {
+            if ($('#detail-connected').find(`#daerah-${id}`).css('display') == 'none') {
                 $('#detail-connected').find(`#daerah-${id}`).slideDown()
                 $('#detail-connected').find(`#icon-header-${id}`).addClass('fa-rotate-180')
             } else {
@@ -672,8 +673,8 @@
     <!-- @foreach (\Vanguard\Plugins\Vanguard::availableWidgets(auth()->user()) as $widget)
     // @if (method_exists($widget, 'scripts'))
     // {!! app()->call([$widget, 'scripts']) !!}
-                                                                                                                                                                                                                    //
+                                                                                                                                                                                                                                                                                    //
     @endif
-                                                                                                                                                                                                                    //
+                                                                                                                                                                                                                                                                                    //
     @endforeach -->
 @stop

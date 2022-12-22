@@ -12,6 +12,9 @@ use Vanguard\Models\DatBankSecret;
 use Vanguard\Models\LogCallback;
 use Yajra\Datatables\Datatables;
 use App\Helpers\Helper;
+use Carbon\Carbon;
+use DateInterval;
+use DateTime;
 use Vanguard\Models\Province;
 use Vanguard\Models\RefDati;
 
@@ -31,7 +34,20 @@ class DashboardController extends Controller
         $data['prop'] = Province::getConnectedProp();
         $data['countBank'] = count($data['prop']);
 
-        // dd($data['countBank']);
+        $dateTime = new DateTime();
+        $data['thisMonth'] = $dateTime->format('F');
+        $dateInterval = new DateInterval('P1M');
+        $dateInterval->invert = true;
+        $dateTime->add($dateInterval);
+        $data['lastMonth'] = $dateTime->format('F');
+
+        $dateTime = new DateTime();
+        $data['thisYear'] = $dateTime->format('Y');
+        $dateInterval = new DateInterval('P1Y');
+        $dateInterval->invert = true;
+        $dateTime->add($dateInterval);
+        $data['lastYear'] = $dateTime->format('Y');
+
         $data['countTransaksi'] = TrxOverBooking::countTransaksi();
         $data['countTransaksiToday'] = TrxOverBooking::countTransaksi('today');
         $data['countTransaksiYesterday'] = TrxOverBooking::countTransaksi('yesterday');
@@ -45,7 +61,7 @@ class DashboardController extends Controller
         $data['jumlahTransaksiToday'] = Library::convertCurrency((int)$rawDataJmlTransaksiToday);
         $data['jumlahTransaksiYesterday'] = Library::convertCurrency((int)$rawDataJmlTransaksiYesterday);
         $data['percentageTrxToday'] = (int)$rawDataJmlTransaksiYesterday != 0 ? round(((int)$rawDataJmlTransaksiToday - (int)$rawDataJmlTransaksiYesterday) / (int)$rawDataJmlTransaksiYesterday * 100, 2) : (int)$rawDataJmlTransaksiToday;
-       
+
         $data['dati2'] = RefDati::getConnectedDati();
         $data['countDati2'] = count($data['dati2']);
 
