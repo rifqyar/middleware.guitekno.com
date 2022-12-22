@@ -97,7 +97,10 @@ class TrxOverBooking extends Model
     public static function countTransaksi($day = '')
     {
         $where = Helper::getRoleFilter('query');
+        
         $where = $where != '' ? "WHERE $where" : '';
+        
+        // dd($where);
 
         if ($day == 'today') {
             // $date = date('Y-m-d', time() - 86400);
@@ -113,6 +116,8 @@ class TrxOverBooking extends Model
 
         $query = "SELECT COUNT(1) as total from trx_overbooking $where $whereDev";
 
+        // dd($whereDev);
+        // dd($query);
         return DB::SELECT($query)[0]->total;
     }
 
